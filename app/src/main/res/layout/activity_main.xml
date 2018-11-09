@@ -6,13 +6,16 @@
     android:layout_height="match_parent"
     tools:context="ru.apps4yourlife.life.lifebalance.Activities.MainActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX ="167dp"
-        tools:layout_editor_absoluteY="142dp"
-        android:theme="@style/BlueButton"
-        />
+
+        <include
+            layout="@layout/wishes_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></include>
+
 </android.support.constraint.ConstraintLayout>
