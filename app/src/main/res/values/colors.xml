@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2e6cdc</color>
+    <color name="colorPrimary">#3f7ded</color>
     <color name="colorPrimaryDark">#1a2c48</color>
     <color name="colorAccent">#bb3a62</color>
 
@@ -10,6 +10,7 @@
     <color name="red">#f54947</color>
 
     <color name="whiteText">#FFFFFF</color>
+    <color name="neartoWhite">#EFEFEF</color>
 
 
 </resources>

@@ -13,14 +13,20 @@
         <item name="android:colorButtonNormal">@color/colorPrimary</item>
     </style>
 
-    <style name="TypicalText" >
+    <style name="HeaderText" >
         <item name="android:textColor">@color/whiteText</item>
         <item name="android:textSize">24dp</item>
+        <item name="android:fontFamily">@font/abel</item>
     </style>
 
     <style name="SmallText" >
         <item name="android:textColor">@color/whiteText</item>
         <item name="android:textSize">10dp</item>
+    </style>
+
+    <style name="defaultText" >
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:textSize">12dp</item>
     </style>
 
 
