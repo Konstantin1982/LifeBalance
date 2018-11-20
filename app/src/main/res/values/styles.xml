@@ -13,21 +13,40 @@
         <item name="android:colorButtonNormal">@color/colorPrimary</item>
     </style>
 
-    <style name="HeaderText" >
+    <style name="HeaderText">
         <item name="android:textColor">@color/whiteText</item>
         <item name="android:textSize">24dp</item>
         <item name="android:fontFamily">@font/abel</item>
     </style>
 
-    <style name="SmallText" >
+    <style name="SmallText">
         <item name="android:textColor">@color/whiteText</item>
         <item name="android:textSize">10dp</item>
     </style>
 
-    <style name="defaultText" >
+    <style name="ExtraSmallText">
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:textSize">8dp</item>
+    </style>
+
+    <style name="defaultText">
         <item name="android:textColor">@color/whiteText</item>
         <item name="android:textSize">12dp</item>
     </style>
+
+    <style name="wishText">
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>
