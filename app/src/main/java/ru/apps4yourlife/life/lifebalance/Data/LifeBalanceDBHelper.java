@@ -80,12 +80,38 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void insertFakeWishes(SQLiteDatabase db) {
+        LifeBalanceDBDataManager.InsertOrUpdateWish(
+                db,
+                null,
+                "0,1,2",
+                0,
+                0,
+                0,
+                GeneralHelper.WishStatusesClass.WISH_STATUS_NEW,
+                "Черновик",
+                "Я хочу морковный сок из 20-ти морковных грядок. Сок холодный и свежий."
+                );
+        LifeBalanceDBDataManager.InsertOrUpdateWish(
+                db,
+                null,
+                "0, 2",
+                0,
+                0,
+                0,
+                GeneralHelper.WishStatusesClass.WISH_STATUS_UNDER_REVIEW,
+                "на проверке",
+                "Устроиться на работу мечты - стать дворников на багамских островах."
+                );
+    }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         CreateTables(sqLiteDatabase);
 
         InsertInitialEvent(sqLiteDatabase);
         InsertInitialMessages(sqLiteDatabase);
+        insertFakeWishes(sqLiteDatabase);
     }
 
     @Override

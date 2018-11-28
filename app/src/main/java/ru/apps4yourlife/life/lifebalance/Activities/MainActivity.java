@@ -8,11 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ru.apps4yourlife.life.lifebalance.Adapters.EventsListAdapter;
 import ru.apps4yourlife.life.lifebalance.Adapters.MessagesListAdapter;
-import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
 
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void wishButtonInit() {
         // label
-        long uncompleteWishes = dataManager.GetCountUncompleteWishes();
+        long uncompleteWishes = dataManager.GetCountOpenedWishes();
         TextView countDescription = (TextView) findViewById(R.id.count_wishes_label);
         countDescription.setText(String.valueOf(uncompleteWishes) + "/" + MAX_COUNT_WISHES);
         //  progress

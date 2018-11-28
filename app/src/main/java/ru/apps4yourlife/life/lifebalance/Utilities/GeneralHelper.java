@@ -48,5 +48,12 @@ public class GeneralHelper {
         return normalDate.getTime();
     }
 
+    public static class WishStatusesClass {
+        public static final int WISH_STATUS_NEW = 0;
+        public static final int WISH_STATUS_UNDER_REVIEW = 1;
+        public static final int WISH_STATUS_ACCEPTED = 2;
+        public static final int WISH_STATUS_ACCEPTED_ITSELF = 22;
+        public static final int WISH_STATUS_REJECTED = 3;
+    }
 
 }

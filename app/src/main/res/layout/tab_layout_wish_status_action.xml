@@ -1,0 +1,56 @@
+<android.support.constraint.ConstraintLayout android:id="@+id/wishStatusActionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/horizontal_divider_image_bottom"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:visibility="visible"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageButton
+        android:id="@+id/button_send_wish_to_approve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@null"
+        android:src="@drawable/ic_wish_status_accepted"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+        android:text="Отправить на проверку"
+        app:layout_constraintBottom_toBottomOf="@id/button_send_wish_to_approve"
+        app:layout_constraintStart_toEndOf="@id/button_send_wish_to_approve"
+        app:layout_constraintTop_toTopOf="@id/button_send_wish_to_approve" />
+
+    <ImageButton
+        android:id="@+id/button_send_wish_to_approve_itself"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@null"
+        android:src="@drawable/ic_wish_status_accepted_byitself"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_send_wish_to_approve" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Проверю сам."
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/button_send_wish_to_approve_itself"
+        app:layout_constraintStart_toEndOf="@id/button_send_wish_to_approve_itself"
+        app:layout_constraintTop_toTopOf="@id/button_send_wish_to_approve_itself" />
+
+
+
+</android.support.constraint.ConstraintLayout>

@@ -7,9 +7,14 @@
     tools:context="ru.apps4yourlife.life.lifebalance.Activities.WishesActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:layout_width="344dp"
-        android:layout_height="551dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
+        android:id="@+id/wish_list_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/red"
+        />
 
 </android.support.constraint.ConstraintLayout>
