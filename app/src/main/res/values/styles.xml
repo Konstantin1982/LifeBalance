@@ -39,7 +39,7 @@
     </style>
 
     <style name="wishText">
-        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:textColor">@color/colorAccentLight</item>
         <item name="android:textSize">18dp</item>
     </style>
 

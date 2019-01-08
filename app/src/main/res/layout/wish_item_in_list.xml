@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-    app:cardBackgroundColor="@color/green"
+    app:cardBackgroundColor="@color/colorPrimary"
         >
 
         <android.support.constraint.ConstraintLayout
@@ -32,37 +32,31 @@
                 style="@style/wishText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
 
                 android:layout_marginTop="24dp"
                 android:maxLines="8"
-                android:text="Я хочу морковный сок и большое мороженое и белую машину и морское путешествие и помидоры на даче "
+                android:text="Я хочу морковный сок и большое мороженое и белую машину и морское путешествие и помидоры на даче и еще немного кое чего "
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editWishButton" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
             <ImageView
                 android:id="@+id/categories_images"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
                 android:cropToPadding="false"
                 app:layout_constraintBottom_toBottomOf="@id/editWishButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_balloons" />
 
-            <ImageView
-                android:id="@+id/horizontal_divider_image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/wishDescription"
-                app:srcCompat="@drawable/dark_divide_line" />
+
             <android.support.constraint.Guideline
                 android:id="@+id/guideline31"
                 android:layout_width="wrap_content"
@@ -85,179 +79,66 @@
                 app:layout_constraintGuide_percent="0.75" />
 
             <ImageButton
+                android:id="@+id/editWishButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editWishButton"
-                android:layout_margin="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="16dp"
                 android:background="@null"
+                android:onClick="wishEdit_click"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_edit_24px"
-                android:onClick="wishEdit_click"
-                />
+                app:srcCompat="@drawable/ic_baseline_edit_24px" />
 
-                        <android.support.constraint.ConstraintLayout
-                            android:id="@+id/wish_status_card"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/guideline31"
-                            app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_image"
-                            android:layout_width="0dp"
-                            android:layout_marginStart="0dp"
-                            android:background="@color/colorPrimary"
-                            android:layout_height="wrap_content"
-                            android:clickable="true"
-                            >
-
-                            <ImageView
-                                android:id="@+id/wishStatusImage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/ic_ok_appproval_acceptance"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:layout_marginTop="8dp"
-
-                                />
-                            <TextView
-                                android:id="@+id/wish_status_textView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                android:text="Проверено!"
-                                style="@style/ExtraSmallText"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/wishStatusImage"
-                                />
-
-                        </android.support.constraint.ConstraintLayout>
-
-                        <android.support.constraint.ConstraintLayout
-                            android:id="@+id/fears_tab"
-                            app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_image"
-                            android:layout_width="0dp"
-                            android:background="@color/green"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/guideline31"
-                            app:layout_constraintEnd_toStartOf="@id/guideline32"
-                            >
-
-                            <ImageView
-                                android:id="@+id/imageView81"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/ic_ghost"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:layout_marginTop="8dp"
-                                />
-                            <TextView
-                                android:id="@+id/fear_status_wish"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                android:text="2 / 8"
-                                style="@style/ExtraSmallText"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/imageView81" />
-
-                        </android.support.constraint.ConstraintLayout>
-
-                        <android.support.constraint.ConstraintLayout
-                            app:layout_constraintStart_toStartOf="@id/guideline32"
-                            app:layout_constraintEnd_toEndOf="@id/guideline33"
-                            app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_image"
-                            android:layout_width="0dp"
-                            android:layout_marginEnd="0dp"
-                            android:background="@color/red"
-                            android:layout_height="wrap_content"
-                            >
-
-                            <ImageView
-                                android:id="@+id/imageView82"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_escalator" />
-
-                            <TextView
-                                android:id="@+id/empty_stairs"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                android:text=""
-                                style="@style/ExtraSmallText"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/imageView82" />
-
-                        </android.support.constraint.ConstraintLayout>
-
-
-                        <android.support.constraint.ConstraintLayout
-                            app:layout_constraintStart_toStartOf="@id/guideline33"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_image"
-                            android:layout_width="0dp"
-                            android:layout_marginEnd="0dp"
-                            android:background="@color/olive"
-                            android:layout_height="wrap_content"
-                            >
-
-                            <ImageView
-                                android:id="@+id/imageView83"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_escalator" />
-
-                            <TextView
-                                android:id="@+id/empty_stairs0"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                android:text=""
-                                style="@style/ExtraSmallText"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/imageView83" />
-
-                        </android.support.constraint.ConstraintLayout>
             <ImageView
-                android:id="@+id/horizontal_divider_image_bottom"
+                android:id="@+id/imageView2"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp"
+                android:layout_height="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/wish_status_card"
+                app:layout_constraintTop_toBottomOf="@+id/categories_images"
                 app:srcCompat="@drawable/dark_divide_line" />
+
+            <ImageView
+                android:id="@+id/horizontal_divider_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/wishDescription"
+                app:srcCompat="@drawable/dark_divide_line" />
+
+            <TextView
+                android:id="@+id/nextStepNumber"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/dark_circle"
+                android:layout_marginBottom="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/horizontal_divider_image" />
+
+            <TextView
+                android:id="@+id/nextStepDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:text="Представляем и мечтаем"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/nextStepNumber"
+                app:layout_constraintTop_toTopOf="@+id/horizontal_divider_image" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
