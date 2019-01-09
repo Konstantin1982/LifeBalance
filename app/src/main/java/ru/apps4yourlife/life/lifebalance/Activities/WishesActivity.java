@@ -2,6 +2,7 @@ package ru.apps4yourlife.life.lifebalance.Activities;
 
 import android.animation.AnimatorSet;
 import android.app.ActivityOptions;
+import android.app.Instrumentation;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Point;
@@ -49,17 +50,27 @@ public class WishesActivity extends AppCompatActivity {
     }
 
     public void wishEdit_click(View view) {
-// Check if we're running on Android 5.0 or higher
+        // Check if we're running on Android 5.0 or higher
         Intent wishEditIntent = new Intent(this, WishEditActivity.class);
+        wishEditIntent.putExtra("WISH_ID", "1");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Apply activity transition
             View wishDescriptionView = findViewById(R.id.wishDescription);
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, wishDescriptionView, "description");
             startActivity(wishEditIntent, options.toBundle());
         } else {
-            startActivity(wishEditIntent);
+            startActivityForResult(wishEditIntent,0);
         }
+    }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0 ) {
+            // from Wish Edit
+            int position = resultCode;
+            mWishListAdapter.updateListValues(position);
+        }
     }
 
 

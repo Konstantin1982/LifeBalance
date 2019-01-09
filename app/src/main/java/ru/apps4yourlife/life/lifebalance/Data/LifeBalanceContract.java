@@ -48,6 +48,8 @@ public class LifeBalanceContract {
         public static final String COLUMN_STATUS = "status"; // создано, отправлено на проверку, проверено, нужно доработать, идет работа со страхами, идет реализация, готово"
         public static final String COLUMN_STATUS_HINT = "statushint"; // подсказка, что дальше или что не так
         public static final String COLUMN_DESCRIPTION = "description"; // собственно, описание
+        public static final String COLUMN_SITUATION = "situation"; // ситуация реализации
+        public static final String COLUMN_SITUATION_STATUS = "situation_status"; // ситуация реализации - статус
     }
 
     public static final class FearsEntry implements BaseColumns {

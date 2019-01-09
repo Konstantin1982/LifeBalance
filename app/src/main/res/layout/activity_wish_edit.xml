@@ -40,7 +40,7 @@
         android:layout_height="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wishDescription"
+        app:layout_constraintTop_toBottomOf="@id/wishDescriptionEditText"
         android:layout_marginTop="8dp"
         app:srcCompat="@drawable/dark_divide_line"
     />
@@ -68,7 +68,7 @@
 
 
     <EditText
-        android:id="@+id/wishDescription"
+        android:id="@+id/wishDescriptionEditText"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -76,9 +76,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
         android:inputType="textMultiLine"
         android:lines="6"
+        android:enabled="true"
         android:text="Я хочу морковный сок и большое мороженое и белую машину и морское путешествие и помидоры на даче "
         app:layout_constraintBottom_toTopOf="@+id/horizontal_divider_image"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,10 +93,9 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:elevation="1dp"
-        android:background="@color/olive"
-        app:layout_constraintTop_toBottomOf="@id/horizontal_divider_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontal_divider_image"
 
         >
 
@@ -108,6 +107,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.v4.view.ViewPager>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Save All"
+        android:onClick="wishSave_click"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -4,9 +4,11 @@ package ru.apps4yourlife.life.lifebalance.Adapters;
  * Created by ksharafutdinov on 28-Nov-18.
  */
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.widget.AdapterView;
 
 import ru.apps4yourlife.life.lifebalance.Activities.Tabs.TabFears;
 import ru.apps4yourlife.life.lifebalance.Activities.Tabs.TabSituation;
@@ -36,22 +38,12 @@ public class PagerAdapter extends FragmentPagerAdapter {
         return null;
     }
 
+
+
     @Override
     public int getCount() {
         return mTabCount;
     }
-    @Override
-    public CharSequence getPageTitle(int position) {
-        // TODO: real titles
-        switch (position) {
-            case 0:
-                return "Управление";
-            case 1:
-                return "Просмотр";
-            default:
-                return "undefined " + (position + 1);
-        }
-    }
-}
 
+}
 

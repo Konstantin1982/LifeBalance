@@ -53,7 +53,9 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                         LifeBalanceContract.WishesEntry.COLUMN_FACT_END + " INTEGER, " +
                         LifeBalanceContract.WishesEntry.COLUMN_STATUS + " INTEGER, " +
                         LifeBalanceContract.WishesEntry.COLUMN_STATUS_HINT + " VARCHAR(255), " +
-                        LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION + " VARCHAR(1020) " +
+                        LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION + " VARCHAR(1020), " +
+                        LifeBalanceContract.WishesEntry.COLUMN_SITUATION + " VARCHAR(1020), " +
+                        LifeBalanceContract.WishesEntry.COLUMN_SITUATION_STATUS + " INTEGER " +
                         ")";
 
         sqLiteDatabase.execSQL(SQL_CREATE_EVENTS_TABLE);
@@ -90,7 +92,9 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 0,
                 GeneralHelper.WishStatusesClass.WISH_STATUS_NEW,
                 "Черновик",
-                "Я хочу морковный сок из 20-ти морковных грядок. Сок холодный и свежий."
+                "Я хочу морковный сок из 20-ти морковных грядок. Сок холодный и свежий.",
+                "Морозное утро, выхожу из-за стола, пью ледяной сок.",
+                0
                 );
         LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
@@ -101,7 +105,9 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 0,
                 GeneralHelper.WishStatusesClass.WISH_STATUS_UNDER_REVIEW,
                 "на проверке",
-                "Устроиться на работу мечты - стать дворников на багамских островах."
+                "Устроиться на работу мечты - стать дворников на багамских островах.",
+                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан.",
+                0
                 );
     }
 

@@ -98,5 +98,17 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
     public int getItemCount() {
         return  mWishListCursor.getCount();
     }
+
+    public void updateListValues(int position) {
+        LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
+        mWishListCursor = mDataManager.GetOpenedWishes();
+        //Log.e("CURSOR","Count of new cursor = " + mListChildrenCursor.getCount() + "; Position = " + position);
+        if (position >= 0) {
+            notifyItemChanged(position);
+        } else {
+            notifyItemInserted(mWishListCursor.getCount());
+        }
+    }
+
 }
 
