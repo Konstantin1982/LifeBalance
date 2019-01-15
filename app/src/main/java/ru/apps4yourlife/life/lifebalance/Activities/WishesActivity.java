@@ -23,7 +23,7 @@ import ru.apps4yourlife.life.lifebalance.Adapters.EventsListAdapter;
 import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
 import ru.apps4yourlife.life.lifebalance.R;
 
-public class WishesActivity extends AppCompatActivity {
+public class WishesActivity extends AppCompatActivity implements WishListAdapter.WishListAdapterClickHandler {
 
 
     private WishListAdapter mWishListAdapter;
@@ -45,22 +45,11 @@ public class WishesActivity extends AppCompatActivity {
 
         mListWishes.setLayoutManager(layoutManager);
         mListWishes.setHasFixedSize(true);
-        mWishListAdapter = new WishListAdapter(this);
+        mWishListAdapter = new WishListAdapter(this, this);
         mListWishes.setAdapter(mWishListAdapter);
     }
 
-    public void wishEdit_click(View view) {
-        // Check if we're running on Android 5.0 or higher
-        Intent wishEditIntent = new Intent(this, WishEditActivity.class);
-        wishEditIntent.putExtra("WISH_ID", "1");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // Apply activity transition
-            View wishDescriptionView = findViewById(R.id.wishDescription);
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, wishDescriptionView, "description");
-            startActivity(wishEditIntent, options.toBundle());
-        } else {
-            startActivityForResult(wishEditIntent,0);
-        }
+    public void wishEdit_click(int wishID) {
     }
 
 
@@ -74,4 +63,19 @@ public class WishesActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onWishClick(String wishId, String itemPositionInList) {
+        // Check if we're running on Android 5.0 or higher
+        Intent wishEditIntent = new Intent(this, WishEditActivity.class);
+        wishEditIntent.putExtra("WISH_ID",  wishId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Apply activity transition
+            View wishDescriptionView = findViewById(R.id.wishDescription);
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, wishDescriptionView, "description");
+            startActivity(wishEditIntent, options.toBundle());
+        } else {
+            startActivityForResult(wishEditIntent,0);
+        }
+
+    }
 }

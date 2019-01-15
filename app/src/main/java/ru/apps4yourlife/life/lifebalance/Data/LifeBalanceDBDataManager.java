@@ -140,6 +140,26 @@ public class LifeBalanceDBDataManager {
         return wishes;
     }
 
+    public Cursor GetWishesTypes() {
+
+        /*
+        Cursor types = mDBHelper.getReadableDatabase().query(
+                LifeBalanceContract.WishesTypesEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                LifeBalanceContract.WishesTypesEntry._ID,
+                null
+        );
+        */
+        // TODO make checked
+        Cursor types = mDBHelper.getReadableDatabase().rawQuery("select description, _id, 0 as CHECKED from " + LifeBalanceContract.WishesTypesEntry.TABLE_NAME, null);
+        types.moveToFirst();
+        return types;
+    }
+
     public Cursor GetWishById(String id) {
         Cursor wish = mDBHelper.getReadableDatabase().query(
                 LifeBalanceContract.WishesEntry.TABLE_NAME,
@@ -192,6 +212,20 @@ public class LifeBalanceDBDataManager {
         } else {
             result = db.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{idEntry});
             //if (result > 0) result = Long.getLong(idEntry);
+        }
+        return result;
+    }
+
+    public static long InsertOrUpdateWishType(SQLiteDatabase db,
+                                          String idEntry,
+                                          String type) {
+        long result = 0;
+        ContentValues values = new ContentValues();
+        values.put(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION, type);
+        if (idEntry == null) {
+            result = db.insert(LifeBalanceContract.WishesTypesEntry.TABLE_NAME, null, values);
+        } else {
+            result = db.update(LifeBalanceContract.WishesTypesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{idEntry});
         }
         return result;
     }

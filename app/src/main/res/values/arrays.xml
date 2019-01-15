@@ -14,5 +14,13 @@
         <item>Администратор|Лично Вам|дальше будет лучше|значит хотите улучшить свою жизнь и готовы впускать в нее чудеса. Я рад, что вы установили себе приложение, </item>
     </string-array>
 
+    <string-array name="wishes_types">
+        <item>Семья</item>
+        <item>Личное</item>
+        <item>Работа</item>
+        <item>Друзья</item>
+        <item>Деньги</item>
+    </string-array>
+
 
 </resources>

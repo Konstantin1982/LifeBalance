@@ -61,5 +61,11 @@ public class LifeBalanceContract {
     }
 
 
+    // желания
+    public static final class WishesTypesEntry implements BaseColumns {
+        public static final String TABLE_NAME = "wishestypes";
+        public static final String COLUMN_DESCRIPTION = "description"; // собственно, описание
+    }
+
 
 }

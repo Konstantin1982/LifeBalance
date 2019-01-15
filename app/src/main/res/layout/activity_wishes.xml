@@ -6,15 +6,36 @@
     android:layout_height="match_parent"
     tools:context="ru.apps4yourlife.life.lifebalance.Activities.WishesActivity">
 
+    <ImageView
+        android:id="@+id/main_back"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/wish_back" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/wish_list_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/red"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        style="@style/LightCheckBox"
+        android:text="Показывать отработанные   "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

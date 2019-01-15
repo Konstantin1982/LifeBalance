@@ -58,9 +58,17 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                         LifeBalanceContract.WishesEntry.COLUMN_SITUATION_STATUS + " INTEGER " +
                         ")";
 
+        final String SQL_CREATE_WISHES_TYPES_TABLE =
+        "CREATE TABLE " +
+                        LifeBalanceContract.WishesTypesEntry.TABLE_NAME + "(" +
+                        LifeBalanceContract.WishesTypesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        LifeBalanceContract.WishesTypesEntry.COLUMN_DESCRIPTION + " VARCHAR(1020) " +
+                        ")";
+
         sqLiteDatabase.execSQL(SQL_CREATE_EVENTS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_MESSAGE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_WISHES_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_WISHES_TYPES_TABLE);
         Log.d("DB", "TABLES WERE CREATED");
     }
 
@@ -79,6 +87,13 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         for (String message : messages) {
             String[] parcedMessage = message.split("\\|");
             LifeBalanceDBDataManager.InsertOrUpdateMessage(db,null,parcedMessage[0],parcedMessage[1],parcedMessage[2],parcedMessage[3],1, GeneralHelper.GetCurrentDate().getTime());
+        }
+    }
+
+    public void InsertInitialWishesTypes(SQLiteDatabase db) {
+        String[] types = mContext.getResources().getStringArray(R.array.wishes_types);
+        for (String type : types) {
+            LifeBalanceDBDataManager.InsertOrUpdateWishType(db,null,type);
         }
     }
 
@@ -109,6 +124,32 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 "Мету кокосовые листья, выбрасываю крабовые шкурки в океан.",
                 0
                 );
+        LifeBalanceDBDataManager.InsertOrUpdateWish(
+                db,
+                null,
+                "0, 2",
+                0,
+                0,
+                0,
+                GeneralHelper.WishStatusesClass.WISH_STATUS_UNDER_REVIEW,
+                "на проверке",
+                "Устроиться на работу мечты - стать дворников на багамских островах.",
+                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан.",
+                0
+                );
+        LifeBalanceDBDataManager.InsertOrUpdateWish(
+                db,
+                null,
+                "0, 2",
+                0,
+                0,
+                0,
+                GeneralHelper.WishStatusesClass.WISH_STATUS_UNDER_REVIEW,
+                "на проверке",
+                "Устроиться на работу мечты - стать дворников на багамских островах.",
+                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан.",
+                0
+                );
     }
 
     @Override
@@ -118,6 +159,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         InsertInitialEvent(sqLiteDatabase);
         InsertInitialMessages(sqLiteDatabase);
         insertFakeWishes(sqLiteDatabase);
+        InsertInitialWishesTypes(sqLiteDatabase);
     }
 
     @Override

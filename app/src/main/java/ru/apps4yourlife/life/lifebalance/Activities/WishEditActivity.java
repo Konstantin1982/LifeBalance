@@ -11,13 +11,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import ru.apps4yourlife.life.lifebalance.Activities.Tabs.TabSituation;
 import ru.apps4yourlife.life.lifebalance.Adapters.PagerAdapter;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
+import ru.apps4yourlife.life.lifebalance.Utilities.ChooseCategoriesFragment;
 
-public class WishEditActivity extends AppCompatActivity {
+public class WishEditActivity extends AppCompatActivity implements ChooseCategoriesFragment.ChooseCategoriesFragmentListener {
     //This is our tablayout
     private TabLayout mTabLayout;
     //This is our viewPager
@@ -34,7 +37,6 @@ public class WishEditActivity extends AppCompatActivity {
         String wishIdString = getIntent().getStringExtra("WISH_ID");
 
         mDataManager = new LifeBalanceDBDataManager(this);
-        initTabs();
         initWish(wishIdString);
     }
 
@@ -55,6 +57,13 @@ public class WishEditActivity extends AppCompatActivity {
         }
     }
 
+    public void wishAddCategoryClick(View view){
+        ChooseCategoriesFragment mApplicationDialogFragment = new ChooseCategoriesFragment();
+        mApplicationDialogFragment.setmListener(this);
+        mApplicationDialogFragment.show(getSupportFragmentManager(), "ChoosePlaceDialogFragment");
+
+    }
+
     public void updateUIWish(Cursor wishEntry) {
         EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
         //EditText    wishSituationEditText = (EditText) mTabLayout.findViewById(R.id.wishSituationEditText);
@@ -67,33 +76,6 @@ public class WishEditActivity extends AppCompatActivity {
         }
     }
 
-    public void initTabs() {
-        mTabLayout = (TabLayout) findViewById(R.id.wish_edit_tab_layout);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager_wish_edit);
-        mpagerAdapter = new PagerAdapter(getSupportFragmentManager(), 4);
-        mViewPager.setAdapter(mpagerAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_wish_status_accepted);
-        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_wish_situation);
-        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_wish_fears);
-        mTabLayout.getTabAt(3).setIcon(R.drawable.ic_escalator);
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                Toast.makeText(getApplicationContext(), "text" + tab.getPosition(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-    }
 
     public void wishSave_click(View view) {
         // Save wish
@@ -107,4 +89,8 @@ public class WishEditActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void OnClickWishesTypes(ArrayList<Integer> selectedItems) {
+
+    }
 }

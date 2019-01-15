@@ -23,7 +23,7 @@
     </ImageView>
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/addnewCategoryImage"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="32dp"
@@ -31,6 +31,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/categories_images"
         app:layout_constraintStart_toEndOf="@+id/categories_images"
         app:layout_constraintTop_toTopOf="parent"
+        android:onClick="wishAddCategoryClick"
         app:srcCompat="@android:drawable/ic_input_add" />
 
 
@@ -44,27 +45,6 @@
         android:layout_marginTop="8dp"
         app:srcCompat="@drawable/dark_divide_line"
     />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline31"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline32"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline33"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
 
 
     <EditText
@@ -88,26 +68,6 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager_wish_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:elevation="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/horizontal_divider_image"
-
-        >
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/wish_edit_tab_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </android.support.v4.view.ViewPager>
-
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
@@ -118,6 +78,34 @@
         android:onClick="wishSave_click"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        style="@style/HeaderText"
+        android:text="Что можно сделать?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_image" />
+
+    <TextView
+        android:id="@+id/theNextStepDescription"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="10"
+        android:text="загружается .... "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -19,6 +19,19 @@
         <item name="android:fontFamily">@font/abel</item>
     </style>
 
+    <style name="WishListHeaderText">
+        <item name="android:textColor">@color/colorAccentLight</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:fontFamily">@font/abel</item>
+    </style>
+
+    <style name="WishListStepNumberText">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">24dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
     <style name="HeaderTextDark" parent="HeaderText">
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
@@ -41,6 +54,13 @@
     <style name="wishText">
         <item name="android:textColor">@color/colorAccentLight</item>
         <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="LightCheckBox" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">@color/colorAccentLight</item>
+        <item name="android:textSize">14dp</item>
+        <item name="colorControlNormal">@color/colorAccentLight</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

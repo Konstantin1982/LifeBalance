@@ -7,8 +7,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
+        android:layout_marginBottom="32dp"
         android:focusable="true"
         app:cardCornerRadius="16dp"
         app:cardElevation="2dp"
@@ -16,11 +15,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-    app:cardBackgroundColor="@color/colorPrimary"
+        app:cardBackgroundColor="@color/colorPrimary"
         >
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/wwwwww"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="0dp"
@@ -35,23 +33,22 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
 
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:maxLines="8"
-                android:text="Я хочу морковный сок и большое мороженое и белую машину и морское путешествие и помидоры на даче и еще немного кое чего "
+                android:text=""
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                app:layout_constraintTop_toBottomOf="@+id/categories_images" />
 
             <ImageView
                 android:id="@+id/categories_images"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:cropToPadding="false"
-                app:layout_constraintBottom_toBottomOf="@id/editWishButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_balloons" />
@@ -62,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.25" />
+                app:layout_constraintGuide_percent="0.20" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline32"
@@ -76,69 +73,64 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.75" />
-
-            <ImageButton
-                android:id="@+id/editWishButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:layout_marginTop="16dp"
-                android:background="@null"
-                android:onClick="wishEdit_click"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_edit_24px" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="0dp"
-                android:layout_height="3dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/categories_images"
-                app:srcCompat="@drawable/dark_divide_line" />
+                app:layout_constraintGuide_percent="0.8" />
 
             <ImageView
                 android:id="@+id/horizontal_divider_image"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="4dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
                 android:layout_marginTop="24dp"
+                android:scaleType="matrix"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/wishDescription"
-                app:srcCompat="@drawable/dark_divide_line" />
+                app:srcCompat="@drawable/white_divide_line" />
 
             <TextView
                 android:id="@+id/nextStepNumber"
+                style="@style/WishListStepNumberText"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/dark_circle"
-                android:layout_marginBottom="32dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="24dp"
+                android:background="@drawable/dark_circle"
+                android:paddingVertical="2dp"
                 android:text="2"
+                android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/nextStepDescription"
                 app:layout_constraintTop_toTopOf="@+id/horizontal_divider_image" />
 
             <TextView
                 android:id="@+id/nextStepDescription"
+                style="@style/WishListHeaderText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginBottom="24dp"
                 android:layout_marginTop="24dp"
+                android:maxLines="2"
                 android:text="Представляем и мечтаем"
+                android:textAlignment="center"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/nextStepNumber"
+                app:layout_constraintEnd_toStartOf="@+id/guideline33"
+                app:layout_constraintStart_toStartOf="@+id/guideline31"
                 app:layout_constraintTop_toTopOf="@+id/horizontal_divider_image" />
 
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:elevation="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/nextStepNumber"
+                app:layout_constraintStart_toEndOf="@+id/nextStepDescription"
+                app:layout_constraintTop_toTopOf="@+id/nextStepNumber"
+                app:srcCompat="@drawable/ic_play_button" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

@@ -1,324 +1,334 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/external_constraint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccentLight"
+    >
+
+    <ImageView
+        android:id="@+id/main_back"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/main_back_2" />
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/main_constraint"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccentLight"
-        tools:context="ru.apps4yourlife.life.lifebalance.Activities.MainActivity">
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/main_constraint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="ru.apps4yourlife.life.lifebalance.Activities.MainActivity">
 
-        <ImageView
-            android:id="@+id/main_back"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="fitEnd"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/expectrum4" />
+                        <android.support.v7.widget.CardView android:id="@+id/messages_card"
+                                    xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    xmlns:tools="http://schemas.android.com/tools"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginTop="24dp"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:onClick="wishList_click"
+                                    app:cardCornerRadius="16dp"
+                                    app:cardElevation="2dp"
+                                    app:contentPadding="0dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.v7.widget.CardView android:id="@+id/messages_card"
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
-                        xmlns:tools="http://schemas.android.com/tools"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="24dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:onClick="wishList_click"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp"
-                        app:contentPadding="0dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                                    <android.support.constraint.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/colorPrimary"
 
-                        <android.support.constraint.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorPrimary"
+                                        >
 
-                            >
+                                        <ImageView
+                                            android:id="@+id/imageView44"
+                                            android:layout_width="32dp"
+                                            android:layout_height="32dp"
+                                            android:layout_marginStart="32dp"
+                                            android:layout_marginTop="24dp"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            app:srcCompat="@android:drawable/ic_dialog_email" />
 
-                            <ImageView
-                                android:id="@+id/imageView44"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginStart="32dp"
-                                android:layout_marginTop="24dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@android:drawable/ic_dialog_email" />
+                                        <android.support.constraint.Guideline
+                                            android:id="@+id/guideline42"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal"
+                                            app:layout_constraintGuide_percent="0.6" />
 
-                            <android.support.constraint.Guideline
-                                android:id="@+id/guideline42"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                app:layout_constraintGuide_percent="0.6" />
+                                        <android.support.v7.widget.RecyclerView
+                                            android:id="@+id/messagesList"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="32dp"
+                                            android:layout_marginTop="8dp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@id/messagesHeader" />
 
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/messagesList"
+                                        <TextView
+                                            android:id="@+id/messagesHeader"
+                                            style="@style/HeaderText"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="8dp"
+                                            android:text="Сообщения"
+
+                                            android:textAlignment="textStart"
+                                            app:layout_constraintBottom_toBottomOf="@+id/imageView44"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="@+id/imageView44" />
+
+                                    </android.support.constraint.ConstraintLayout>
+
+                                </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView android:id="@+id/wishes_card"
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                xmlns:tools="http://schemas.android.com/tools"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="32dp"
-                                android:layout_marginTop="8dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/messagesHeader" />
-
-                            <TextView
-                                android:id="@+id/messagesHeader"
-                                style="@style/HeaderText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
                                 android:layout_marginStart="8dp"
-                                android:text="Сообщения"
-
-                                android:textAlignment="textStart"
-                                app:layout_constraintBottom_toBottomOf="@+id/imageView44"
+                                android:layout_marginTop="24dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:onClick="wishList_click"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="2dp"
+                                app:contentPadding="0dp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/imageView44" />
+                                app:layout_constraintTop_toBottomOf="@id/messages_card"
 
-                        </android.support.constraint.ConstraintLayout>
+                                >
 
-                    </android.support.v7.widget.CardView>
+                                    <android.support.constraint.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/colorAccentDark"
+                                        >
 
-            <android.support.v7.widget.CardView android:id="@+id/wishes_card"
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="24dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:onClick="wishList_click"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp"
-                    app:contentPadding="0dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/messages_card"
-
-                    >
-
-                        <android.support.constraint.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorAccentDark"
-                            >
-
-                            <ImageView
-                                android:id="@+id/imageView"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginBottom="40dp"
-                                android:layout_marginStart="32dp"
-                                android:layout_marginTop="40dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_sun" />
+                                        <ImageView
+                                            android:id="@+id/imageView"
+                                            android:layout_width="32dp"
+                                            android:layout_height="32dp"
+                                            android:layout_marginBottom="40dp"
+                                            android:layout_marginStart="32dp"
+                                            android:layout_marginTop="40dp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            app:srcCompat="@drawable/ic_sun" />
 
 
-                            <TextView
-                                android:id="@+id/textView"
-                                style="@style/HeaderText"
-                                android:layout_width="wrap_content"
+                                        <TextView
+                                            android:id="@+id/textView"
+                                            style="@style/HeaderText"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="8dp"
+                                            android:layout_marginEnd="8dp"
+                                            android:layout_marginStart="8dp"
+                                            android:layout_marginTop="8dp"
+                                            android:text="Мои желания"
+                                            android:textSize="24sp"
+                                            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+                                        <ProgressBar
+                                            android:id="@+id/wishes_progress_bar"
+                                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                            android:layout_width="0dp"
+                                            android:layout_height="3dp"
+                                            android:layout_marginBottom="24dp"
+                                            android:layout_marginEnd="32dp"
+                                            android:layout_marginStart="32dp"
+                                            android:background="@color/olive"
+                                            android:progress="33"
+                                            android:progressDrawable="@drawable/progress_bar_style"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent" />
+
+                                            <TextView
+                                                android:id="@+id/count_wishes_label"
+                                                style="@style/SmallText"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="5 / 50"
+                                                app:layout_constraintLeft_toLeftOf="@id/wishes_progress_bar"
+                                                app:layout_constraintTop_toBottomOf="@id/wishes_progress_bar" />
+
+
+
+                                    </android.support.constraint.ConstraintLayout>
+                            </android.support.v7.widget.CardView>
+                        <android.support.v7.widget.CardView android:id="@+id/events_card"
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                xmlns:tools="http://schemas.android.com/tools"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="24dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:onClick="wishList_click"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="2dp"
+                                app:contentPadding="0dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/wishes_card">
+
+                                    <android.support.constraint.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/colorAccent"
+                                        >
+
+                                        <ImageView
+                                            android:id="@+id/imageView4"
+                                            android:layout_width="32dp"
+                                            android:layout_height="32dp"
+                                            android:layout_marginStart="32dp"
+                                            android:layout_marginTop="24dp"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            app:srcCompat="@drawable/ic_calendar" />
+
+                                            <android.support.constraint.Guideline
+                                                android:id="@+id/guideline2"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="horizontal"
+                                                app:layout_constraintGuide_percent="0.6" />
+
+                                            <android.support.v7.widget.RecyclerView
+                                                android:id="@+id/eventsList"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginBottom="32dp"
+                                                android:layout_marginTop="8dp"
+                                                app:layout_constraintBottom_toBottomOf="parent"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@id/eventsHeader" />
+
+                                        <TextView
+                                            android:id="@+id/eventsHeader"
+                                            style="@style/HeaderTextDark"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="8dp"
+                                            android:text="События"
+
+                                            android:textAlignment="textStart"
+                                            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+                                    </android.support.constraint.ConstraintLayout>
+
+                            </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView android:id="@+id/balance_wheel_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="8dp"
-                                android:text="Мои желания"
-                                android:textSize="24sp"
-                                app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                                app:layout_constraintEnd_toEndOf="parent"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:onClick="wishList_click"
+                                app:cardBackgroundColor="@color/red"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="2dp"
+                                app:contentPadding="0dp"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/imageView" />
+                                app:layout_constraintTop_toBottomOf="@id/events_card">
 
-                            <ProgressBar
-                                android:id="@+id/wishes_progress_bar"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="0dp"
-                                android:layout_height="3dp"
-                                android:layout_marginBottom="24dp"
-                                android:layout_marginEnd="32dp"
-                                android:layout_marginStart="32dp"
-                                android:background="@color/olive"
-                                android:progress="33"
-                                android:progressDrawable="@drawable/progress_bar_style"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent" />
+                                    <android.support.constraint.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
 
-                                <TextView
-                                    android:id="@+id/count_wishes_label"
-                                    style="@style/SmallText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="5 / 50"
-                                    app:layout_constraintLeft_toLeftOf="@id/wishes_progress_bar"
-                                    app:layout_constraintTop_toBottomOf="@id/wishes_progress_bar" />
+                                            <TextView
+                                                android:id="@+id/wheelHeader"
+                                                style="@style/HeaderText"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="16dp"
+                                                android:text="Мой жизненный баланс"
+                                                android:textAlignment="center"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent" />
 
+                                            <ImageView
+                                                android:id="@+id/imageView3"
+                                                android:layout_width="300dp"
+                                                android:layout_height="300dp"
+                                                android:layout_marginBottom="8dp"
+                                                android:layout_marginEnd="8dp"
+                                                android:layout_marginStart="8dp"
+                                                android:layout_marginTop="8dp"
+                                                android:scaleType="fitCenter"
+                                                app:layout_constraintBottom_toBottomOf="parent"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@id/wheelHeader"
+                                                app:srcCompat="@drawable/time_400" />
 
+                                            <android.support.design.widget.FloatingActionButton
+                                                android:id="@+id/floatingActionButton"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginBottom="24dp"
+                                                android:layout_marginEnd="24dp"
+                                                android:backgroundTint="@color/green"
+                                                android:clickable="true"
+                                                app:layout_constraintBottom_toBottomOf="parent"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:srcCompat="@android:drawable/ic_menu_edit" />
 
-                        </android.support.constraint.ConstraintLayout>
-                </android.support.v7.widget.CardView>
+                                            <android.support.constraint.Guideline
+                                                android:id="@+id/guideline"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="vertical"
+                                                app:layout_constraintGuide_begin="20dp" />
+                                    </android.support.constraint.ConstraintLayout>
+                            </android.support.v7.widget.CardView>
+        </android.support.constraint.ConstraintLayout>
 
-            <android.support.v7.widget.CardView android:id="@+id/events_card"
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="24dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:onClick="wishList_click"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp"
-                    app:contentPadding="0dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/wishes_card">
-
-                        <android.support.constraint.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorAccent"
-                            >
-
-                            <ImageView
-                                android:id="@+id/imageView4"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginStart="32dp"
-                                android:layout_marginTop="24dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_calendar" />
-
-                                <android.support.constraint.Guideline
-                                    android:id="@+id/guideline2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    app:layout_constraintGuide_percent="0.6" />
-
-                                <android.support.v7.widget.RecyclerView
-                                    android:id="@+id/eventsList"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="32dp"
-                                    android:layout_marginTop="8dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/eventsHeader" />
-
-                            <TextView
-                                android:id="@+id/eventsHeader"
-                                style="@style/HeaderTextDark"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="События"
-
-                                android:textAlignment="textStart"
-                                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
-                        </android.support.constraint.ConstraintLayout>
-
-                </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView android:id="@+id/balance_wheel_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:onClick="wishList_click"
-                    app:cardBackgroundColor="@color/red"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp"
-                    app:contentPadding="0dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/events_card">
-
-                        <android.support.constraint.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                                <TextView
-                                    android:id="@+id/wheelHeader"
-                                    style="@style/HeaderText"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
-                                    android:text="Мой жизненный баланс"
-                                    android:textAlignment="center"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <ImageView
-                                    android:id="@+id/imageView3"
-                                    android:layout_width="300dp"
-                                    android:layout_height="300dp"
-                                    android:layout_marginBottom="8dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:layout_marginStart="8dp"
-                                    android:layout_marginTop="8dp"
-                                    android:scaleType="fitCenter"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/wheelHeader"
-                                    app:srcCompat="@drawable/time_400" />
-
-                                <android.support.design.widget.FloatingActionButton
-                                    android:id="@+id/floatingActionButton"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="24dp"
-                                    android:layout_marginEnd="24dp"
-                                    android:backgroundTint="@color/green"
-                                    android:clickable="true"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:srcCompat="@android:drawable/ic_menu_edit" />
-
-                                <android.support.constraint.Guideline
-                                    android:id="@+id/guideline"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    app:layout_constraintGuide_begin="20dp" />
-                        </android.support.constraint.ConstraintLayout>
-                </android.support.v7.widget.CardView>
-
-    </android.support.constraint.ConstraintLayout>
-
-</ScrollView>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

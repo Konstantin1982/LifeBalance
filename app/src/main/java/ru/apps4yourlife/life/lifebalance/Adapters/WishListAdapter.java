@@ -27,6 +27,11 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
     private Context mContext;
     private Cursor mWishListCursor;
 
+    public interface WishListAdapterClickHandler {
+        void onWishClick(String wishId, String itemPositionInList);
+    }
+
+    private final WishListAdapterClickHandler mWishListAdapterClickHandler;
 
     class WishListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView wishDescriptionTextView;
@@ -35,14 +40,22 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
         WishListAdapterViewHolder(View view) {
             super(view);
             wishDescriptionTextView = (TextView) view.findViewById(R.id.wishDescription);
-            statusLayout = (ConstraintLayout) view.findViewById(R.id.wish_status_card);
+            //statusLayout = (ConstraintLayout) view.findViewById(R.id.wish_status_card);
+            view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             mWishListCursor.moveToPosition(position);
+
+            Toast.makeText(mContext, "CLICKED sds", Toast.LENGTH_SHORT).show();
+
             Log.d("ADAPTER", "CALL ACTIVITY with position = " + position);
+            mWishListAdapterClickHandler.onWishClick(
+                    mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry._ID)),
+                     String.valueOf(position)
+            );
             //mChildrenListAdapterClickHandler.onChildClick(
                     //mListChildrenCursor.getString(mListChildrenCursor.getColumnIndex(WardrobeContract.ChildEntry._ID)),
                     //String.valueOf(position)
@@ -50,7 +63,8 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
         }
     }
 
-    public WishListAdapter(Context context) {
+    public WishListAdapter(Context context, WishListAdapterClickHandler clickHandler) {
+        mWishListAdapterClickHandler = clickHandler;
         mContext = context;
         LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
         mWishListCursor = mDataManager.GetOpenedWishes();
@@ -66,31 +80,8 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
     public void onBindViewHolder(final WishListAdapter.WishListAdapterViewHolder holder, final int position) {
         mWishListCursor.moveToPosition(position);
         holder.wishDescriptionTextView.setText(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION)));
-/*
-        holder.statusLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e("CLICK LISTENER", "Clicked STatus on Position " +  position);
-                Toast.makeText(view.getContext(),"CLICKED ON", Toast.LENGTH_SHORT).show();
-                ConstraintLayout statusLayout = (ConstraintLayout) holder.itemView.findViewById(R.id.wishStatusActionLayout);
-                Animation slideUp = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.slide_up);
-                statusLayout.setVisibility(View.VISIBLE);
-                statusLayout.startAnimation(slideUp);
-            }
-        });
-*/
-        /*
-        holder.messageDate.setText("08.11 12:00");
-        holder.messageFrom.setText(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.MessagesEntry.COLUMN_FROM)));
-        holder.messageSubject.setText(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.MessagesEntry.COLUMN_SUBJECT)));
-        holder.messageBody.setText(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.MessagesEntry.COLUMN_BODY)));
-        */
-        /*
-    public void onWishStatusImageClick(View view) {
 
 
-    }
-        */
         return;
     }
 
