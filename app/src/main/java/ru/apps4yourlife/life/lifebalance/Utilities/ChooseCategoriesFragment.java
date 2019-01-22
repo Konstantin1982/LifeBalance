@@ -26,6 +26,7 @@ public class ChooseCategoriesFragment extends DialogFragment  {
 
     public interface ChooseCategoriesFragmentListener {
         void OnClickWishesTypes(ArrayList<Integer> selectedItems);
+        ArrayList<Integer> getSelectedItems();
     }
 
     private ChooseCategoriesFragmentListener mListener;
@@ -33,11 +34,10 @@ public class ChooseCategoriesFragment extends DialogFragment  {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        //TODO : mITEMS IS EMPTY!!!!
         mContext = this.getContext();
-        mSelectedItems = new ArrayList();  // Where we track the selected items
+        mSelectedItems = mListener.getSelectedItems();  // Where we track the selected items
         mDataManager = new LifeBalanceDBDataManager(mContext);
-        Cursor mItems = mDataManager.GetWishesTypes();
+        Cursor mItems = mDataManager.GetWishesTypesWithChecked(mSelectedItems);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.title_choose_categories)
                 .setMultiChoiceItems(

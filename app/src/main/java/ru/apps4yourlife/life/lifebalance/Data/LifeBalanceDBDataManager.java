@@ -6,6 +6,8 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
+import java.util.ArrayList;
+
 import ru.apps4yourlife.life.lifebalance.R;
 import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 
@@ -140,7 +142,7 @@ public class LifeBalanceDBDataManager {
         return wishes;
     }
 
-    public Cursor GetWishesTypes() {
+    public Cursor GetWishesTypesWithChecked(ArrayList<Integer> selectedItems) {
 
         /*
         Cursor types = mDBHelper.getReadableDatabase().query(
@@ -155,7 +157,9 @@ public class LifeBalanceDBDataManager {
         );
         */
         // TODO make checked
-        Cursor types = mDBHelper.getReadableDatabase().rawQuery("select description, _id, 0 as CHECKED from " + LifeBalanceContract.WishesTypesEntry.TABLE_NAME, null);
+        Cursor types = mDBHelper.getReadableDatabase().rawQuery(
+                "select description, _id, CASE WHEN _id IN (1,2) THEN 1 ELSE 0 END AS CHECKED from " + LifeBalanceContract.WishesTypesEntry.TABLE_NAME,
+                null);
         types.moveToFirst();
         return types;
     }

@@ -15,12 +15,11 @@
     </string-array>
 
     <string-array name="wishes_types">
-        <item>Семья</item>
-        <item>Личное</item>
+        <item>Любовь</item>
         <item>Работа</item>
-        <item>Друзья</item>
+        <item>Здоровье</item>
+        <item>Дружба</item>
+        <item>Хобби</item>
         <item>Деньги</item>
     </string-array>
-
-
 </resources>

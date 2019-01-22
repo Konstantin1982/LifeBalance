@@ -114,7 +114,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
                 null,
-                "0, 2",
+                "1,2",
                 0,
                 0,
                 0,
@@ -127,7 +127,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
                 null,
-                "0, 2",
+                "0,1",
                 0,
                 0,
                 0,
@@ -140,7 +140,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
                 null,
-                "0, 2",
+                "0,2",
                 0,
                 0,
                 0,

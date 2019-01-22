@@ -35,6 +35,14 @@ import java.util.Random;
 
 public class GeneralHelper {
 
+    public static ArrayList<Integer> extractTypesFromWish(String types) {
+        String[] typesArray = types.split(",");
+        ArrayList<Integer> resultArray = new ArrayList<>();
+        for (String type : typesArray) {
+            resultArray.add(Integer.valueOf(type));
+        }
+        return resultArray;
+    }
 
     public static Date GetCurrentDate() {
         GregorianCalendar tmpDate = new GregorianCalendar();

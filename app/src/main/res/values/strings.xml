@@ -3,4 +3,6 @@
     <string name="title_activity_wishes">Желания</string>
     <string name="title_choose_categories">Выбираем категории желания</string>
     <string name="OK">Ок!</string>
+    <string name="next_step_0_header"><![CDATA[Формулируем <b>Желание</b>.]]></string>
+    <string name="next_step_0"><![CDATA[Помним основные правила:<UL><LI>&nbsp;&nbsp;&nbsp;Никаких "не"<LI>&nbsp;&nbsp;&nbsp;Желаем только для <b>себя</b><LI>&nbsp;&nbsp;&nbsp;Желание - конкретно ]]></string>
 </resources>

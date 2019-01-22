@@ -62,6 +62,10 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         }
     }
 
+    public void wishAdd_click(View view) {
+        onWishClick("-1", "-1");
+    }
+
 
     @Override
     public void onWishClick(String wishId, String itemPositionInList) {
