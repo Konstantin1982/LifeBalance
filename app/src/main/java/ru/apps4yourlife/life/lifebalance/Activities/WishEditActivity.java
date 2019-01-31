@@ -99,6 +99,9 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
     public void wishSave_click() {
         // Save wish
+
+
+
         EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
         EditText wishSituationEditText = (EditText) findViewById(R.id.wishSituationEditText);
         String wishDescriptionString = wishDescriptionEditText.getText().toString();
@@ -116,7 +119,6 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
     @Override
     public ArrayList<Integer> getSelectedItems() {
-
         return mSelectedTypes;
     }
 

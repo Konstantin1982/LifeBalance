@@ -156,9 +156,14 @@ public class LifeBalanceDBDataManager {
                 null
         );
         */
-        // TODO make checked
+        String itemString = "(";
+        for (int item : selectedItems) {
+            itemString += item + ",";
+        }
+        itemString += "-1)";
+
         Cursor types = mDBHelper.getReadableDatabase().rawQuery(
-                "select description, _id, CASE WHEN _id IN (1,2) THEN 1 ELSE 0 END AS CHECKED from " + LifeBalanceContract.WishesTypesEntry.TABLE_NAME,
+                "select description, _id, CASE WHEN _id IN " + itemString + "THEN 1 ELSE 0 END AS CHECKED from " + LifeBalanceContract.WishesTypesEntry.TABLE_NAME,
                 null);
         types.moveToFirst();
         return types;

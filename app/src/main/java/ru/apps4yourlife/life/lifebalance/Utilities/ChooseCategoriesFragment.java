@@ -7,6 +7,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,6 +26,7 @@ public class ChooseCategoriesFragment extends DialogFragment  {
 
     private ArrayList<Integer> mSelectedItems;
     private Context mContext;
+    private View mDialogView;
     private LifeBalanceDBDataManager mDataManager;
 
     public interface ChooseCategoriesFragmentListener {
@@ -39,25 +44,53 @@ public class ChooseCategoriesFragment extends DialogFragment  {
         mDataManager = new LifeBalanceDBDataManager(mContext);
         Cursor mItems = mDataManager.GetWishesTypesWithChecked(mSelectedItems);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        mDialogView = View.inflate(mContext, R.layout.wish_types_dialog, null );
+        CheckBox checkBox = mDialogView.findViewById(R.id.checkBox_0);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickCheckBox(0);
+            }
+        });
+        checkBox = mDialogView.findViewById(R.id.checkBox_1);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickCheckBox(1);
+            }
+        });
+        checkBox = mDialogView.findViewById(R.id.checkBox_2);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickCheckBox(2);
+            }
+        });
+        checkBox = mDialogView.findViewById(R.id.checkBox_3);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickCheckBox(3);
+            }
+        });
+        checkBox = mDialogView.findViewById(R.id.checkBox_4);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickCheckBox(4);
+            }
+        });
+        checkBox = mDialogView.findViewById(R.id.checkBox_5);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickCheckBox(5);
+            }
+        });
+        updateCheckBoxes();
+
+        builder.setView(mDialogView);
         builder.setTitle(R.string.title_choose_categories)
-                .setMultiChoiceItems(
-                        mItems,
-                        "CHECKED",
-                        LifeBalanceContract.WishesTypesEntry.COLUMN_DESCRIPTION,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which,
-                                                boolean isChecked) {
-                                if (isChecked) {
-                                    // If the user checked the item, add it to the selected items
-                                    mSelectedItems.add(which);
-                                } else if (mSelectedItems.contains(which)) {
-                                    // Else, if the item is already in the array, remove it
-                                    mSelectedItems.remove(Integer.valueOf(which));
-                                }
-                            }
-                        })
-                // Set the action buttons
                 .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -68,7 +101,51 @@ public class ChooseCategoriesFragment extends DialogFragment  {
         return builder.create();
     }
 
+    public void updateCheckBoxes() {
+        int id;
+        CheckBox checkBox = mDialogView.findViewById(R.id.checkBox_0);
+        checkBox.setChecked(mSelectedItems.contains(0));
+        checkBox = mDialogView.findViewById(R.id.checkBox_1);
+        checkBox.setChecked(mSelectedItems.contains(1));
+        checkBox = mDialogView.findViewById(R.id.checkBox_2);
+        checkBox.setChecked(mSelectedItems.contains(2));
+        checkBox = mDialogView.findViewById(R.id.checkBox_3);
+        checkBox.setChecked(mSelectedItems.contains(3));
+        checkBox = mDialogView.findViewById(R.id.checkBox_4);
+        checkBox.setChecked(mSelectedItems.contains(4));
+        checkBox = mDialogView.findViewById(R.id.checkBox_5);
+        checkBox.setChecked(mSelectedItems.contains(5));
+    }
 
+
+    public void onClickCheckBox(int position) {
+        CheckBox checkBox;
+        if (position == 0) {
+            checkBox = mDialogView.findViewById(R.id.checkBox_1);
+            checkBox.setChecked(false);
+        }
+        if (position == 1) {
+            checkBox = mDialogView.findViewById(R.id.checkBox_0);
+            checkBox.setChecked(false);
+        }
+        if (position == 2) {
+            checkBox = mDialogView.findViewById(R.id.checkBox_3);
+            checkBox.setChecked(false);
+        }
+        if (position == 3) {
+            checkBox = mDialogView.findViewById(R.id.checkBox_2);
+            checkBox.setChecked(false);
+        }
+        if (position == 4) {
+            checkBox = mDialogView.findViewById(R.id.checkBox_5);
+            checkBox.setChecked(false);
+        }
+        if (position == 5) {
+            checkBox = mDialogView.findViewById(R.id.checkBox_4);
+            checkBox.setChecked(false);
+        }
+
+    }
 
     public void setmListener(Context context) {
         try {

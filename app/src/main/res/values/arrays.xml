@@ -16,10 +16,10 @@
 
     <string-array name="wishes_types">
         <item>Любовь</item>
-        <item>Работа</item>
-        <item>Здоровье</item>
         <item>Дружба</item>
+        <item>Работа</item>
         <item>Хобби</item>
         <item>Деньги</item>
+        <item>Здоровье</item>
     </string-array>
 </resources>
