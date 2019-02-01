@@ -119,32 +119,48 @@ public class ChooseCategoriesFragment extends DialogFragment  {
 
 
     public void onClickCheckBox(int position) {
-        CheckBox checkBox;
+        CheckBox checkBox = null, checkBoxMain = null;
+        int position1 = -1;
         if (position == 0) {
+            checkBoxMain = mDialogView.findViewById(R.id.checkBox_0);
             checkBox = mDialogView.findViewById(R.id.checkBox_1);
-            checkBox.setChecked(false);
+            position1 = 1;
         }
         if (position == 1) {
+            checkBoxMain = mDialogView.findViewById(R.id.checkBox_1);
             checkBox = mDialogView.findViewById(R.id.checkBox_0);
-            checkBox.setChecked(false);
+            position1 = 0;
         }
         if (position == 2) {
+            checkBoxMain = mDialogView.findViewById(R.id.checkBox_2);
             checkBox = mDialogView.findViewById(R.id.checkBox_3);
-            checkBox.setChecked(false);
+            position1 = 3;
         }
         if (position == 3) {
+            checkBoxMain = mDialogView.findViewById(R.id.checkBox_3);
             checkBox = mDialogView.findViewById(R.id.checkBox_2);
-            checkBox.setChecked(false);
+            position1 = 2;
         }
         if (position == 4) {
+            checkBoxMain = mDialogView.findViewById(R.id.checkBox_4);
             checkBox = mDialogView.findViewById(R.id.checkBox_5);
-            checkBox.setChecked(false);
+            position1 = 5;
         }
         if (position == 5) {
+            checkBoxMain = mDialogView.findViewById(R.id.checkBox_5);
             checkBox = mDialogView.findViewById(R.id.checkBox_4);
-            checkBox.setChecked(false);
+            position1 = 4;
         }
 
+        if (checkBoxMain.isChecked()) {
+            mSelectedItems.add(position);
+        } else  if (mSelectedItems.contains(Integer.valueOf(position))) {
+            mSelectedItems.remove(position);
+        }
+        if (mSelectedItems.contains(Integer.valueOf(position1))) {
+            mSelectedItems.remove(position1);
+        }
+        checkBox.setChecked(false);
     }
 
     public void setmListener(Context context) {

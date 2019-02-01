@@ -54,8 +54,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                         LifeBalanceContract.WishesEntry.COLUMN_STATUS + " INTEGER, " +
                         LifeBalanceContract.WishesEntry.COLUMN_STATUS_HINT + " VARCHAR(255), " +
                         LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION + " VARCHAR(1020), " +
-                        LifeBalanceContract.WishesEntry.COLUMN_SITUATION + " VARCHAR(1020), " +
-                        LifeBalanceContract.WishesEntry.COLUMN_SITUATION_STATUS + " INTEGER " +
+                        LifeBalanceContract.WishesEntry.COLUMN_SITUATION + " VARCHAR(1020) " +
                         ")";
 
         final String SQL_CREATE_WISHES_TYPES_TABLE =
@@ -108,8 +107,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 GeneralHelper.WishStatusesClass.WISH_STATUS_NEW,
                 "Черновик",
                 "Я хочу морковный сок из 20-ти морковных грядок. Сок холодный и свежий.",
-                "Морозное утро, выхожу из-за стола, пью ледяной сок.",
-                0
+                "Морозное утро, выхожу из-за стола, пью ледяной сок."
                 );
         LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
@@ -121,8 +119,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 GeneralHelper.WishStatusesClass.WISH_STATUS_UNDER_REVIEW,
                 "на проверке",
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
-                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан.",
-                0
+                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );
         LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
@@ -134,8 +131,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 GeneralHelper.WishStatusesClass.WISH_STATUS_UNDER_REVIEW,
                 "на проверке",
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
-                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан.",
-                0
+                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );
         LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
@@ -147,8 +143,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 GeneralHelper.WishStatusesClass.WISH_STATUS_UNDER_REVIEW,
                 "на проверке",
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
-                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан.",
-                0
+                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );
     }
 

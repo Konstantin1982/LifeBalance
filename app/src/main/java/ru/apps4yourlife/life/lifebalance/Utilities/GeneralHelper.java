@@ -1,6 +1,7 @@
 package ru.apps4yourlife.life.lifebalance.Utilities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -14,7 +15,11 @@ import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import ru.apps4yourlife.life.lifebalance.R;
 
 /**
  * Created by 123 on 27.03.2018.
@@ -62,6 +69,30 @@ public class GeneralHelper {
         public static final int WISH_STATUS_ACCEPTED = 2;
         public static final int WISH_STATUS_ACCEPTED_ITSELF = 22;
         public static final int WISH_STATUS_REJECTED = 3;
+    }
+
+
+    public static boolean isUserSubscribed() {
+        return false;
+    }
+
+    public static void ShowRecommendToSubscribe(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.title_recommend_subscribe)
+                .setMessage(R.string.text_recommend_subscribe)
+                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(context,"УРА! Спасибо за подписку!",Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(R.string.myself, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(context,"Успехов! При необходимости всегда можно подключить ментора",Toast.LENGTH_LONG).show();
+                    }
+                });
+        builder.show();
     }
 
 }

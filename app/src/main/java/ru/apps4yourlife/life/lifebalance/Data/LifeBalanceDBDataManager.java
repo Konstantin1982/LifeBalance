@@ -20,13 +20,15 @@ public class LifeBalanceDBDataManager {
     public static final int WISH_STATUS_NEW = 0;
     public static final int WISH_STATUS_IN_REVIEW = 1;
     public static final int WISH_STATUS_REJECTED = 2;
-    public static final int WISH_STATUS_APPROVED = 3;
+    public static final int WISH_STATUS_SITUATION = 3;
+    public static final int WISH_STATUS_SITUATION_REVIEW = 4;
+    public static final int WISH_STATUS_SITUATION_REJECTED = 5;
+    public static final int WISH_STATUS_FEARS = 6;
+    public static final int WISH_STATUS_STEPS = 7;
+    public static final int WISH_STATUS_WAITING = 8;
     public static final int WISH_STATUS_COMPLETE = 999;
 
 
-    public static final int WISH_SITUATION_STATUS_DRAFT = 0;
-    public static final int WISH_SITUATION_STATUS_SUBMITTED = 1;
-    public static final int WISH_SITUATION_STATUS_REJECTED = 1;
 
 
     public LifeBalanceDBDataManager(Context context) {
@@ -204,8 +206,7 @@ public class LifeBalanceDBDataManager {
                                           int status,
                                           String statusHint,
                                           String description,
-                                          String situation,
-                                          int situation_status) {
+                                          String situation) {
         long result = 0;
         ContentValues values = new ContentValues();
         values.put(LifeBalanceContract.WishesEntry.COLUMN_TYPE, types);
@@ -239,8 +240,8 @@ public class LifeBalanceDBDataManager {
         return result;
     }
 
-    public long InsertOrUpdateWish(String idEntry, String types, long start, long planend, long factend, int status, String statusHint, String description, String situation, int situation_status) {
-        return this.InsertOrUpdateWish(mDBHelper.getWritableDatabase(), idEntry, types, start, planend, factend, status, statusHint, description, situation, situation_status);
+    public long InsertOrUpdateWish(String idEntry, String types, long start, long planend, long factend, int status, String statusHint, String description, String situation) {
+        return this.InsertOrUpdateWish(mDBHelper.getWritableDatabase(), idEntry, types, start, planend, factend, status, statusHint, description, situation);
     }
 
 /*

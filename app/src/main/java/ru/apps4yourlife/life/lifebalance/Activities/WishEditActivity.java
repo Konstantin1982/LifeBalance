@@ -1,10 +1,6 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -14,17 +10,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-import ru.apps4yourlife.life.lifebalance.Activities.Tabs.TabSituation;
-import ru.apps4yourlife.life.lifebalance.Adapters.PagerAdapter;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
@@ -41,7 +32,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wish_edit);
+        setContentView(R.layout.activity_wish_edit_status_new);
         String wishIdString = getIntent().getStringExtra("WISH_ID");
 
         mDataManager = new LifeBalanceDBDataManager(this);
@@ -96,20 +87,42 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         }
     }
 
+    public boolean isWishCorrect() {
+        return true;
+    }
+
+    public void wishSave_routine() {
+        EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
+        String wishDescriptionString = wishDescriptionEditText.getText().toString();
+
+        Toast.makeText(this, "Save clicked", Toast.LENGTH_SHORT).show();
+        Log.e("wId", "WISH ID" + mWishEntryId);
+
+        mDataManager.InsertOrUpdateWish(String.valueOf(mWishEntryId), "", 0, 0, 0, 0, "", wishDescriptionString, "");
+        finish();
+    }
+
 
     public void wishSave_click() {
         // Save wish
+        if (isWishCorrect()) {
+            wishSave_routine();
+            finish();
+        } else {
+
+        }
 
 
+    }
 
-        EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
-        EditText wishSituationEditText = (EditText) findViewById(R.id.wishSituationEditText);
-        String wishDescriptionString = wishDescriptionEditText.getText().toString();
-        String wishSituationString = wishSituationEditText.getText().toString();
-        Toast.makeText(this, "Save clicked", Toast.LENGTH_SHORT).show();
-        Log.e("wId", "WISH ID" + mWishEntryId);
-        mDataManager.InsertOrUpdateWish(String.valueOf(mWishEntryId), "", 0, 0, 0, 0, "", wishDescriptionString, wishSituationString, 0);
-        finish();
+    public void  wishSendtoReview (View view) {
+        // check to subscribe
+        if (GeneralHelper.isUserSubscribed()) {
+
+        } else {
+            // рекомендация подписаться!
+            GeneralHelper.ShowRecommendToSubscribe(this);
+        }
     }
 
     @Override
