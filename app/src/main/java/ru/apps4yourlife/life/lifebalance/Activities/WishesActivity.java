@@ -72,11 +72,12 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         // Check if we're running on Android 5.0 or higher
         Intent wishEditIntent = new Intent(this, WishEditActivity.class);
         wishEditIntent.putExtra("WISH_ID",  wishId);
+        wishEditIntent.putExtra("POSITION_ID",  itemPositionInList);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Apply activity transition
             View wishDescriptionView = findViewById(R.id.wishDescription);
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, wishDescriptionView, "description");
-            startActivity(wishEditIntent, options.toBundle());
+            startActivityForResult(wishEditIntent,0, options.toBundle());
         } else {
             startActivityForResult(wishEditIntent,0);
         }

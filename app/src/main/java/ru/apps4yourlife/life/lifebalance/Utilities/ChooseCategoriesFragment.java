@@ -155,10 +155,10 @@ public class ChooseCategoriesFragment extends DialogFragment  {
         if (checkBoxMain.isChecked()) {
             mSelectedItems.add(position);
         } else  if (mSelectedItems.contains(Integer.valueOf(position))) {
-            mSelectedItems.remove(position);
+            mSelectedItems.remove((Object)position);
         }
         if (mSelectedItems.contains(Integer.valueOf(position1))) {
-            mSelectedItems.remove(position1);
+            mSelectedItems.remove((Object)position1);
         }
         checkBox.setChecked(false);
     }

@@ -17,16 +17,6 @@ public class LifeBalanceDBDataManager {
     private Context mContext;
 
 
-    public static final int WISH_STATUS_NEW = 0;
-    public static final int WISH_STATUS_IN_REVIEW = 1;
-    public static final int WISH_STATUS_REJECTED = 2;
-    public static final int WISH_STATUS_SITUATION = 3;
-    public static final int WISH_STATUS_SITUATION_REVIEW = 4;
-    public static final int WISH_STATUS_SITUATION_REJECTED = 5;
-    public static final int WISH_STATUS_FEARS = 6;
-    public static final int WISH_STATUS_STEPS = 7;
-    public static final int WISH_STATUS_WAITING = 8;
-    public static final int WISH_STATUS_COMPLETE = 999;
 
 
 
@@ -135,7 +125,7 @@ public class LifeBalanceDBDataManager {
                 LifeBalanceContract.WishesEntry.TABLE_NAME,
                 null,
                 LifeBalanceContract.WishesEntry.COLUMN_STATUS + " < ? ",
-                new String[]{String.valueOf(WISH_STATUS_COMPLETE)},
+                new String[]{String.valueOf(GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE)},
                 null,
                 null,
                 LifeBalanceContract.WishesEntry.COLUMN_START + " DESC",
@@ -194,7 +184,7 @@ public class LifeBalanceDBDataManager {
                 db,
                 LifeBalanceContract.WishesEntry.TABLE_NAME,
                 LifeBalanceContract.WishesEntry.COLUMN_STATUS + " < ? ",
-                new String[]{String.valueOf(WISH_STATUS_COMPLETE)});
+                new String[]{String.valueOf(GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE)});
         return result;
     }
     public static long InsertOrUpdateWish(SQLiteDatabase db,
@@ -204,7 +194,6 @@ public class LifeBalanceDBDataManager {
                                           long planend,
                                           long factend,
                                           int status,
-                                          String statusHint,
                                           String description,
                                           String situation) {
         long result = 0;
@@ -214,10 +203,10 @@ public class LifeBalanceDBDataManager {
         values.put(LifeBalanceContract.WishesEntry.COLUMN_PLAN_END, planend);
         values.put(LifeBalanceContract.WishesEntry.COLUMN_FACT_END, factend);
         values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, status);
-        values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS_HINT, statusHint);
         values.put(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION, description);
         values.put(LifeBalanceContract.WishesEntry.COLUMN_SITUATION, situation);
-        if (idEntry == null) {
+        if (idEntry == null) idEntry = "0";
+        if (idEntry.equalsIgnoreCase("0")  || idEntry.equalsIgnoreCase("-1")) {
             result = db.insert(LifeBalanceContract.WishesEntry.TABLE_NAME, null, values);
         } else {
             result = db.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{idEntry});
@@ -240,8 +229,8 @@ public class LifeBalanceDBDataManager {
         return result;
     }
 
-    public long InsertOrUpdateWish(String idEntry, String types, long start, long planend, long factend, int status, String statusHint, String description, String situation) {
-        return this.InsertOrUpdateWish(mDBHelper.getWritableDatabase(), idEntry, types, start, planend, factend, status, statusHint, description, situation);
+    public long InsertOrUpdateWish(String idEntry, String types, long start, long planend, long factend, int status, String description, String situation) {
+        return this.InsertOrUpdateWish(mDBHelper.getWritableDatabase(), idEntry, types, start, planend, factend, status, description, situation);
     }
 
 /*

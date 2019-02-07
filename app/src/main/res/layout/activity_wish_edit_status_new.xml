@@ -7,53 +7,26 @@
     android:background="@color/neartoWhite"
     tools:context="ru.apps4yourlife.life.lifebalance.Activities.WishEditActivity">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout1"
-        android:layout_width="0dp"
+
+
+    <EditText
+        android:id="@+id/wishDescriptionEditText"
+        style="@style/wishTextDark"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="fill"
-        android:hint="Желание"
-        app:layout_constraintBottom_toTopOf="@+id/guideline50hor"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/round_rect_light"
+        android:enabled="true"
+        android:hint="Формулируем желание"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2">
+        app:layout_constraintTop_toBottomOf="@+id/image_type_2" />
 
-        <EditText
-            android:id="@+id/wishDescriptionEditText"
-            style="@style/wishTextDark"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/round_rect_light"
-            android:enabled="true"
-            android:hint="Желание"
-            android:inputType="textMultiLine"
-            android:lines="6"
-
-            />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <Button
-        android:id="@+id/button3"
-        style="@style/BlueButton"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/oval_light"
-        android:paddingEnd="8dp"
-        android:paddingStart="8dp"
-        android:text="?"
-        android:textAllCaps="false"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button2" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline50"
@@ -77,11 +50,11 @@
         app:layout_constraintGuide_percent="0.75" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/image_type_1"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/oval_dark"
+        android:background="@drawable/oval_light"
         android:padding="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline25"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,11 +62,11 @@
         app:srcCompat="@drawable/ic_balloons" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/image_type_2"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/oval_dark"
+        android:background="@drawable/oval_light"
         android:padding="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline50"
         app:layout_constraintStart_toStartOf="@+id/guideline25"
@@ -102,11 +75,11 @@
 
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/image_type_3"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/oval_dark"
+        android:background="@drawable/oval_light"
         android:padding="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline75"
         app:layout_constraintStart_toStartOf="@+id/guideline50"
@@ -126,72 +99,94 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
+    <Button
+        android:id="@+id/button2"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/round_rect_primary"
-        android:padding="0dp"
-        app:layout_constraintBottom_toTopOf="@id/button2"
+        android:onClick="wishSendtoReview"
+        android:text="Отправить на проверку"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/round_rect_small_light"
+        android:text="Загадываем желание"
+        app:layout_constraintBottom_toTopOf="@+id/wishDescriptionEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/wishDescriptionEditText" />
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_end="40dp"
+         />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/helpView"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:background="@color/colorAccentLight"
+        android:layout_marginTop="8dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:onClick="helpShowHide"
+        android:elevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline50hor">
+        app:layout_constraintTop_toTopOf="@+id/guideline4">
 
         <TextView
-            android:id="@+id/theNextStepDescriptionHeader"
-            style="@style/defaultHintHeaderText"
+            android:id="@+id/textView7"
+            style="@style/helpText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:gravity="center_vertical|center_horizontal"
-            android:maxLines="1"
-            android:text="загружается..."
+            android:background="@drawable/halfround_rect_dark"
+            android:onClick="helpShowHide"
+            android:text="Как правильно загадать желание?"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
-            android:id="@+id/theNextStepDescription"
-            style="@style/defaultHintText"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:gravity="center_vertical|start"
-            android:maxLines="10"
-            android:text="загружается..."
+
+            android:text="HELP1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/theNextStepDescriptionHeader" />
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
 
     </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline50hor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <Button
-        android:id="@+id/button2"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Отправить на проверку"
-        android:onClick="wishSendtoReview"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 
 </android.support.constraint.ConstraintLayout>

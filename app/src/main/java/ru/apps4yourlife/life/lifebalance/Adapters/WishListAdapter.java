@@ -8,16 +8,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
+import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 
 /**
  * Created by ksharafutdinov on 14-Nov-18.
@@ -35,12 +36,23 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
 
     class WishListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView wishDescriptionTextView;
+        private ImageView wishType1;
+        private ImageView wishType2;
+        private ImageView wishType3;
         private ConstraintLayout statusLayout;
+        private TextView nextStepNumber;
+        private TextView nextStepDescription;
 
         WishListAdapterViewHolder(View view) {
             super(view);
             wishDescriptionTextView = (TextView) view.findViewById(R.id.wishDescription);
-            //statusLayout = (ConstraintLayout) view.findViewById(R.id.wish_status_card);
+            wishType1 = (ImageView) view.findViewById(R.id.list_wish_type_1);
+            wishType2 = (ImageView) view.findViewById(R.id.list_wish_type_2);
+            wishType3 = (ImageView) view.findViewById(R.id.list_wish_type_3);
+
+            nextStepNumber = (TextView) view.findViewById(R.id.nextStepNumber);
+            nextStepDescription = (TextView) view.findViewById(R.id.nextStepDescription);
+
             view.setOnClickListener(this);
         }
 
@@ -79,9 +91,60 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
     @Override
     public void onBindViewHolder(final WishListAdapter.WishListAdapterViewHolder holder, final int position) {
         mWishListCursor.moveToPosition(position);
+        ArrayList<Integer> types = GeneralHelper.extractTypesFromWish(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_TYPE)));
+        // public static Map<Integer, String> GetNextStepDescriptionForList(Integer current_status) {
+        AbstractMap.SimpleEntry<String, String> nextStep =   GeneralHelper.GetNextStepDescriptionForList(mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS)));
+
         holder.wishDescriptionTextView.setText(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION)));
+        holder.nextStepNumber.setText(nextStep.getKey());
+        holder.nextStepDescription.setText(nextStep.getValue());
+        holder.wishType1.setImageBitmap(null);
+        holder.wishType2.setImageBitmap(null);
+        holder.wishType3.setImageBitmap(null);
+        holder.wishType1.setVisibility(View.INVISIBLE);
+        holder.wishType2.setVisibility(View.INVISIBLE);
+        holder.wishType3.setVisibility(View.INVISIBLE);
 
+/*
+            <TextView
+        android:id="@+id/nextStepNumber"
+        style="@style/WishListStepNumberText"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/dark_circle"
+        android:paddingVertical="2dp"
+        android:text="2"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/nextStepDescription"
+        app:layout_constraintTop_toTopOf="@+id/horizontal_divider_image" />
 
+            <TextView
+        android:id="@+id/nextStepDescription"
+*/
+
+        int count = 1;
+        for (Integer type : types) {
+            int imageId = GeneralHelper.GetImageResourceByType(type);
+            if (imageId > 0) {
+                if (count == 1) {
+                    holder.wishType1.setImageResource(imageId);
+                    holder.wishType1.setVisibility(View.VISIBLE);
+                }
+                if (count == 2) {
+                    holder.wishType2.setImageResource(imageId);
+                    holder.wishType2.setVisibility(View.VISIBLE);
+                }
+                if (count == 3) {
+                    holder.wishType3.setImageResource(imageId);
+                    holder.wishType3.setVisibility(View.VISIBLE);
+                }
+                count++;
+            }
+        }
         return;
     }
 
@@ -93,7 +156,7 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
     public void updateListValues(int position) {
         LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
         mWishListCursor = mDataManager.GetOpenedWishes();
-        //Log.e("CURSOR","Count of new cursor = " + mListChildrenCursor.getCount() + "; Position = " + position);
+        Log.e("CURSOR","Count of new cursor = " + mWishListCursor.getCount() + "; Position = " + position);
         if (position >= 0) {
             notifyItemChanged(position);
         } else {
