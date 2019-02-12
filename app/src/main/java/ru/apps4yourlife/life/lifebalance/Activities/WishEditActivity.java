@@ -4,21 +4,28 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.media.Image;
 import android.provider.ContactsContract;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.InputType;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +36,7 @@ import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
 import ru.apps4yourlife.life.lifebalance.Utilities.ChooseCategoriesFragment;
 import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
+import ru.apps4yourlife.life.lifebalance.Utilities.ShowHelpFragment;
 
 public class WishEditActivity extends AppCompatActivity implements ChooseCategoriesFragment.ChooseCategoriesFragmentListener {
 
@@ -128,42 +136,10 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
 
     public void helpShowHide(View view) {
-        Toast.makeText(this,"clicked", Toast.LENGTH_SHORT).show();
-        final View helpView = findViewById(R.id.helpView);
-        final int start, end;
-        if (!isHelpShown) {
-            start = 0;
-            end = - helpView.getHeight();
-        } else {
-            start = helpView.getHeight();
-            end = 0;
-        }
-        TranslateAnimation animate = new TranslateAnimation(
-                0,
-                0,
-                start,
-                end);
-        animate.setDuration(500);
-        animate.setFillAfter(true);
-        animate.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                Toast.makeText(getBaseContext(), "START Y = " + helpView.getTop(), Toast.LENGTH_SHORT).show();
-            }
+        Toast.makeText(this, "POPUP", Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Toast.makeText(getBaseContext(), "START Y = " + helpView.getTop(), Toast.LENGTH_SHORT).show();
-                helpView.layout(helpView.getLeft(), helpView.getTop() - helpView.getHeight(),  helpView.getRight(), helpView.getBottom() - helpView.getHeight() );
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        helpView.startAnimation(animate);
-        isHelpShown = !isHelpShown;
+        ShowHelpFragment mApplicationDialogFragment = new ShowHelpFragment();
+        mApplicationDialogFragment.show(getFragmentManager(),"showHelp");
     }
 
     public void wishSave_click() {
