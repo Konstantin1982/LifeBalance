@@ -70,6 +70,11 @@
         <item name="android:textSize">14dp</item>
     </style>
 
+    <style name="helpTextHeader">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
     <style name="wishTextDark">
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textSize">18dp</item>

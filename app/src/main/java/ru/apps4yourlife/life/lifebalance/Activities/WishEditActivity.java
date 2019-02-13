@@ -3,6 +3,7 @@ package ru.apps4yourlife.life.lifebalance.Activities;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.Image;
+import android.opengl.GLException;
 import android.provider.ContactsContract;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -36,12 +37,12 @@ import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
 import ru.apps4yourlife.life.lifebalance.Utilities.ChooseCategoriesFragment;
 import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
-import ru.apps4yourlife.life.lifebalance.Utilities.ShowHelpFragment;
 
 public class WishEditActivity extends AppCompatActivity implements ChooseCategoriesFragment.ChooseCategoriesFragmentListener {
 
     private LifeBalanceDBDataManager mDataManager;
     private long mWishEntryId;
+    private int mWishStatus;
     private String mWishPositionInList;
     private Cursor mWishEntry;
     private ArrayList<Integer> mSelectedTypes;
@@ -50,22 +51,41 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wish_edit_status_new);
-        EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
-        wishDescriptionEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        wishDescriptionEditText.setRawInputType(InputType.TYPE_CLASS_TEXT);
 
         String wishIdString = getIntent().getStringExtra("WISH_ID");
-
         mWishPositionInList = getIntent().getStringExtra("POSITION_ID");
-
         mDataManager = new LifeBalanceDBDataManager(this);
+
+        // get all data from Database
         initWish(wishIdString);
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
+        // init layout
+        int layout_type;
+        switch (mWishStatus) {
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
+                layout_type = R.layout.activity_wish_edit_status_new;
+                break;
+            default:
+                layout_type = R.layout.activity_wish_edit_status_new;
+        }
+        setContentView(layout_type);
+        initLayout();
+        updateUIWish(mWishEntry);
     }
+
+    public void initLayout() {
+        switch (mWishStatus) {
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
+                EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
+                wishDescriptionEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                wishDescriptionEditText.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
+            break;
+        }
+    }
+
     // TODO: 1) Implement styles checker
     // TODO: 2) Implment add / edit wish on step 0 (or after rejecting)
     // TODO: 3) Implement Step 1 - Fears....
@@ -82,12 +102,13 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             mWishEntry = mDataManager.GetWishById(wishId);
             mSelectedTypes = GeneralHelper.extractTypesFromWish(
                     mWishEntry.getString(mWishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_TYPE)));
+            mWishStatus = mWishEntry.getInt(mWishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
         } else {
             // new wish
             mWishEntry = null;
             mSelectedTypes = new ArrayList<Integer>();
+            mWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_NEW;
         }
-        updateUIWish(mWishEntry);
     }
 
 
@@ -136,10 +157,14 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
 
     public void helpShowHide(View view) {
-        Toast.makeText(this, "POPUP", Toast.LENGTH_SHORT).show();
-
-        ShowHelpFragment mApplicationDialogFragment = new ShowHelpFragment();
-        mApplicationDialogFragment.show(getFragmentManager(),"showHelp");
+        String header = "", message = "";
+        switch (mWishStatus) {
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW :
+                header = getString(R.string.next_step_0_header);
+                message = getString(R.string.next_step_0_html);
+            break;
+        }
+        GeneralHelper.ShowHelpInWishActivity(header, message, this);
     }
 
     public void wishSave_click() {

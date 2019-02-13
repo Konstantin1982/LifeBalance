@@ -16,6 +16,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -185,6 +187,24 @@ public class GeneralHelper {
     public static boolean isUserSubscribed() {
         return false;
     }
+
+    public static void ShowHelpInWishActivity(String header, String message, final Context context) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        Spanned sp = Html.fromHtml(message);
+        builder.setMessage(sp);
+        builder.setTitle(header);
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.show();
+        return;
+
+    }
+
 
     public static void ShowRecommendToSubscribe(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

@@ -14,11 +14,13 @@
     <color name="neartoWhite">#efefef</color>
 -->
 
-    <color name="colorPrimary">#046380</color>
-    <color name="colorPrimaryDark">#002F2F</color>
-    <color name="colorAccent">#E6E2AF</color>
-    <color name="colorAccentLight">#efecca</color>
-    <color name="colorAccentDark">#A7A37E</color>
+    <color name="colorPrimary">#e9e8d2</color>
+    <color name="colorPrimaryDark">#cecab0</color>
+
+
+    <color name="colorAccent">#553f54</color>
+    <color name="colorAccentLight">#67b2c1</color>
+    <color name="colorAccentDark">#e57c5c</color>
 
     <color name="olive">#bea01a</color>
     <color name="green">#3fc67e</color>
