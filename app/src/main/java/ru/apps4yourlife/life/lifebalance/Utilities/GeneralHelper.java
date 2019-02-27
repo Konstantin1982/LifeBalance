@@ -1,48 +1,20 @@
 package ru.apps4yourlife.life.lifebalance.Utilities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Shader;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.accessibility.AccessibilityManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 
 import ru.apps4yourlife.life.lifebalance.R;
-
-import static ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper.WishStatusesClass;
 
 /**
  * Created by 123 on 27.03.2018.
@@ -98,6 +70,12 @@ public class GeneralHelper {
         public static final int WISH_STATUS_WAITING = 8;
         public static final int WISH_STATUS_COMPLETE = 999;
     }
+
+    public interface SubscribeDialogInterface {
+        void OnAgreedToSubscribe(Context context);
+        void OnRejectToSubscribe(Context context);
+    }
+
 
     public static AbstractMap.SimpleEntry<String, String> GetNextStepDescriptionForList(Integer current_status) {
 
@@ -185,7 +163,16 @@ public class GeneralHelper {
 
 
     public static boolean isUserSubscribed() {
-        return false;
+        return true;
+    }
+
+
+    public static void PushWishToServer(Context context, long wishId) {
+        Toast.makeText(context, "Отправлено на рассмотрение", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void StartSubscriptionProcess(Context context) {
+        Toast.makeText(context, "Subscription process is started....", Toast.LENGTH_SHORT).show();
     }
 
     public static void ShowHelpInWishActivity(String header, String message, final Context context) {
@@ -206,7 +193,7 @@ public class GeneralHelper {
     }
 
 
-    public static void ShowRecommendToSubscribe(final Context context) {
+    public static Dialog ShowRecommendToSubscribe(final Context context, final SubscribeDialogInterface listener ) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.title_recommend_subscribe)
                 .setMessage(R.string.text_recommend_subscribe)
@@ -214,15 +201,18 @@ public class GeneralHelper {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Toast.makeText(context,"УРА! Спасибо за подписку!",Toast.LENGTH_SHORT).show();
+                        GeneralHelper.StartSubscriptionProcess(context);
+                        listener.OnAgreedToSubscribe(context);
                     }
                 })
                 .setNegativeButton(R.string.myself, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Toast.makeText(context,"Успехов! При необходимости всегда можно подключить ментора",Toast.LENGTH_LONG).show();
+                        listener.OnRejectToSubscribe(context);
                     }
                 });
-        builder.show();
+        return builder.create();
     }
 
     public static int GetImageResourceByType(int type) {
