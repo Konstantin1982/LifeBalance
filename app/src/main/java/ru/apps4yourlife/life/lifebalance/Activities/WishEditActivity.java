@@ -1,5 +1,6 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,6 +24,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.ArrayList;
 
@@ -63,6 +68,9 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
                 layout_type = R.layout.activity_wish_edit_status_new;
                 break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                layout_type = R.layout.activity_wish_edit_status_new;
+                break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
                 layout_type = R.layout.activity_wish_edit_status_new;
                 break;
@@ -88,6 +96,16 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
                 actionBar.setElevation(0.0f);
                 break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
+                wishDescriptionEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                wishDescriptionEditText.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                actionBar = getSupportActionBar();
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
+                actionBar.setElevation(0.0f);
+                StartHelpAnimation();
+                break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
                 wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
                 wishDescriptionEditText.setFocusable(false);
@@ -108,9 +126,27 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         }
     }
 
-    // TODO: 1) Implement styles checker
-    // TODO: 2) Implment add / edit wish on step 0 (or after rejecting)
-    // TODO: 3) Implement Step 1 - Fears....
+    public void StartHelpAnimation() {
+        Button helpButton = (Button) findViewById(R.id.helpButton);
+        ObjectAnimator animY = ObjectAnimator.ofFloat(helpButton, "translationY", 0f, -100f, 0f);
+        animY.setDuration(600);//1sec
+        animY.setInterpolator(new BounceInterpolator());
+        animY.setRepeatCount(5);
+        animY.start();
+
+        /*
+        YoYo.with(Techniques.Shake)
+                .duration(500)
+                .repeat(5)
+                .pivotY(-0.5f)
+                .playOn(findViewById(R.id.helpButton));
+        YoYo.with(Techniques.R)
+                .duration(500)
+                .repeat(5)
+                .pivotY(-0.5f)
+                .playOn(findViewById(R.id.helpButton));
+                */
+    }
 
     public void initWish(String wishId) {
         if (wishId != null) {
@@ -149,6 +185,10 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         switch (mWishStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
                 EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
+                wishDescriptionEditText.setText(description);
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
                 wishDescriptionEditText.setText(description);
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
@@ -192,18 +232,23 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
 
     public void helpShowHide(View view) {
-        String header = "", message = "";
+        String header = "", message = "", extraMessage = "";
         switch (mWishStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
                 header = getString(R.string.next_step_0_header);
                 message = getString(R.string.next_step_0_html);
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                header = getString(R.string.next_step_0_header);
+                message = getString(R.string.next_step_0_html);
+                extraMessage = mDataManager.GetReviewForWish(mWishEntryId);
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
                 header = getString(R.string.next_step_1_header);
                 message = getString(R.string.next_step_1_html);
                 break;
         }
-        GeneralHelper.ShowHelpInWishActivity(header, message, this);
+        GeneralHelper.ShowHelpInWishActivity(header, message, extraMessage, this);
     }
 /*
     public static class WishStatusesClass {
@@ -215,7 +260,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         public static final int WISH_STATUS_SITUATION_REJECTED = 5;
         public static final int WISH_STATUS_FEARS = 6;
         public static final int WISH_STATUS_STEPS = 7;
-        public static final int WISH_STATUS_WAITING = 8;
+        public static final int WISH_STATUS_WAITING = 888;
         public static final int WISH_STATUS_COMPLETE = 999;
     }
 

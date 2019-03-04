@@ -175,10 +175,10 @@ public class GeneralHelper {
         Toast.makeText(context, "Subscription process is started....", Toast.LENGTH_SHORT).show();
     }
 
-    public static void ShowHelpInWishActivity(String header, String message, final Context context) {
+    public static void ShowHelpInWishActivity(String header, String message, String extraMessage, final Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        Spanned sp = Html.fromHtml(message);
+        Spanned sp = Html.fromHtml(extraMessage + "<BR><BR>" +  message);
         builder.setMessage(sp);
         builder.setTitle(header);
         builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
@@ -245,5 +245,6 @@ public class GeneralHelper {
         }
         return resourceId;
     }
+
 
 }

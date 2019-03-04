@@ -134,6 +134,14 @@ public class LifeBalanceDBDataManager {
         return wishes;
     }
 
+
+    public String GetReviewForWish(long wishId) {
+        String result = "";
+
+
+        return result;
+    }
+
     public Cursor GetWishesTypesWithChecked(ArrayList<Integer> selectedItems) {
 
         /*
