@@ -1,15 +1,12 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
 import android.animation.ObjectAnimator;
-import android.app.Dialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,24 +16,24 @@ import android.view.animation.BounceInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
 import ru.apps4yourlife.life.lifebalance.Utilities.ChooseCategoriesFragment;
 import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
-
-import static ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper.ShowRecommendToSubscribe;
 
 public class WishEditActivity extends AppCompatActivity implements ChooseCategoriesFragment.ChooseCategoriesFragmentListener, GeneralHelper.SubscribeDialogInterface {
 
@@ -47,6 +44,8 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     private String mWishPositionInList;
     private String mWishSituation;
     private Cursor mWishEntry;
+    private Date mChosenDate;
+    private long mChosenDateLong;
 
     private ArrayList<Integer> mSelectedTypes;
     private boolean isHelpShown = false;
@@ -73,6 +72,9 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
                 layout_type = R.layout.activity_wish_edit_status_new;
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+                layout_type = R.layout.activity_wish_edit_status_situation;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
                 layout_type = R.layout.activity_wish_edit_status_fears;
@@ -117,6 +119,15 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
                 actionBar.setElevation(0.0f);
                 break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+                EditText situationDescriptionEditText = (EditText) findViewById(R.id.wishSituationEditText);
+                situationDescriptionEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                situationDescriptionEditText.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                actionBar = getSupportActionBar();
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
+                actionBar.setElevation(0.0f);
+                break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
                 actionBar = getSupportActionBar();
                 actionBar.setDisplayHomeAsUpEnabled(true);
@@ -133,19 +144,6 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         animY.setInterpolator(new BounceInterpolator());
         animY.setRepeatCount(5);
         animY.start();
-
-        /*
-        YoYo.with(Techniques.Shake)
-                .duration(500)
-                .repeat(5)
-                .pivotY(-0.5f)
-                .playOn(findViewById(R.id.helpButton));
-        YoYo.with(Techniques.R)
-                .duration(500)
-                .repeat(5)
-                .pivotY(-0.5f)
-                .playOn(findViewById(R.id.helpButton));
-                */
     }
 
     public void initWish(String wishId) {
@@ -160,11 +158,13 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             mWishEntry = mDataManager.GetWishById(wishId);
             mSelectedTypes = GeneralHelper.extractTypesFromWish(mWishEntry.getString(mWishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_TYPE)));
             mWishStatus = mWishEntry.getInt(mWishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
+            mChosenDateLong = mWishEntry.getLong(mWishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_PLAN_END));
         } else {
             // new wish
             mWishEntry = null;
             mSelectedTypes = new ArrayList<Integer>();
             mWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_NEW;
+            mChosenDateLong = 0;
         }
         mNewWishStatus = mWishStatus;
         mWishSituation = "";
@@ -179,8 +179,12 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
     public void updateUIWish(Cursor wishEntry) {
         String description = "";
+        String situation = "";
+
+        mChosenDate = new Date(mChosenDateLong);
         if (wishEntry != null) {
             description = wishEntry.getString(wishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION));
+            situation = wishEntry.getString(wishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_SITUATION));
         }
         switch (mWishStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
@@ -201,6 +205,17 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 TextView wishDescriptionTextView = (TextView) findViewById(R.id.wishDescriptionTextView);
                 wishDescriptionTextView.setText(description);
                 break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+                EditText wishSituationEditText = (EditText) findViewById(R.id.wishSituationEditText);
+                wishSituationEditText.setText(situation);
+                wishDescriptionTextView = (TextView) findViewById(R.id.wishDescriptionTextView);
+                wishDescriptionTextView.setText(description);
+                if (mChosenDateLong > 0) {
+                    Button mBirthDateButton = (Button) findViewById(R.id.planDateButton);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+                    mBirthDateButton.setText(dateFormat.format(mChosenDate.getTime()));
+                }
+                break;
         }
 
 
@@ -212,8 +227,23 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     }
 
     public void wishSave_routine() {
-        EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
-        String wishDescriptionString = wishDescriptionEditText.getText().toString();
+        String wishDescriptionString = "", wishSituationString = "";
+        switch (mWishStatus) {
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
+                wishDescriptionString = wishDescriptionEditText.getText().toString();
+            break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+                EditText wishSituationEditText = (EditText) findViewById(R.id.wishSituationEditText);
+                wishSituationString = wishSituationEditText.getText().toString();
+                TextView wishDescriptionTextView = (TextView) findViewById(R.id.wishDescriptionTextView);
+                wishDescriptionString = wishDescriptionTextView.getText().toString();
+            break;
+        }
 
         Toast.makeText(this, "Save clicked", Toast.LENGTH_SHORT).show();
         Log.e("wId", "WISH ID" + mWishEntryId);
@@ -221,11 +251,11 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 String.valueOf(mWishEntryId),
                 GeneralHelper.ConvertTypesToString(mSelectedTypes),
                 0,
-                0,
+                mChosenDate.getTime(),
                 0,
                 mNewWishStatus,
                 wishDescriptionString,
-                "");
+                wishSituationString);
         if (mWishEntryId == 0) mWishEntryId = res;
 
     }
@@ -241,9 +271,22 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
                 header = getString(R.string.next_step_0_header);
                 message = getString(R.string.next_step_0_html);
-                extraMessage = mDataManager.GetReviewForWish(mWishEntryId);
+                extraMessage = mDataManager.GetReviewForWish(mWishEntryId, 0);
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
+                header = getString(R.string.next_step_1_header);
+                message = getString(R.string.next_step_1_html);
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+                header = getString(R.string.next_step_2_header);
+                message = getString(R.string.next_step_2_html);
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
+                header = getString(R.string.next_step_2_header);
+                message = getString(R.string.next_step_2_html);
+                extraMessage = mDataManager.GetReviewForWish(mWishEntryId, 1);
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
                 header = getString(R.string.next_step_1_header);
                 message = getString(R.string.next_step_1_html);
                 break;
@@ -252,10 +295,10 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     }
 /*
     public static class WishStatusesClass {
-        public static final int WISH_STATUS_NEW = 0;
-        public static final int WISH_STATUS_IN_REVIEW = 1;
-        public static final int WISH_STATUS_REJECTED = 2;
-        public static final int WISH_STATUS_SITUATION = 3;
+        ++ public static final int WISH_STATUS_NEW = 0;
+        ++ public static final int WISH_STATUS_IN_REVIEW = 1;
+        ++ public static final int WISH_STATUS_REJECTED = 2;
+        ++public static final int WISH_STATUS_SITUATION = 3;
         public static final int WISH_STATUS_SITUATION_REVIEW = 4;
         public static final int WISH_STATUS_SITUATION_REJECTED = 5;
         public static final int WISH_STATUS_FEARS = 6;
@@ -288,6 +331,21 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     }
                 }
             }
+            if (mWishStatus == GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION     ||
+                    mWishStatus == GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED) {
+                CheckBox submitCheckBox = findViewById(R.id.ready_to_check);
+                if (submitCheckBox.isChecked()) {
+                    if (GeneralHelper.isUserSubscribed()) {
+                        mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
+                        needToBeSent = true;
+                    } else {
+                        wishSave_routine();
+                        needToBeSave = false;
+                        GeneralHelper.ShowRecommendToSubscribe(this, this).show();
+                        needToCloseActivity = false;
+                    }
+                }
+            }
             if (needToBeSave) wishSave_routine();
             if (needToBeSent) GeneralHelper.PushWishToServer(this, mWishEntryId);
         }
@@ -302,7 +360,18 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
     @Override
     public void OnRejectToSubscribe(Context context) {
-        mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION;
+        switch (mWishStatus) {
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION;
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+                mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS;
+                break;
+        }
         wishSave_routine();
         FinishActivity(Integer.valueOf(mWishPositionInList));
     }
@@ -317,23 +386,25 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         ImageView type1 = findViewById(R.id.image_type_1);
         ImageView type2 = findViewById(R.id.image_type_2);
         ImageView type3 = findViewById(R.id.image_type_3);
-        type1.setImageBitmap(null);
-        type2.setImageBitmap(null);
-        type3.setImageBitmap(null);
-        int count = 1;
-        for (Integer type : mSelectedTypes) {
-            int imageId = GeneralHelper.GetImageResourceByType(type);
-            if (imageId > 0) {
-                if (count == 1) {
-                    type1.setImageResource(imageId);
+        if (type1 != null) {
+            type1.setImageBitmap(null);
+            type2.setImageBitmap(null);
+            type3.setImageBitmap(null);
+            int count = 1;
+            for (Integer type : mSelectedTypes) {
+                int imageId = GeneralHelper.GetImageResourceByType(type);
+                if (imageId > 0) {
+                    if (count == 1) {
+                        type1.setImageResource(imageId);
+                    }
+                    if (count == 2) {
+                        type2.setImageResource(imageId);
+                    }
+                    if (count == 3) {
+                        type3.setImageResource(imageId);
+                    }
+                    count++;
                 }
-                if (count == 2) {
-                    type2.setImageResource(imageId);
-                }
-                if (count == 3) {
-                    type3.setImageResource(imageId);
-                }
-                count++;
             }
         }
     }
@@ -350,6 +421,9 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         int menu_id;
         switch (mWishStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
                 menu_id = R.menu.menu_save_item;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
@@ -385,5 +459,22 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         }
     }
 
+    public void btnSetBirthDate_click (View view) {
+        Calendar currentCalendar = new GregorianCalendar();
+        new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                          int dayOfMonth) {
+                        Button mBirthDateButton = (Button) findViewById(R.id.planDateButton);
+                        Calendar calendar = new GregorianCalendar(year,monthOfYear,dayOfMonth);
+                        mChosenDate = calendar.getTime();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+                        mBirthDateButton.setText(dateFormat.format(mChosenDate.getTime()));
+                    }
+                },
+                currentCalendar.get(currentCalendar.YEAR),
+                currentCalendar.get(currentCalendar.MONTH),
+                currentCalendar.get(currentCalendar.DAY_OF_MONTH)).show();
+    }
 
 }

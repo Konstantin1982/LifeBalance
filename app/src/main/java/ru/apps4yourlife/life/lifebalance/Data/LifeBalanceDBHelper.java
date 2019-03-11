@@ -136,7 +136,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 0,
                 0,
                 0,
-                GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW,
+                GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION,
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
                 "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );

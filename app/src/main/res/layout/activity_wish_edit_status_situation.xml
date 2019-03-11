@@ -24,7 +24,7 @@
         app:layout_constraintBottom_toTopOf="@+id/ready_to_check"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/planDateButton" />
 
 
     <ImageView
@@ -96,12 +96,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/ic_quote"
-        android:text=""
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+        app:layout_constraintTop_toBottomOf="@+id/image_type_3" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline4"
@@ -111,16 +110,18 @@
         app:layout_constraintGuide_percent="0.7"
          />
 
-    <EditText
-        android:id="@+id/editText"
+    <Button
+        android:id="@+id/planDateButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="date"
+        android:onClick="btnSetBirthDate_click"
         android:text="Дата (не менее 6 месяцев от сегодня)"
+        android:textAlignment="textEnd"
+        android:textAllCaps="false"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

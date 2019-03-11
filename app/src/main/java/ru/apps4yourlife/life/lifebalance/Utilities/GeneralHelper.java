@@ -128,42 +128,9 @@ public class GeneralHelper {
         return res;
     }
 
-    public static AbstractMap.SimpleEntry<String, String> GetNextStepDescriptionForItem(Context context, int current_status) {
-
-        String nextStepNumber = "загружается...";
-        String nextStepDescription = "загружается ... ";
-
-        switch (current_status) {
-            case WishStatusesClass.WISH_STATUS_NEW:
-                nextStepNumber =  context.getString(R.string.next_step_0);
-                nextStepDescription = context.getString(R.string.next_step_0_header);
-                break;
-            case WishStatusesClass.WISH_STATUS_IN_REVIEW:
-                break;
-            case WishStatusesClass.WISH_STATUS_REJECTED :
-                break;
-            case WishStatusesClass.WISH_STATUS_SITUATION:
-                break;
-            case WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
-                break;
-            case WishStatusesClass.WISH_STATUS_SITUATION_REJECTED :
-                break;
-            case WishStatusesClass.WISH_STATUS_FEARS:
-                break;
-            case WishStatusesClass.WISH_STATUS_STEPS:
-                break;
-            case WishStatusesClass.WISH_STATUS_WAITING:
-                break;
-            case WishStatusesClass.WISH_STATUS_COMPLETE:
-                break;
-        }
-        AbstractMap.SimpleEntry<String, String> res = new AbstractMap.SimpleEntry<String, String>(nextStepNumber, nextStepDescription);
-        return res;
-    }
-
 
     public static boolean isUserSubscribed() {
-        return true;
+        return false;
     }
 
 

@@ -135,8 +135,10 @@ public class LifeBalanceDBDataManager {
     }
 
 
-    public String GetReviewForWish(long wishId) {
+    public String GetReviewForWish(long wishId, int mode) {
         String result = "";
+        // mode == 0 - review
+        // mode == 1 - sit review
 
 
         return result;

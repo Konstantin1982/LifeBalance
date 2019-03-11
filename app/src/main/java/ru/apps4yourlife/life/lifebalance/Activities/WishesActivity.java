@@ -1,14 +1,8 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
-import android.animation.AnimatorSet;
 import android.app.ActivityOptions;
-import android.app.Instrumentation;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.Build;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,10 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.Explode;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-
-import ru.apps4yourlife.life.lifebalance.Adapters.EventsListAdapter;
 import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
 import ru.apps4yourlife.life.lifebalance.R;
 
@@ -36,6 +26,11 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishes);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        actionBar.setElevation(0.0f);
+
         wishListInit();
     }
     public void wishListInit(){
