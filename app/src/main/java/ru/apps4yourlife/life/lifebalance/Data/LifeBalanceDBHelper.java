@@ -63,10 +63,20 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                         LifeBalanceContract.WishesTypesEntry.COLUMN_DESCRIPTION + " VARCHAR(1020) " +
                         ")";
 
+        final String SQL_CREATE_FEARS_TABLE =
+        "CREATE TABLE " +
+                        LifeBalanceContract.FearsEntry.TABLE_NAME + "(" +
+                        LifeBalanceContract.FearsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        LifeBalanceContract.FearsEntry.COLUMN_DESCRIPTION + " VARCHAR(1020), " +
+                        LifeBalanceContract.FearsEntry.COLUMN_STATUS + " INTEGER, " +
+                        LifeBalanceContract.FearsEntry.COLUMN_WISH_ID + " INTEGER " +
+                        ")";
+
         sqLiteDatabase.execSQL(SQL_CREATE_EVENTS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_MESSAGE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_WISHES_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_WISHES_TYPES_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_FEARS_TABLE);
         Log.d("DB", "TABLES WERE CREATED");
     }
 
@@ -96,6 +106,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
     }
 
     public void insertFakeWishes(SQLiteDatabase db) {
+        /*
         LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
                 null,
@@ -103,7 +114,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 0,
                 0,
                 0,
-                GeneralHelper.WishStatusesClass.WISH_STATUS_NEW,
+                GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW,
                 "Я хочу морковный сок из 20-ти морковных грядок. Сок холодный и свежий.",
                 "Морозное утро, выхожу из-за стола, пью ледяной сок."
                 );
@@ -114,7 +125,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 0,
                 0,
                 0,
-                GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW,
+                GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED,
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
                 "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );
@@ -129,6 +140,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
                 "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );
+                */
         LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
                 null,

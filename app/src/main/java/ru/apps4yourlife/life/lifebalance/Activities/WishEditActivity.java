@@ -16,6 +16,7 @@ import android.view.animation.BounceInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -46,6 +47,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     private Cursor mWishEntry;
     private Date mChosenDate;
     private long mChosenDateLong;
+    private int mWishFearStatus;
 
     private ArrayList<Integer> mSelectedTypes;
     private boolean isHelpShown = false;
@@ -65,20 +67,18 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         int layout_type;
         switch (mWishStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
-                layout_type = R.layout.activity_wish_edit_status_new;
-                break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
-                layout_type = R.layout.activity_wish_edit_status_new;
-                break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
                 layout_type = R.layout.activity_wish_edit_status_new;
-                break;
+            break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
                 layout_type = R.layout.activity_wish_edit_status_situation;
-                break;
+            break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
                 layout_type = R.layout.activity_wish_edit_status_fears;
-                break;
+            break;
             default:
                 layout_type = R.layout.activity_wish_edit_status_new;
         }
@@ -88,24 +88,19 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     }
 
     public void initLayout() {
+        int backButtonImage = R.drawable.ic_clear_white_24dp;
         switch (mWishStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
                 EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
                 wishDescriptionEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 wishDescriptionEditText.setRawInputType(InputType.TYPE_CLASS_TEXT);
-                android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
-                actionBar.setElevation(0.0f);
+                backButtonImage = R.drawable.ic_clear_white_24dp;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
                 wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
                 wishDescriptionEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 wishDescriptionEditText.setRawInputType(InputType.TYPE_CLASS_TEXT);
-                actionBar = getSupportActionBar();
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
-                actionBar.setElevation(0.0f);
+                backButtonImage = R.drawable.ic_clear_white_24dp;
                 StartHelpAnimation();
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
@@ -114,27 +109,36 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 wishDescriptionEditText.setClickable(false);
                 ImageButton buttonTypes = findViewById(R.id.imageView4);
                 buttonTypes.setVisibility(View.INVISIBLE);
-                actionBar = getSupportActionBar();
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
-                actionBar.setElevation(0.0f);
+                backButtonImage = R.drawable.ic_arrow_back_white_24dp;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
                 EditText situationDescriptionEditText = (EditText) findViewById(R.id.wishSituationEditText);
                 situationDescriptionEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 situationDescriptionEditText.setRawInputType(InputType.TYPE_CLASS_TEXT);
-                actionBar = getSupportActionBar();
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
-                actionBar.setElevation(0.0f);
+                backButtonImage = R.drawable.ic_clear_white_24dp;
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+                situationDescriptionEditText = (EditText) findViewById(R.id.wishSituationEditText);
+                situationDescriptionEditText.setFocusable(false);
+                situationDescriptionEditText.setClickable(false);
+                backButtonImage = R.drawable.ic_arrow_back_white_24dp;
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
+                situationDescriptionEditText = (EditText) findViewById(R.id.wishSituationEditText);
+                situationDescriptionEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                situationDescriptionEditText.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                backButtonImage = R.drawable.ic_clear_white_24dp;
+                StartHelpAnimation();
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
-                actionBar = getSupportActionBar();
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
-                actionBar.setElevation(0.0f);
+                backButtonImage = R.drawable.ic_clear_white_24dp;
                 break;
         }
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(backButtonImage);
+        actionBar.setElevation(0.0f);
+
     }
 
     public void StartHelpAnimation() {
@@ -168,6 +172,9 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         }
         mNewWishStatus = mWishStatus;
         mWishSituation = "";
+        mWishFearStatus = mDataManager.GetFearWishStatus(mWishEntryId);
+
+        Toast.makeText(this,"FEARS = " + mWishFearStatus, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -188,11 +195,8 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         }
         switch (mWishStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
-                EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
-                wishDescriptionEditText.setText(description);
-                break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
-                wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
+                EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
                 wishDescriptionEditText.setText(description);
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
@@ -204,8 +208,10 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
                 TextView wishDescriptionTextView = (TextView) findViewById(R.id.wishDescriptionTextView);
                 wishDescriptionTextView.setText(description);
+                SetFearsStatus();
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
                 EditText wishSituationEditText = (EditText) findViewById(R.id.wishSituationEditText);
                 wishSituationEditText.setText(situation);
                 wishDescriptionTextView = (TextView) findViewById(R.id.wishDescriptionTextView);
@@ -216,9 +222,22 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     mBirthDateButton.setText(dateFormat.format(mChosenDate.getTime()));
                 }
                 break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+                wishSituationEditText = (EditText) findViewById(R.id.wishSituationEditText);
+                wishSituationEditText.setText(situation);
+                wishDescriptionTextView = (TextView) findViewById(R.id.wishDescriptionTextView);
+                wishDescriptionTextView.setText(description);
+                review = findViewById(R.id.ready_to_check);
+                review.setVisibility(View.INVISIBLE);
+                if (mChosenDateLong > 0) {
+                    Button mBirthDateButton = (Button) findViewById(R.id.planDateButton);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+                    mBirthDateButton.setText(dateFormat.format(mChosenDate.getTime()));
+                    mBirthDateButton.setEnabled(false);
+                }
+                break;
+
         }
-
-
         UpdateUITypes();
     }
 
@@ -246,7 +265,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         }
 
         Toast.makeText(this, "Save clicked", Toast.LENGTH_SHORT).show();
-        Log.e("wId", "WISH ID" + mWishEntryId);
+        Log.e("wId", "WISH ID" + mWishEntryId + ";   NEW STATUS = " + mNewWishStatus);
         long res = mDataManager.InsertOrUpdateWish(
                 String.valueOf(mWishEntryId),
                 GeneralHelper.ConvertTypesToString(mSelectedTypes),
@@ -290,6 +309,10 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 header = getString(R.string.next_step_1_header);
                 message = getString(R.string.next_step_1_html);
                 break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
+                header = getString(R.string.next_step_3_header);
+                message = getString(R.string.next_step_3_html);
+                break;
         }
         GeneralHelper.ShowHelpInWishActivity(header, message, extraMessage, this);
     }
@@ -299,8 +322,8 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         ++ public static final int WISH_STATUS_IN_REVIEW = 1;
         ++ public static final int WISH_STATUS_REJECTED = 2;
         ++public static final int WISH_STATUS_SITUATION = 3;
-        public static final int WISH_STATUS_SITUATION_REVIEW = 4;
-        public static final int WISH_STATUS_SITUATION_REJECTED = 5;
+        ++public static final int WISH_STATUS_SITUATION_REVIEW = 4;
+        ++public static final int WISH_STATUS_SITUATION_REJECTED = 5;
         public static final int WISH_STATUS_FEARS = 6;
         public static final int WISH_STATUS_STEPS = 7;
         public static final int WISH_STATUS_WAITING = 888;
@@ -345,6 +368,15 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                         needToCloseActivity = false;
                     }
                 }
+            }
+            if (mWishStatus == GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS) {
+                needToBeSave = false;
+                if (mWishFearStatus == 4) {
+                    mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS;
+                }
+                mDataManager.InsertOrUpdateFearsStatus(mWishEntryId, mWishFearStatus);
+                Toast.makeText(this,"FEARS = " + mWishFearStatus, Toast.LENGTH_SHORT).show();
+                needToCloseActivity = true;
             }
             if (needToBeSave) wishSave_routine();
             if (needToBeSent) GeneralHelper.PushWishToServer(this, mWishEntryId);
@@ -409,6 +441,116 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         }
     }
 
+    public void fearsClickListener(int step, boolean isChecked) {
+        CheckBox step_1 = (CheckBox) findViewById(R.id.step1checkBox);
+        CheckBox step_2 = (CheckBox) findViewById(R.id.step2checkBox);
+        CheckBox step_3 = (CheckBox) findViewById(R.id.step3checkBox);
+        CheckBox step_4 = (CheckBox) findViewById(R.id.step4checkBox);
+        if (step == 1) {
+            if (isChecked) {
+                step_2.setEnabled(true);
+                mWishFearStatus = 1;
+            } else {
+                mWishFearStatus = 0;
+                step_2.setEnabled(false);
+                step_2.setChecked(false);
+            }
+        }
+        if (step == 2) {
+            if (isChecked) {
+                mWishFearStatus = 2;
+                step_3.setEnabled(true);
+                step_1.setEnabled(false);
+            } else {
+                mWishFearStatus = 1;
+                step_3.setEnabled(false);
+                step_3.setChecked(false);
+                step_1.setEnabled(true);
+            }
+        }
+        if (step == 3) {
+            if (isChecked) {
+                mWishFearStatus = 3;
+                step_4.setEnabled(true);
+                step_2.setEnabled(false);
+            } else {
+                mWishFearStatus = 2;
+                step_4.setEnabled(false);
+                step_4.setChecked(false);
+                step_2.setEnabled(true);
+            }
+        }
+        if (step == 4) {
+            if (isChecked) {
+                step_3.setEnabled(false);
+                mWishFearStatus = 4;
+            } else {
+                step_3.setEnabled(true);
+                mWishFearStatus = 3;
+            }
+        }
+    }
+
+    public void SetFearsStatus() {
+
+        CheckBox step_1 = (CheckBox) findViewById(R.id.step1checkBox);
+        CheckBox step_2 = (CheckBox) findViewById(R.id.step2checkBox);
+        CheckBox step_3 = (CheckBox) findViewById(R.id.step3checkBox);
+        CheckBox step_4 = (CheckBox) findViewById(R.id.step4checkBox);
+
+        step_1.setEnabled(false);
+        step_2.setEnabled(false);
+        step_3.setEnabled(false);
+        step_4.setEnabled(false);
+        // 0 1 2 3 4
+        Toast.makeText(this, "FEARS!!! = " + mWishFearStatus, Toast.LENGTH_SHORT).show();
+        if (mWishFearStatus >= 3) {
+            step_1.setChecked(true);
+            step_2.setChecked(true);
+            step_3.setChecked(true);
+            step_3.setEnabled(true);
+            step_4.setEnabled(true);
+        } else if (mWishFearStatus >= 2) {
+            step_1.setChecked(true);
+            step_2.setChecked(true);
+            step_2.setEnabled(true);
+            step_3.setEnabled(true);
+        } else if (mWishFearStatus >= 1) {
+            step_1.setChecked(true);
+            step_1.setEnabled(true);
+            step_2.setEnabled(true);
+        } else {
+            step_1.setEnabled(true);
+        }
+
+        step_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                fearsClickListener(1, b);
+            }
+        });
+        step_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                fearsClickListener(2, b);
+            }
+        });
+        step_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                fearsClickListener(3, b);
+            }
+        });
+        step_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                fearsClickListener(4, b);
+            }
+        });
+    }
+
+
+
     @Override
     public ArrayList<Integer> getSelectedItems() {
         return mSelectedTypes;
@@ -427,6 +569,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 menu_id = R.menu.menu_save_item;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
                 menu_id = 0;
                 break;
             default:

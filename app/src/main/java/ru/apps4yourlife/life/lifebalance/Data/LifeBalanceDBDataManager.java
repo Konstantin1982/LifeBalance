@@ -134,6 +134,64 @@ public class LifeBalanceDBDataManager {
         return wishes;
     }
 
+    public int GetFearWishStatus(long wishId) {
+        int status = 0;
+        Cursor fear = mDBHelper.getReadableDatabase().query(
+                LifeBalanceContract.FearsEntry.TABLE_NAME,
+                null,
+                LifeBalanceContract.FearsEntry.COLUMN_WISH_ID + " = ? ",
+                new String[]{String.valueOf(wishId)},
+                null,
+                null,
+                null,
+                null
+        );
+
+        if (fear.getCount() > 0) {
+            fear.moveToFirst();
+            status = fear.getInt(fear.getColumnIndex(LifeBalanceContract.FearsEntry.COLUMN_STATUS));
+        }
+
+        return status;
+    }
+
+    public long GetFearWishId(long wishId) {
+        long id = -1;
+        Cursor fear = mDBHelper.getReadableDatabase().query(
+                LifeBalanceContract.FearsEntry.TABLE_NAME,
+                null,
+                LifeBalanceContract.FearsEntry.COLUMN_WISH_ID + " = ? ",
+                new String[]{String.valueOf(wishId)},
+                null,
+                null,
+                null,
+                null
+        );
+
+        if (fear.getCount() > 0) {
+            fear.moveToFirst();
+            id = fear.getLong(fear.getColumnIndex(LifeBalanceContract.FearsEntry._ID));
+        }
+        return id;
+    }
+
+    public long InsertOrUpdateFearsStatus(long wishId, int fearsStatus) {
+        long result = 0;
+
+        long id = GetFearWishId(wishId);
+        SQLiteDatabase db = mDBHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(LifeBalanceContract.FearsEntry.COLUMN_STATUS, fearsStatus);
+        values.put(LifeBalanceContract.FearsEntry.COLUMN_WISH_ID, wishId);
+        if (id <= 0) {
+            result = db.insert(LifeBalanceContract.FearsEntry.TABLE_NAME, null, values);
+        } else {
+            result = db.update(LifeBalanceContract.FearsEntry.TABLE_NAME, values, LifeBalanceContract.FearsEntry._ID + " = ? ", new String[]{String.valueOf(id)});
+            if (result > 0) result = id;
+        }
+        return result;
+    }
 
     public String GetReviewForWish(long wishId, int mode) {
         String result = "";

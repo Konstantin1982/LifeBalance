@@ -55,7 +55,7 @@ public class LifeBalanceContract {
         public static final String TABLE_NAME = "fears";
         public static final String COLUMN_WISH_ID = "wish_id"; //
         public static final String COLUMN_DESCRIPTION = "description";
-        public static final String COLUMN_STATUS = "status"; // сказал вслух, увеличил, проработал, победил.
+        public static final String COLUMN_STATUS = "status"; // 0,1,2,3,4
         //
     }
 
