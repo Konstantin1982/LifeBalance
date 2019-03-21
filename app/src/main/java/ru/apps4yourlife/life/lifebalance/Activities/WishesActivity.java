@@ -10,10 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.Explode;
 import android.view.View;
 import android.view.Window;
+
+import ru.apps4yourlife.life.lifebalance.Adapters.StepsListAdapter;
 import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
 import ru.apps4yourlife.life.lifebalance.R;
 
-public class WishesActivity extends AppCompatActivity implements WishListAdapter.WishListAdapterClickHandler {
+public class WishesActivity extends AppCompatActivity implements WishListAdapter.WishListAdapterClickHandler, StepsListAdapter.StepsListAdapterClickHandler {
 
 
     private WishListAdapter mWishListAdapter;
@@ -76,6 +78,11 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         } else {
             startActivityForResult(wishEditIntent,0);
         }
+
+    }
+
+    @Override
+    public void onStepClick(String stepId, String itemPositionInList) {
 
     }
 }

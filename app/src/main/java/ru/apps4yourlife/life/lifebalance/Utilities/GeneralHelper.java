@@ -6,8 +6,16 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
+import android.webkit.WebView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -142,19 +150,37 @@ public class GeneralHelper {
         Toast.makeText(context, "Subscription process is started....", Toast.LENGTH_SHORT).show();
     }
 
-    public static void ShowHelpInWishActivity(String header, String message, String extraMessage, final Context context) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        Spanned sp = Html.fromHtml(extraMessage + "<BR><BR>" +  message);
-        builder.setMessage(sp);
-        builder.setTitle(header);
-        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
+    public static void ShowHelpInWishActivity(String stepName, String extraMessage, final Context context) {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
+            View dialogView = inflater.inflate(R.layout.help_view, null);
+            WebView messageWebView = (WebView) dialogView.findViewById(R.id.helpShowWebView);
+            String fileName = "file:///android_asset/" +  stepName;
+            if (extraMessage.isEmpty()) {
+                messageWebView.loadUrl(fileName);
+            } else {
+                InputStream is = context.getAssets().open(stepName);
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+                String str = new String(buffer);
+                String fullMessage = extraMessage + "<BR><HR>" + str;
+                messageWebView.loadData(fullMessage, "text/html", "ru_RU");
             }
-        });
-        builder.show();
+
+            builder.setView(dialogView);
+            builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return;
 
     }

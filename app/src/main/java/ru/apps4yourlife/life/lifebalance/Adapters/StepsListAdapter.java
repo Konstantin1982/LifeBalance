@@ -1,0 +1,101 @@
+package ru.apps4yourlife.life.lifebalance.Adapters;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
+import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
+import ru.apps4yourlife.life.lifebalance.R;
+
+/**
+ * Created by ksharafutdinov on 20-Mar-19.
+ */
+
+public class StepsListAdapter  extends RecyclerView.Adapter <StepsListAdapter.StepsListAdapterViewHolder> {
+    private Context mContext;
+    private Cursor mStepListCursor;
+    private String mWishId;
+
+    public interface StepsListAdapterClickHandler {
+        void onStepClick(String stepId, String itemPositionInList);
+    }
+
+    private final StepsListAdapter.StepsListAdapterClickHandler mWishListAdapterClickHandler;
+
+    class StepsListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView nextStepDescription;
+
+        StepsListAdapterViewHolder(View view) {
+            super(view);
+            nextStepDescription = (TextView) view.findViewById(R.id.stepDescriptionEditText);
+
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            mStepListCursor.moveToPosition(position);
+
+            Toast.makeText(mContext, "CLICKED sds", Toast.LENGTH_SHORT).show();
+
+            Log.d("ADAPTER", "CALL ACTIVITY with position = " + position);
+            mWishListAdapterClickHandler.onStepClick(
+                    mStepListCursor.getString(mStepListCursor.getColumnIndex(LifeBalanceContract.WishesEntry._ID)),
+                    String.valueOf(position)
+            );
+            //mChildrenListAdapterClickHandler.onChildClick(
+            //mListChildrenCursor.getString(mListChildrenCursor.getColumnIndex(WardrobeContract.ChildEntry._ID)),
+            //String.valueOf(position)
+            //);
+        }
+    }
+
+    public StepsListAdapter(Context context, StepsListAdapter.StepsListAdapterClickHandler clickHandler, long wishId) {
+        mWishListAdapterClickHandler = clickHandler;
+        mContext = context;
+        mWishId = String.valueOf(wishId);
+        LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
+        mStepListCursor = mDataManager.GetStepsByWishId(mWishId);
+    }
+
+    @Override
+    public StepsListAdapter.StepsListAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.step_item_in_list, parent, false);
+        return new StepsListAdapter.StepsListAdapterViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final StepsListAdapter.StepsListAdapterViewHolder holder, final int position) {
+        mStepListCursor.moveToPosition(position);
+        String stepDescription = mStepListCursor.getString(mStepListCursor.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_DESCRIPTION));
+        holder.nextStepDescription.setText(stepDescription);
+        return;
+    }
+
+    @Override
+    public int getItemCount() {
+        return  mStepListCursor.getCount();
+    }
+
+    public void updateListValues(int position) {
+        LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
+        mStepListCursor = mDataManager.GetOpenedWishes();
+        if (position >= 0) {
+            notifyItemChanged(position);
+        } else {
+            notifyItemInserted(mStepListCursor.getCount());
+        }
+    }
+
+
+
+
+}

@@ -1,11 +1,16 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
 import android.animation.ObjectAnimator;
+import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -30,13 +35,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import ru.apps4yourlife.life.lifebalance.Adapters.StepsListAdapter;
+import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
 import ru.apps4yourlife.life.lifebalance.Utilities.ChooseCategoriesFragment;
 import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 
-public class WishEditActivity extends AppCompatActivity implements ChooseCategoriesFragment.ChooseCategoriesFragmentListener, GeneralHelper.SubscribeDialogInterface {
+public class WishEditActivity extends AppCompatActivity implements ChooseCategoriesFragment.ChooseCategoriesFragmentListener, GeneralHelper.SubscribeDialogInterface, StepsListAdapter.StepsListAdapterClickHandler{
 
     private LifeBalanceDBDataManager mDataManager;
     private long mWishEntryId;
@@ -78,6 +85,9 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
                 layout_type = R.layout.activity_wish_edit_status_fears;
+            break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+                layout_type = R.layout.activity_wish_status_steps;
             break;
             default:
                 layout_type = R.layout.activity_wish_edit_status_new;
@@ -132,6 +142,16 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
                 backButtonImage = R.drawable.ic_clear_white_24dp;
+                break;
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+                    RecyclerView mStepsRecyclerView = (RecyclerView) findViewById(R.id.stepsRecyclerView);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                    layoutManager.setMeasurementCacheEnabled(false);
+
+                    mStepsRecyclerView.setLayoutManager(layoutManager);
+                    mStepsRecyclerView.setHasFixedSize(true);
+                    StepsListAdapter stepsListAdapter = new StepsListAdapter(this, this, (int)mWishEntryId);
+                    mStepsRecyclerView.setAdapter(stepsListAdapter);
                 break;
         }
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -281,40 +301,33 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
 
     public void helpShowHide(View view) {
-        String header = "", message = "", extraMessage = "";
+        String header = "", fileName = "", extraMessage = "";
         switch (mWishStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
-                header = getString(R.string.next_step_0_header);
-                message = getString(R.string.next_step_0_html);
+                fileName = "step_0.html";
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
-                header = getString(R.string.next_step_0_header);
-                message = getString(R.string.next_step_0_html);
+                fileName = "step_0.html";
                 extraMessage = mDataManager.GetReviewForWish(mWishEntryId, 0);
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
-                header = getString(R.string.next_step_1_header);
-                message = getString(R.string.next_step_1_html);
+                fileName = "step_1.html";
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
-                header = getString(R.string.next_step_2_header);
-                message = getString(R.string.next_step_2_html);
+                fileName = "step_2.html";
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
-                header = getString(R.string.next_step_2_header);
-                message = getString(R.string.next_step_2_html);
+                fileName = "step_2.html";
                 extraMessage = mDataManager.GetReviewForWish(mWishEntryId, 1);
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
-                header = getString(R.string.next_step_1_header);
-                message = getString(R.string.next_step_1_html);
+                fileName = "step_1.html";
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
-                header = getString(R.string.next_step_3_header);
-                message = getString(R.string.next_step_3_html);
+                fileName = "step_3.html";
                 break;
         }
-        GeneralHelper.ShowHelpInWishActivity(header, message, extraMessage, this);
+        GeneralHelper.ShowHelpInWishActivity(fileName, extraMessage, this);
     }
 /*
     public static class WishStatusesClass {
@@ -620,4 +633,17 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 currentCalendar.get(currentCalendar.DAY_OF_MONTH)).show();
     }
 
+    @Override
+    public void onStepClick(String stepId, String itemPositionInList) {
+
+    }
+
+    public void stepAdd_click(View view) {
+        Intent stepEditIntent = new Intent(this, StepEditActivity.class);
+        //wishEditIntent.putExtra("STEP_ID",  wishId);
+        //wishEditIntent.putExtra("POSITION_ID",  itemPositionInList);
+        startActivityForResult(stepEditIntent,0);
+
+        return;
+    }
 }

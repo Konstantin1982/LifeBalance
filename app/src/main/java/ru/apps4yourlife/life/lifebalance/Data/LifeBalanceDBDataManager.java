@@ -111,15 +111,24 @@ public class LifeBalanceDBDataManager {
         return result;
     }
 
+    public static long InsertOrUpdateSettings(SQLiteDatabase db, String name, String value) {
+        long result = 0;
+        ContentValues values = new ContentValues();
+        values.put(LifeBalanceContract.SettingsEntry.COLUMN_NAME, name);
+        values.put(LifeBalanceContract.SettingsEntry.COLUMN_VALUE, value);
+        String currentValue = LifeBalanceDBDataManager.GetSettingValueByName(db, name);
+        if (currentValue.isEmpty()) {
+            result = db.insert(LifeBalanceContract.SettingsEntry.TABLE_NAME, null, values);
+        } else {
+            result = db.update(LifeBalanceContract.SettingsEntry.TABLE_NAME, values, LifeBalanceContract.SettingsEntry.COLUMN_NAME + " LIKE '?' ", new String[]{name});
+        }
+        return result;
+    }
+
     public long InsertOrUpdateMessage(String idEntry, String from, String to, String subject, String body, int isnew, long messageDate) {
         return this.InsertOrUpdateMessage(mDBHelper.getWritableDatabase(), idEntry, from, to, subject, body, isnew, messageDate);
     }
 
-    /*
-        *******************************************
-                WISHES SECTION
-        *******************************************
-    */
     public Cursor GetOpenedWishes() {
         Cursor wishes = mDBHelper.getReadableDatabase().query(
                 LifeBalanceContract.WishesEntry.TABLE_NAME,
@@ -154,6 +163,7 @@ public class LifeBalanceDBDataManager {
 
         return status;
     }
+
 
     public long GetFearWishId(long wishId) {
         long id = -1;
@@ -194,28 +204,13 @@ public class LifeBalanceDBDataManager {
     }
 
     public String GetReviewForWish(long wishId, int mode) {
-        String result = "";
+        String result = "<B>Внимание к деталям</B> <BR> <UL><LI>Обрати внимание на ГГГ</LI></UL>";
         // mode == 0 - review
         // mode == 1 - sit review
-
-
         return result;
     }
 
     public Cursor GetWishesTypesWithChecked(ArrayList<Integer> selectedItems) {
-
-        /*
-        Cursor types = mDBHelper.getReadableDatabase().query(
-                LifeBalanceContract.WishesTypesEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                LifeBalanceContract.WishesTypesEntry._ID,
-                null
-        );
-        */
         String itemString = "(";
         for (int item : selectedItems) {
             itemString += item + ",";
@@ -301,42 +296,130 @@ public class LifeBalanceDBDataManager {
         return this.InsertOrUpdateWish(mDBHelper.getWritableDatabase(), idEntry, types, start, planend, factend, status, description, situation);
     }
 
-/*
-    public Cursor GetAllSizesTypes() {
-
-        Cursor sizeTypes = mDBHelper.getReadableDatabase().query(
-                LifeBalanceContract.SizesTypes.TABLE_NAME,
+    public static String GetSettingValueByName(SQLiteDatabase  db, String name) {
+        String result = "";
+        Cursor settings = db.query(
+                LifeBalanceContract.SettingsEntry.TABLE_NAME,
+                null,
+                LifeBalanceContract.SettingsEntry.COLUMN_NAME + " LIKE ?",
+                new String[]{name},
                 null,
                 null,
-                null,
-                null,
-                null,
-                LifeBalanceContract.SizesTypes.COLUMN_ID);
-        return sizeTypes;
-    }
-
-    public long GetCountItemsInCategory(long catId) {
-        SQLiteDatabase db = mDBHelper.getReadableDatabase();
-        long result = DatabaseUtils.queryNumEntries(
-                db,
-                LifeBalanceContract.ClothesItem.TABLE_NAME,
-                LifeBalanceContract.ClothesItem.COLUMN_CAT_ID + " = ? ",
-                new String[]{String.valueOf(catId)});
-        return result;
-    }
-
-    public int GetSizeIdByFilter(int type, double value, int condition) {
-        int result = -1;
-        SQLiteDatabase db = mDBHelper.getReadableDatabase();
-        String sql  = "";
-        sql = "select * from sizes where real_value <= ? and size_type = ? order by real_value desc limit 1;";
-        String[] selectionArgs = new String[] {String.valueOf(value), String.valueOf(type)};
-        Cursor cursor = db.rawQuery(sql,selectionArgs);
-        if (cursor.getCount() > 0) {
-            cursor.moveToPosition(0);
-            result = cursor.getInt(cursor.getColumnIndex("_id"));
+                null
+        );
+        if (settings.getCount() > 0) {
+            settings.moveToFirst();
+            result = settings.getString( settings.getColumnIndex(LifeBalanceContract.SettingsEntry.COLUMN_VALUE));
         }
         return result;
     }
-*/
+
+
+    // get steps by wish id
+    public Cursor GetStepsByWishId(String wishId) {
+        Cursor steps = mDBHelper.getReadableDatabase().query(
+                LifeBalanceContract.StepsEntry.TABLE_NAME,
+                null,
+                LifeBalanceContract.StepsEntry.COLUMN_WISH_ID + " = ? ",
+                new String[]{wishId},
+                null,
+                null,
+                LifeBalanceContract.StepsEntry.COLUMN_ORDER,
+                null
+        );
+        if (steps.getCount() > 0) {
+            steps.moveToFirst();
+        }
+        return steps;
+    }
+
+    public static Cursor GetStepById(SQLiteDatabase db, long id) {
+        Cursor steps = db.query(
+                LifeBalanceContract.StepsEntry.TABLE_NAME,
+                null,
+                LifeBalanceContract.StepsEntry._ID + " = ? ",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null,
+                null
+        );
+        if (steps.getCount() > 0) {
+            steps.moveToFirst();
+        }
+        return steps;
+    }
+
+    public static long InsertOrUpdateStep(SQLiteDatabase db, long idEntry, int wishId, String description) {
+        long result = 0;
+        ContentValues values = new ContentValues();
+        values.put(LifeBalanceContract.StepsEntry.COLUMN_WISH_ID, wishId);
+        values.put(LifeBalanceContract.StepsEntry.COLUMN_DESCRIPTION, description);
+        if (idEntry > 0) {
+            result = db.update(LifeBalanceContract.StepsEntry.TABLE_NAME, values, LifeBalanceContract.StepsEntry._ID + " = ? ", new String[]{String.valueOf(idEntry)});
+            if (result > 0) result = idEntry;
+        } else {
+            int order = GetClosestOrderNumber(db,9999999, wishId, 1);
+            if (order < 0) order = 1;
+            values.put(LifeBalanceContract.StepsEntry.COLUMN_ORDER, order);
+            result = db.insert(LifeBalanceContract.SettingsEntry.TABLE_NAME, null, values);
+        }
+        return result;
+    }
+
+    public static int GetClosestOrderNumber(SQLiteDatabase db,  int number, int wishId, int direction) {
+        int result = -1;
+        String sign, aggr;
+        if (direction == 1) { sign = " > "; aggr = "MIN";}
+        else  { sign = " < "; aggr = "MAX" ; }
+        Cursor value = db.rawQuery("SELECT " + aggr + "(" + LifeBalanceContract.StepsEntry.COLUMN_ORDER +") FROM " + LifeBalanceContract.StepsEntry.TABLE_NAME + " WHERE " +
+                LifeBalanceContract.StepsEntry.COLUMN_ORDER + sign + String.valueOf(number) + " AND " + LifeBalanceContract.StepsEntry.COLUMN_WISH_ID + " = " + wishId, null) ;
+        if (value.getCount() > 0) {
+            value.moveToFirst();
+            result = value.getInt(0);
+        }
+        return result;
+    }
+
+    public static boolean ReorderStep(SQLiteDatabase db, long stepId, int direction) {
+        boolean result = false;
+        Cursor currentStep = GetStepById(db,stepId);
+        if (currentStep.getCount() > 0) {
+            currentStep.moveToFirst();
+            int wishId = currentStep.getInt(currentStep.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_WISH_ID));
+            int currentOrder = currentStep.getInt(currentStep.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_ORDER));
+            int newOrder = GetClosestOrderNumber(db,currentOrder,wishId, direction);
+            if (newOrder >= 0) {
+                ContentValues values = new ContentValues();
+
+                values.put(LifeBalanceContract.StepsEntry.COLUMN_ORDER, currentOrder);
+                long res1 = db.update(LifeBalanceContract.StepsEntry.TABLE_NAME, values,
+                        LifeBalanceContract.StepsEntry.COLUMN_ORDER + " = ? AND " + LifeBalanceContract.StepsEntry.COLUMN_WISH_ID + " = ? ",
+                        new String[]{String.valueOf(newOrder), String.valueOf(wishId)});
+
+                values = new ContentValues();
+                values.put(LifeBalanceContract.StepsEntry.COLUMN_ORDER, newOrder);
+                long res2 = db.update(LifeBalanceContract.StepsEntry.TABLE_NAME, values, LifeBalanceContract.StepsEntry._ID + " = ? ", new String[]{String.valueOf(stepId)});
+            }
+        }
+
+        return result;
+    }
+
+    public static void PutStepToTop(SQLiteDatabase db, long stepId) {
+        Cursor currentStep = GetStepById(db,stepId);
+        if (currentStep.getCount() > 0) {
+            currentStep.moveToFirst();
+            int wishId = currentStep.getInt(currentStep.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_WISH_ID));
+            int currentOrder = currentStep.getInt(currentStep.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_ORDER));
+
+            String sql = "UPDATE " + LifeBalanceContract.StepsEntry.TABLE_NAME + " SET " + LifeBalanceContract.StepsEntry.COLUMN_ORDER + " = " + LifeBalanceContract.StepsEntry.COLUMN_ORDER + " + 1 WHERE " +
+                    LifeBalanceContract.StepsEntry.COLUMN_WISH_ID  + " = " + wishId;
+            db.execSQL(sql);
+
+            ContentValues values = new ContentValues();
+            values.put(LifeBalanceContract.StepsEntry.COLUMN_ORDER, 1);
+            long res2 = db.update(LifeBalanceContract.StepsEntry.TABLE_NAME, values, LifeBalanceContract.StepsEntry._ID + " = ? ", new String[]{String.valueOf(stepId)});
+        }
+    }
 }

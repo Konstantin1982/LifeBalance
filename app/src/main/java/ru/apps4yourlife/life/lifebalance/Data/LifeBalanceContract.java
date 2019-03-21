@@ -5,6 +5,16 @@ import android.provider.BaseColumns;
 
 public class LifeBalanceContract {
 
+    // Settings - идентификационная запись участника
+    public static final class SettingsEntry implements BaseColumns {
+        public static final String TABLE_NAME = "settings";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_VALUE = "value";
+    }
+
+
+
+
     // Events - события, которые происходят в приложении.
     public static final class EventsEntry implements BaseColumns {
         public static final String TABLE_NAME = "events";
@@ -27,6 +37,13 @@ public class LifeBalanceContract {
     // страхи
 
     // шаги
+    public static final class StepsEntry implements BaseColumns {
+        public static final String TABLE_NAME = "steps";
+        public static final String COLUMN_WISH_ID = "wish_id"; //
+        public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_ORDER = "sort_order"; // 0,1,2,3,4
+        //
+    }
     // фотки
 
     // покупки
