@@ -55,6 +55,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     private Date mChosenDate;
     private long mChosenDateLong;
     private int mWishFearStatus;
+    private StepsListAdapter mStepsListAdapter;
 
     private ArrayList<Integer> mSelectedTypes;
     private boolean isHelpShown = false;
@@ -143,16 +144,16 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
                 backButtonImage = R.drawable.ic_clear_white_24dp;
                 break;
-                case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
-                    RecyclerView mStepsRecyclerView = (RecyclerView) findViewById(R.id.stepsRecyclerView);
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-                    layoutManager.setMeasurementCacheEnabled(false);
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+                RecyclerView mStepsRecyclerView = (RecyclerView) findViewById(R.id.stepsRecyclerView);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                layoutManager.setMeasurementCacheEnabled(false);
 
-                    mStepsRecyclerView.setLayoutManager(layoutManager);
-                    mStepsRecyclerView.setHasFixedSize(true);
-                    StepsListAdapter stepsListAdapter = new StepsListAdapter(this, this, (int)mWishEntryId);
-                    mStepsRecyclerView.setAdapter(stepsListAdapter);
-                break;
+                mStepsRecyclerView.setLayoutManager(layoutManager);
+                mStepsRecyclerView.setHasFixedSize(true);
+                mStepsListAdapter = new StepsListAdapter(this, this, (int)mWishEntryId);
+                mStepsRecyclerView.setAdapter(mStepsListAdapter);
+            break;
         }
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -194,7 +195,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         mWishSituation = "";
         mWishFearStatus = mDataManager.GetFearWishStatus(mWishEntryId);
 
-        Toast.makeText(this,"FEARS = " + mWishFearStatus, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"FEARS = " + mWishFearStatus, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -256,6 +257,16 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     mBirthDateButton.setEnabled(false);
                 }
                 break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+                wishDescriptionTextView = (TextView) findViewById(R.id.wishDescriptionTextView);
+                wishDescriptionTextView.setText(description);
+                Cursor tmp = mDataManager.GetStepsByWishId(String.valueOf(mWishEntryId));
+                if (tmp.getCount() < 10) {
+                    Button finishButton = (Button) findViewById(R.id.buttonFinishWish);
+                    finishButton.setEnabled(false);
+                    finishButton.setText("Исполнить желание (" + tmp.getCount() + "/10)");
+                }
+                break;
 
         }
         UpdateUITypes();
@@ -296,7 +307,10 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 wishDescriptionString,
                 wishSituationString);
         if (mWishEntryId == 0) mWishEntryId = res;
+    }
 
+    public void PutWishToNextStatus() {
+        mDataManager.MoveWishToNextStatus(String.valueOf(mWishEntryId),mNewWishStatus);
     }
 
 
@@ -386,6 +400,8 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 needToBeSave = false;
                 if (mWishFearStatus == 4) {
                     mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS;
+                    PutWishToNextStatus();
+
                 }
                 mDataManager.InsertOrUpdateFearsStatus(mWishEntryId, mWishFearStatus);
                 Toast.makeText(this,"FEARS = " + mWishFearStatus, Toast.LENGTH_SHORT).show();
@@ -635,15 +651,25 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
     @Override
     public void onStepClick(String stepId, String itemPositionInList) {
-
+        Intent stepEditIntent = new Intent(this, StepEditActivity.class);
+        stepEditIntent.putExtra("STEP_ID",  stepId);
+        stepEditIntent.putExtra("POSITION_ID",  itemPositionInList);
+        stepEditIntent.putExtra("WISH_ID",  String.valueOf(mWishEntryId));
+        startActivityForResult(stepEditIntent,0);
     }
 
     public void stepAdd_click(View view) {
         Intent stepEditIntent = new Intent(this, StepEditActivity.class);
-        //wishEditIntent.putExtra("STEP_ID",  wishId);
-        //wishEditIntent.putExtra("POSITION_ID",  itemPositionInList);
+        stepEditIntent.putExtra("WISH_ID",  String.valueOf(mWishEntryId));
         startActivityForResult(stepEditIntent,0);
+    }
 
-        return;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0 ) {
+            // from Step Edit
+            int position = resultCode;
+            mStepsListAdapter.updateListValues(position);
+        }
     }
 }

@@ -273,10 +273,22 @@ public class LifeBalanceDBDataManager {
             result = db.insert(LifeBalanceContract.WishesEntry.TABLE_NAME, null, values);
         } else {
             result = db.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{idEntry});
-            //if (result > 0) result = Long.getLong(idEntry);
+            if (result > 0) result = Long.valueOf(idEntry);
         }
         return result;
     }
+
+    public long MoveWishToNextStatus(String idEntry,
+                                          int status)
+    {
+        long result = 0;
+        ContentValues values = new ContentValues();
+        values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, status);
+        result = mDBHelper.getWritableDatabase().update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{idEntry});
+        if (result > 0 ) result = Long.valueOf(idEntry);
+        return result;
+    }
+
 
     public static long InsertOrUpdateWishType(SQLiteDatabase db,
                                           String idEntry,
@@ -349,6 +361,13 @@ public class LifeBalanceDBDataManager {
         }
         return steps;
     }
+    public Cursor GetStepById(long id) {
+        return LifeBalanceDBDataManager.GetStepById(mDBHelper.getReadableDatabase(), id);
+    }
+
+    public long InsertOrUpdateStep(long idEntry, int wishId, String description) {
+        return LifeBalanceDBDataManager.InsertOrUpdateStep(mDBHelper.getWritableDatabase(),idEntry, wishId, description);
+    }
 
     public static long InsertOrUpdateStep(SQLiteDatabase db, long idEntry, int wishId, String description) {
         long result = 0;
@@ -360,9 +379,9 @@ public class LifeBalanceDBDataManager {
             if (result > 0) result = idEntry;
         } else {
             int order = GetClosestOrderNumber(db,9999999, wishId, 1);
-            if (order < 0) order = 1;
+            if (order <= 0) order = 1;
             values.put(LifeBalanceContract.StepsEntry.COLUMN_ORDER, order);
-            result = db.insert(LifeBalanceContract.SettingsEntry.TABLE_NAME, null, values);
+            result = db.insert(LifeBalanceContract.StepsEntry.TABLE_NAME, null, values);
         }
         return result;
     }

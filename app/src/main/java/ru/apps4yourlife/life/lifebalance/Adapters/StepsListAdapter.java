@@ -64,6 +64,7 @@ public class StepsListAdapter  extends RecyclerView.Adapter <StepsListAdapter.St
         mWishId = String.valueOf(wishId);
         LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
         mStepListCursor = mDataManager.GetStepsByWishId(mWishId);
+        Toast.makeText(mContext,"COUNT OF STEPS = " + mStepListCursor.getCount(),Toast.LENGTH_SHORT).show();
     }
 
     @Override

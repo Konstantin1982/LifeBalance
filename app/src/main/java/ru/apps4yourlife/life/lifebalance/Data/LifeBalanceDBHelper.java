@@ -167,7 +167,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
                 "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );
-        LifeBalanceDBDataManager.InsertOrUpdateWish(
+        long id = LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
                 null,
                 "0,2",
@@ -178,6 +178,24 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
                 "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "Пойти в кокосовый магазин"
+        );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "Вырастить кокос"
+        );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "Полить кокосовый сок"
+        );
     }
 
     @Override

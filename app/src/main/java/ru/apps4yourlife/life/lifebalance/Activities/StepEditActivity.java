@@ -29,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,53 +48,79 @@ import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 public class StepEditActivity extends AppCompatActivity {
 
     private LifeBalanceDBDataManager mDataManager;
-    private long mWishEntryId;
-
-    private ArrayList<Integer> mSelectedTypes;
-    private boolean isHelpShown = false;
+    private Cursor mCurrentStep;
+    private String mStepPositionInList;
+    private long mStepId;
+    private String mWishId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_edit);
+
+        int backButtonImage = R.drawable.ic_clear_white_24dp;
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        actionBar.setHomeAsUpIndicator(backButtonImage);
         actionBar.setElevation(0.0f);
 
-        /*
-        String wishIdString = getIntent().getStringExtra("WISH_ID");
-        mWishPositionInList = getIntent().getStringExtra("POSITION_ID");
+        String stepId = getIntent().getStringExtra("STEP_ID");
+        mStepPositionInList = getIntent().getStringExtra("POSITION_ID");
+        mWishId = getIntent().getStringExtra("WISH_ID");
         mDataManager = new LifeBalanceDBDataManager(this);
-
-        // get all data from Database
-        initWish(wishIdString);
-
-        // init layout
-        int layout_type;
-        switch (mWishStatus) {
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
-                layout_type = R.layout.activity_wish_edit_status_new;
-                break;
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
-                layout_type = R.layout.activity_wish_edit_status_situation;
-                break;
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
-                layout_type = R.layout.activity_wish_edit_status_fears;
-                break;
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
-                layout_type = R.layout.activity_wish_status_steps;
-                break;
-            default:
-                layout_type = R.layout.activity_wish_edit_status_new;
+        mStepId = 0;
+        if (stepId != null) {
+            mStepId = Long.valueOf(stepId);
+            if (mStepId > 0) {
+                mCurrentStep = mDataManager.GetStepById(mStepId);
+                EditText mStepDescription = (EditText) findViewById(R.id.stepDescriptionEditText);
+                String stepDescription = mCurrentStep.getString(mCurrentStep.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_DESCRIPTION));
+                mStepDescription.setText(stepDescription);
+            }
         }
-        setContentView(layout_type);
-        initLayout();
-        updateUIWish(mWishEntry);
-        */
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_save_item, menu);
+        return true;
+    }
+
+    public boolean isStepCorrect() {
+        return true;
+    }
+
+    public boolean stepSave_click() {
+        if (isStepCorrect()) {
+            EditText stepDescriptionEditText = (EditText) findViewById(R.id.stepDescriptionEditText);
+            String stepDescription = stepDescriptionEditText.getText().toString();
+            mDataManager.InsertOrUpdateStep(mStepId, Integer.valueOf(mWishId), stepDescription);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void FinishActivity(int result) {
+        setResult(result);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_save:
+                if (stepSave_click()) {
+                    FinishActivity(Integer.valueOf(mStepPositionInList));
+                }
+                return true;
+            case android.R.id.home:
+                FinishActivity(0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
