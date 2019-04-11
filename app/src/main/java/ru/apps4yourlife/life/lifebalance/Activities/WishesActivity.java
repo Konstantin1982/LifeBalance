@@ -15,7 +15,7 @@ import ru.apps4yourlife.life.lifebalance.Adapters.StepsListAdapter;
 import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
 import ru.apps4yourlife.life.lifebalance.R;
 
-public class WishesActivity extends AppCompatActivity implements WishListAdapter.WishListAdapterClickHandler, StepsListAdapter.StepsListAdapterClickHandler {
+public class WishesActivity extends AppCompatActivity implements WishListAdapter.WishListAdapterClickHandler {
 
 
     private WishListAdapter mWishListAdapter;
@@ -78,11 +78,6 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         } else {
             startActivityForResult(wishEditIntent,0);
         }
-
-    }
-
-    @Override
-    public void onStepClick(String stepId, String itemPositionInList) {
 
     }
 }

@@ -182,19 +182,19 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 db,
                 0,
                 (int) id,
-                "Пойти в кокосовый магазин"
+                "0 Пойти в кокосовый магазин"
         );
         LifeBalanceDBDataManager.InsertOrUpdateStep(
                 db,
                 0,
                 (int) id,
-                "Вырастить кокос"
+                " 1 Вырастить кокос"
         );
         LifeBalanceDBDataManager.InsertOrUpdateStep(
                 db,
                 0,
                 (int) id,
-                "Полить кокосовый сок"
+                "2 Полить кокосовый сок"
         );
     }
 

@@ -378,7 +378,7 @@ public class LifeBalanceDBDataManager {
             result = db.update(LifeBalanceContract.StepsEntry.TABLE_NAME, values, LifeBalanceContract.StepsEntry._ID + " = ? ", new String[]{String.valueOf(idEntry)});
             if (result > 0) result = idEntry;
         } else {
-            int order = GetClosestOrderNumber(db,9999999, wishId, 1);
+            int order = GetMaxOrderNumber(db, wishId) + 1;
             if (order <= 0) order = 1;
             values.put(LifeBalanceContract.StepsEntry.COLUMN_ORDER, order);
             result = db.insert(LifeBalanceContract.StepsEntry.TABLE_NAME, null, values);
@@ -386,18 +386,56 @@ public class LifeBalanceDBDataManager {
         return result;
     }
 
-    public static int GetClosestOrderNumber(SQLiteDatabase db,  int number, int wishId, int direction) {
+    public static int GetMaxOrderNumber(SQLiteDatabase db, int wishId) {
         int result = -1;
         String sign, aggr;
-        if (direction == 1) { sign = " > "; aggr = "MIN";}
-        else  { sign = " < "; aggr = "MAX" ; }
-        Cursor value = db.rawQuery("SELECT " + aggr + "(" + LifeBalanceContract.StepsEntry.COLUMN_ORDER +") FROM " + LifeBalanceContract.StepsEntry.TABLE_NAME + " WHERE " +
-                LifeBalanceContract.StepsEntry.COLUMN_ORDER + sign + String.valueOf(number) + " AND " + LifeBalanceContract.StepsEntry.COLUMN_WISH_ID + " = " + wishId, null) ;
+        Cursor value = db.rawQuery("SELECT MAX(" + LifeBalanceContract.StepsEntry.COLUMN_ORDER +") FROM " + LifeBalanceContract.StepsEntry.TABLE_NAME + " WHERE " +
+                LifeBalanceContract.StepsEntry.COLUMN_WISH_ID + " = " + wishId, null) ;
         if (value.getCount() > 0) {
             value.moveToFirst();
             result = value.getInt(0);
         }
         return result;
+    }
+
+    public static int GetMinOrderNumber(SQLiteDatabase db, int wishId) {
+        return 0;
+    }
+
+    public static int GetNextOrderNumber(SQLiteDatabase db, int wishId, int currentOrder) {
+        int result;
+        Cursor value = db.rawQuery(
+                "SELECT MIN(" + LifeBalanceContract.StepsEntry.COLUMN_ORDER +") FROM " + LifeBalanceContract.StepsEntry.TABLE_NAME + " WHERE " +
+                LifeBalanceContract.StepsEntry.COLUMN_WISH_ID + " = ? AND " + LifeBalanceContract.StepsEntry.COLUMN_ORDER + " > ?" , new String[]{String.valueOf(wishId), String.valueOf(currentOrder)}) ;
+        if (value.getCount() > 0) {
+            value.moveToFirst();
+            result = value.getInt(0);
+        } else {
+            result = currentOrder; //
+        }
+        return result;
+    }
+    public static int GetPrevOrderNumber(SQLiteDatabase db, int wishId, int currentOrder) {
+        int result;
+        Cursor value = db.rawQuery(
+                "SELECT MAX(" + LifeBalanceContract.StepsEntry.COLUMN_ORDER +") FROM " + LifeBalanceContract.StepsEntry.TABLE_NAME + " WHERE " +
+                        LifeBalanceContract.StepsEntry.COLUMN_WISH_ID + " = ? AND " + LifeBalanceContract.StepsEntry.COLUMN_ORDER + " < ?" , new String[]{String.valueOf(wishId), String.valueOf(currentOrder)}) ;
+        if (value.getCount() > 0) {
+            value.moveToFirst();
+            result = value.getInt(0);
+        } else {
+            result = currentOrder; //
+        }
+        return result;
+    }
+
+
+
+
+
+    public static int GetClosestOrderNumber(SQLiteDatabase db,  int currentOrder, int wishId, int direction) {
+        if (direction == 1) return GetNextOrderNumber(db,wishId,currentOrder);
+        return GetPrevOrderNumber(db,wishId,currentOrder);
     }
 
     public static boolean ReorderStep(SQLiteDatabase db, long stepId, int direction) {
@@ -408,7 +446,9 @@ public class LifeBalanceDBDataManager {
             int wishId = currentStep.getInt(currentStep.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_WISH_ID));
             int currentOrder = currentStep.getInt(currentStep.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_ORDER));
             int newOrder = GetClosestOrderNumber(db,currentOrder,wishId, direction);
-            if (newOrder >= 0) {
+            if (currentOrder <= 1 && direction == -1) return false;
+            if (newOrder == currentOrder || newOrder <= 0) return false;
+            if (newOrder >= 0 && newOrder != currentOrder) {
                 ContentValues values = new ContentValues();
 
                 values.put(LifeBalanceContract.StepsEntry.COLUMN_ORDER, currentOrder);
@@ -423,6 +463,10 @@ public class LifeBalanceDBDataManager {
         }
 
         return result;
+    }
+
+    public boolean ReorderStep(long stepId, int direction) {
+        return ReorderStep(mDBHelper.getWritableDatabase(), stepId, direction);
     }
 
     public static void PutStepToTop(SQLiteDatabase db, long stepId) {

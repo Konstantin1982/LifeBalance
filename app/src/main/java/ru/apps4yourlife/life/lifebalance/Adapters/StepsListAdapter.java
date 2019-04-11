@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,36 +26,57 @@ public class StepsListAdapter  extends RecyclerView.Adapter <StepsListAdapter.St
 
     public interface StepsListAdapterClickHandler {
         void onStepClick(String stepId, String itemPositionInList);
+        void onArrowClick(String stepId, int direction);
     }
 
     private final StepsListAdapter.StepsListAdapterClickHandler mWishListAdapterClickHandler;
 
     class StepsListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nextStepDescription;
+        private TextView nextStepOrder;
+
+        private ImageButton buttonUp;
+        private ImageButton buttonDn;
 
         StepsListAdapterViewHolder(View view) {
             super(view);
             nextStepDescription = (TextView) view.findViewById(R.id.stepDescriptionEditText);
-
+            nextStepOrder = (TextView) view.findViewById(R.id.step_order);
+            buttonUp = (ImageButton) view.findViewById(R.id.button_up);
+            buttonDn = (ImageButton) view.findViewById(R.id.button_dn);
+            buttonUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onArrowClick(-1);
+                }
+            });
+            buttonDn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onArrowClick(1);
+                }
+            });
             view.setOnClickListener(this);
+        }
+
+        public void onArrowClick(int direction) {
+            int position = getAdapterPosition();
+            mStepListCursor.moveToPosition(position);
+            mWishListAdapterClickHandler.onArrowClick(
+                    mStepListCursor.getString(mStepListCursor.getColumnIndex(LifeBalanceContract.StepsEntry._ID)),
+                    direction
+            );
+
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             mStepListCursor.moveToPosition(position);
-
-            Toast.makeText(mContext, "CLICKED sds", Toast.LENGTH_SHORT).show();
-
-            Log.d("ADAPTER", "CALL ACTIVITY with position = " + position);
             mWishListAdapterClickHandler.onStepClick(
-                    mStepListCursor.getString(mStepListCursor.getColumnIndex(LifeBalanceContract.WishesEntry._ID)),
+                    mStepListCursor.getString(mStepListCursor.getColumnIndex(LifeBalanceContract.StepsEntry._ID)),
                     String.valueOf(position)
             );
-            //mChildrenListAdapterClickHandler.onChildClick(
-            //mListChildrenCursor.getString(mListChildrenCursor.getColumnIndex(WardrobeContract.ChildEntry._ID)),
-            //String.valueOf(position)
-            //);
         }
     }
 
@@ -77,7 +99,9 @@ public class StepsListAdapter  extends RecyclerView.Adapter <StepsListAdapter.St
     public void onBindViewHolder(final StepsListAdapter.StepsListAdapterViewHolder holder, final int position) {
         mStepListCursor.moveToPosition(position);
         String stepDescription = mStepListCursor.getString(mStepListCursor.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_DESCRIPTION));
+        String stepOrder = mStepListCursor.getString(mStepListCursor.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_ORDER));
         holder.nextStepDescription.setText(stepDescription);
+        holder.nextStepOrder.setText(stepOrder);
         return;
     }
 
@@ -88,11 +112,11 @@ public class StepsListAdapter  extends RecyclerView.Adapter <StepsListAdapter.St
 
     public void updateListValues(int position) {
         LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
-        mStepListCursor = mDataManager.GetOpenedWishes();
+        mStepListCursor = mDataManager.GetStepsByWishId(mWishId);
         if (position >= 0) {
             notifyItemChanged(position);
         } else {
-            notifyItemInserted(mStepListCursor.getCount());
+            notifyDataSetChanged();
         }
     }
 

@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -153,6 +154,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 mStepsRecyclerView.setHasFixedSize(true);
                 mStepsListAdapter = new StepsListAdapter(this, this, (int)mWishEntryId);
                 mStepsRecyclerView.setAdapter(mStepsListAdapter);
+                backButtonImage = R.drawable.ic_arrow_back_white_24dp;
             break;
         }
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -595,10 +597,12 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
                 menu_id = R.menu.menu_save_item;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
                 menu_id = 0;
                 break;
             default:
@@ -658,9 +662,18 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         startActivityForResult(stepEditIntent,0);
     }
 
+    @Override
+    public void onArrowClick(String stepId, int direction) {
+        Toast.makeText(this, "ID = " + stepId + "; direction =   " + direction, Toast.LENGTH_SHORT ).show();
+        mDataManager.ReorderStep(Long.valueOf(stepId), direction);
+        mStepsListAdapter.updateListValues(-1);
+    }
+
     public void stepAdd_click(View view) {
         Intent stepEditIntent = new Intent(this, StepEditActivity.class);
         stepEditIntent.putExtra("WISH_ID",  String.valueOf(mWishEntryId));
+        stepEditIntent.putExtra("STEP_ID",  "-1");
+        stepEditIntent.putExtra("POSITION_ID",  "-1");
         startActivityForResult(stepEditIntent,0);
     }
 
