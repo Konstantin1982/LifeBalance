@@ -196,6 +196,60 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 (int) id,
                 "2 Полить кокосовый сок"
         );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "3 Полить кокосовый сок"
+        );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "4 Полить кокосовый сок"
+        );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "5 Полить кокосовый сок"
+        );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "6 Полить кокосовый сок"
+        );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "7 Полить кокосовый сок"
+        );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "8 Полить кокосовый сок"
+        );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "9 Полить кокосовый сок"
+        );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "10 Полить кокосовый сок"
+        );
+        LifeBalanceDBDataManager.InsertOrUpdateStep(
+                db,
+                0,
+                (int) id,
+                "11 Полить кокосовый сок"
+        );
     }
 
     @Override

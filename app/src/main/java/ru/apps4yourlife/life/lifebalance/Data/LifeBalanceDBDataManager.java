@@ -129,12 +129,19 @@ public class LifeBalanceDBDataManager {
         return this.InsertOrUpdateMessage(mDBHelper.getWritableDatabase(), idEntry, from, to, subject, body, isnew, messageDate);
     }
 
-    public Cursor GetOpenedWishes() {
-        Cursor wishes = mDBHelper.getReadableDatabase().query(
+    public Cursor GetWishesList(int mode) {
+        Cursor wishes;
+        String selection = null;
+        String[] args = null;
+        if (mode == 0) {
+            selection = LifeBalanceContract.WishesEntry.COLUMN_STATUS + " < ? ";
+            args = new String[]{String.valueOf(GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE)};
+        }
+        wishes = mDBHelper.getReadableDatabase().query(
                 LifeBalanceContract.WishesEntry.TABLE_NAME,
                 null,
-                LifeBalanceContract.WishesEntry.COLUMN_STATUS + " < ? ",
-                new String[]{String.valueOf(GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE)},
+                selection,
+                args,
                 null,
                 null,
                 LifeBalanceContract.WishesEntry.COLUMN_START + " DESC",
@@ -469,20 +476,4 @@ public class LifeBalanceDBDataManager {
         return ReorderStep(mDBHelper.getWritableDatabase(), stepId, direction);
     }
 
-    public static void PutStepToTop(SQLiteDatabase db, long stepId) {
-        Cursor currentStep = GetStepById(db,stepId);
-        if (currentStep.getCount() > 0) {
-            currentStep.moveToFirst();
-            int wishId = currentStep.getInt(currentStep.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_WISH_ID));
-            int currentOrder = currentStep.getInt(currentStep.getColumnIndex(LifeBalanceContract.StepsEntry.COLUMN_ORDER));
-
-            String sql = "UPDATE " + LifeBalanceContract.StepsEntry.TABLE_NAME + " SET " + LifeBalanceContract.StepsEntry.COLUMN_ORDER + " = " + LifeBalanceContract.StepsEntry.COLUMN_ORDER + " + 1 WHERE " +
-                    LifeBalanceContract.StepsEntry.COLUMN_WISH_ID  + " = " + wishId;
-            db.execSQL(sql);
-
-            ContentValues values = new ContentValues();
-            values.put(LifeBalanceContract.StepsEntry.COLUMN_ORDER, 1);
-            long res2 = db.update(LifeBalanceContract.StepsEntry.TABLE_NAME, values, LifeBalanceContract.StepsEntry._ID + " = ? ", new String[]{String.valueOf(stepId)});
-        }
-    }
 }

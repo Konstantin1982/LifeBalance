@@ -262,16 +262,23 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
                 wishDescriptionTextView = (TextView) findViewById(R.id.wishDescriptionTextView);
                 wishDescriptionTextView.setText(description);
-                Cursor tmp = mDataManager.GetStepsByWishId(String.valueOf(mWishEntryId));
-                if (tmp.getCount() < 10) {
-                    Button finishButton = (Button) findViewById(R.id.buttonFinishWish);
-                    finishButton.setEnabled(false);
-                    finishButton.setText("Исполнить желание (" + tmp.getCount() + "/10)");
-                }
+                updateFinishButton();
                 break;
 
         }
         UpdateUITypes();
+    }
+    public void updateFinishButton() {
+        Cursor tmp = mDataManager.GetStepsByWishId(String.valueOf(mWishEntryId));
+        Button finishButton = (Button) findViewById(R.id.buttonFinishWish);
+        if (tmp.getCount() < 10) {
+            finishButton.setEnabled(false);
+            finishButton.setText("Исполнить желание (" + tmp.getCount() + "/10)");
+        } else {
+            finishButton.setEnabled(true);
+            finishButton.setText("Исполнить желание !!!");
+        }
+
     }
 
     public boolean isWishCorrect() {
@@ -683,6 +690,15 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             // from Step Edit
             int position = resultCode;
             mStepsListAdapter.updateListValues(position);
+            updateFinishButton();
         }
+    }
+
+
+    public void buttonFinishClick(View view) {
+        mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE;
+        mDataManager.MoveWishToNextStatus(String.valueOf(mWishEntryId),mNewWishStatus);
+        Toast.makeText(this,"Ваше желание отправлено во Вселенную на исполнение. Хорошего дня.", Toast.LENGTH_LONG).show();
+        FinishActivity(-1);
     }
 }

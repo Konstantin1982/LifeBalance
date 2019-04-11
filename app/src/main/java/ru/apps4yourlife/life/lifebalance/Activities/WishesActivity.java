@@ -2,6 +2,7 @@ package ru.apps4yourlife.life.lifebalance.Activities;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.Explode;
 import android.view.View;
 import android.view.Window;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.util.concurrent.TimeUnit;
 
 import ru.apps4yourlife.life.lifebalance.Adapters.StepsListAdapter;
 import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
@@ -32,9 +40,9 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         actionBar.setElevation(0.0f);
-
         wishListInit();
     }
+
     public void wishListInit(){
         mListWishes = (RecyclerView) findViewById(R.id.wish_list_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -42,13 +50,22 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
         mListWishes.setLayoutManager(layoutManager);
         mListWishes.setHasFixedSize(true);
-        mWishListAdapter = new WishListAdapter(this, this);
+        mWishListAdapter = new WishListAdapter(this, this, 0);
         mListWishes.setAdapter(mWishListAdapter);
-    }
 
-    public void wishEdit_click(int wishID) {
-    }
+        CheckBox isCompleteShow = (CheckBox) findViewById(R.id.isShowCompleted);
+        isCompleteShow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    mWishListAdapter.changeListMode(1);
+                } else {
+                    mWishListAdapter.changeListMode(0);
+                }
+            }
+        });
 
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -80,4 +97,6 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         }
 
     }
+
+
 }

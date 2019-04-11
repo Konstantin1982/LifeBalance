@@ -27,6 +27,7 @@ import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishListAdapterViewHolder> {
     private Context mContext;
     private Cursor mWishListCursor;
+    private int mode;
 
     public interface WishListAdapterClickHandler {
         void onWishClick(String wishId, String itemPositionInList);
@@ -68,18 +69,15 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
                     mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry._ID)),
                      String.valueOf(position)
             );
-            //mChildrenListAdapterClickHandler.onChildClick(
-                    //mListChildrenCursor.getString(mListChildrenCursor.getColumnIndex(WardrobeContract.ChildEntry._ID)),
-                    //String.valueOf(position)
-            //);
         }
     }
 
-    public WishListAdapter(Context context, WishListAdapterClickHandler clickHandler) {
+    public WishListAdapter(Context context, WishListAdapterClickHandler clickHandler, int listMode) {
         mWishListAdapterClickHandler = clickHandler;
         mContext = context;
         LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
-        mWishListCursor = mDataManager.GetOpenedWishes();
+        mode = listMode;
+        mWishListCursor = mDataManager.GetWishesList(mode);
     }
 
     @Override
@@ -155,14 +153,19 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
 
     public void updateListValues(int position) {
         LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
-        mWishListCursor = mDataManager.GetOpenedWishes();
+        mWishListCursor = mDataManager.GetWishesList(mode);
         Log.e("CURSOR","Count of new cursor = " + mWishListCursor.getCount() + "; Position = " + position);
         if (position >= 0) {
             notifyItemChanged(position);
         } else {
-            notifyItemInserted(mWishListCursor.getCount());
+            //notifyItemInserted(mWishListCursor.getCount());
+            notifyDataSetChanged();
         }
     }
 
+    public void changeListMode(int newMode) {
+        mode = newMode;
+        updateListValues(-1);
+    }
 }
 
