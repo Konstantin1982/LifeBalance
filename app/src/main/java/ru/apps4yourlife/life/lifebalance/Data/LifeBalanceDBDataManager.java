@@ -17,10 +17,6 @@ public class LifeBalanceDBDataManager {
     private Context mContext;
 
 
-
-
-
-
     public LifeBalanceDBDataManager(Context context) {
         mDBHelper = new LifeBalanceDBHelper(context);
         mContext = context;
@@ -114,10 +110,10 @@ public class LifeBalanceDBDataManager {
     public static long InsertOrUpdateSettings(SQLiteDatabase db, String name, String value) {
         long result = 0;
         ContentValues values = new ContentValues();
-        values.put(LifeBalanceContract.SettingsEntry.COLUMN_NAME, name);
         values.put(LifeBalanceContract.SettingsEntry.COLUMN_VALUE, value);
         String currentValue = LifeBalanceDBDataManager.GetSettingValueByName(db, name);
         if (currentValue.isEmpty()) {
+            values.put(LifeBalanceContract.SettingsEntry.COLUMN_NAME, name);
             result = db.insert(LifeBalanceContract.SettingsEntry.TABLE_NAME, null, values);
         } else {
             result = db.update(LifeBalanceContract.SettingsEntry.TABLE_NAME, values, LifeBalanceContract.SettingsEntry.COLUMN_NAME + " LIKE '?' ", new String[]{name});
@@ -127,6 +123,32 @@ public class LifeBalanceDBDataManager {
 
     public long InsertOrUpdateMessage(String idEntry, String from, String to, String subject, String body, int isnew, long messageDate) {
         return this.InsertOrUpdateMessage(mDBHelper.getWritableDatabase(), idEntry, from, to, subject, body, isnew, messageDate);
+    }
+
+    public static long InsertQueue(SQLiteDatabase db, String idEntry, String type, String status) {
+        long result = 0;
+        ContentValues values = new ContentValues();
+        values.put(LifeBalanceContract.ServerQueueEntry.COLUMN_ENTITY_ID, idEntry);
+        values.put(LifeBalanceContract.ServerQueueEntry.COLUMN_TYPE, type);
+        values.put(LifeBalanceContract.ServerQueueEntry.COLUMN_STATUS, status);
+        result = db.insert(LifeBalanceContract.ServerQueueEntry.TABLE_NAME, null, values);
+        return result;
+    }
+
+    public long InsertQueue(String idEntry, String type, String status) {
+        return InsertQueue(mDBHelper.getWritableDatabase(), idEntry, type, status);
+    }
+
+    public static long SetQueueRecordStatus(SQLiteDatabase db, String queueId, String status) {
+        long result = 0;
+        ContentValues values = new ContentValues();
+        values.put(LifeBalanceContract.ServerQueueEntry.COLUMN_STATUS, status);
+        result = db.update(LifeBalanceContract.ServerQueueEntry.TABLE_NAME, values, LifeBalanceContract.ServerQueueEntry._ID + " = ? ", new String[]{queueId});
+        return result;
+    }
+
+    public long SetQueueRecordStatus(String queueId, String status) {
+        return SetQueueRecordStatus(mDBHelper.getWritableDatabase(), queueId, status);
     }
 
     public Cursor GetWishesList(int mode) {
@@ -148,6 +170,23 @@ public class LifeBalanceDBDataManager {
                 null
         );
         return wishes;
+    }
+
+    public Cursor GetWishesToServer() {
+        return GetWishesToServer(mDBHelper.getReadableDatabase());
+    }
+
+    public static Cursor GetWishesToServer(SQLiteDatabase db) {
+        String sql = "select * from  " + LifeBalanceContract.WishesEntry.TABLE_NAME+ " WHERE " + LifeBalanceContract.WishesEntry._ID +
+                " IN (Select " + LifeBalanceContract.ServerQueueEntry.COLUMN_ENTITY_ID + " FROM " + LifeBalanceContract.ServerQueueEntry.TABLE_NAME +
+                " WHERE " + LifeBalanceContract.ServerQueueEntry.COLUMN_TYPE + " = 0 AND " +
+                LifeBalanceContract.ServerQueueEntry.COLUMN_STATUS + " = 0)";
+        Cursor wishes = db.rawQuery(
+                sql,
+                null);
+        wishes.moveToFirst();
+        return wishes;
+
     }
 
     public int GetFearWishStatus(long wishId) {

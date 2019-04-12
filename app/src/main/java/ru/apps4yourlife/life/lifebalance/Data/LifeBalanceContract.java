@@ -63,10 +63,18 @@ public class LifeBalanceContract {
         public static final String COLUMN_PLAN_END = "planend"; // желаемый конец желания
         public static final String COLUMN_FACT_END = "factend"; // реальный конец  желания
         public static final String COLUMN_STATUS = "status"; // создано, отправлено на проверку, проверено, нужно доработать, идет работа со страхами, идет реализация, готово"
-        public static final String COLUMN_STATUS_HINT = "statushint"; // подсказка, что дальше или что не так
         public static final String COLUMN_DESCRIPTION = "description"; // собственно, описание
         public static final String COLUMN_SITUATION = "situation"; // ситуация реализации
     }
+
+    // очередь отправки на сервер
+    public static final class ServerQueueEntry implements BaseColumns {
+        public static final String TABLE_NAME = "serverqueue";
+        public static final String COLUMN_ENTITY_ID = "entityid"; // айдишник записи
+        public static final String COLUMN_TYPE = "type"; // тип записи - желание, письмо ...
+        public static final String COLUMN_STATUS = "status"; // 0 - ожидает отправки, 1 - отправлено
+    }
+
 
     public static final class FearsEntry implements BaseColumns {
         public static final String TABLE_NAME = "fears";

@@ -1,3 +1,4 @@
+
 package ru.apps4yourlife.life.lifebalance.Activities;
 
 import android.app.ActivityOptions;
@@ -22,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 import ru.apps4yourlife.life.lifebalance.Adapters.StepsListAdapter;
 import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
 import ru.apps4yourlife.life.lifebalance.R;
+import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
+import ru.apps4yourlife.life.lifebalance.Utilities.SyncTask;
 
 public class WishesActivity extends AppCompatActivity implements WishListAdapter.WishListAdapterClickHandler {
 
@@ -41,6 +44,9 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         actionBar.setElevation(0.0f);
         wishListInit();
+
+        SyncTask task = new SyncTask(this);
+        task.execute();
     }
 
     public void wishListInit(){

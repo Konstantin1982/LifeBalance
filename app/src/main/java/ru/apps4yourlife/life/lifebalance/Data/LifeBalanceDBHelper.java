@@ -3,6 +3,7 @@ package ru.apps4yourlife.life.lifebalance.Data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 import java.util.UUID;
@@ -91,6 +92,16 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                         LifeBalanceContract.StepsEntry.COLUMN_ORDER + " INTEGER " +
                         ")";
 
+
+        final String SQL_CREATE_QUEUE_TABLE =
+        "CREATE TABLE " +
+                        LifeBalanceContract.ServerQueueEntry.TABLE_NAME + "(" +
+                        LifeBalanceContract.ServerQueueEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        LifeBalanceContract.ServerQueueEntry.COLUMN_ENTITY_ID + " INTEGER, " +
+                        LifeBalanceContract.ServerQueueEntry.COLUMN_TYPE + " INTEGER, " +
+                        LifeBalanceContract.ServerQueueEntry.COLUMN_STATUS + " INTEGER " +
+                        ")";
+
         sqLiteDatabase.execSQL(SQL_CREATE_EVENTS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_MESSAGE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_WISHES_TABLE);
@@ -98,6 +109,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_FEARS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_SETTINGS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_STEPS_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_QUEUE_TABLE);
         Log.d("DB", "TABLES WERE CREATED");
     }
 
@@ -127,7 +139,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
     }
 
     public void InsertInitialSettings(SQLiteDatabase db) {
-        String name = "USERID";
+        String name = "USER_ID";
         String uuid = UUID.randomUUID().toString();
         LifeBalanceDBDataManager.InsertOrUpdateSettings(db, name, uuid);
     }
@@ -249,6 +261,13 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 0,
                 (int) id,
                 "11 Полить кокосовый сок"
+        );
+
+        LifeBalanceDBDataManager.InsertQueue(
+                db,
+                String.valueOf(id),
+                "0",
+                "0"
         );
     }
 

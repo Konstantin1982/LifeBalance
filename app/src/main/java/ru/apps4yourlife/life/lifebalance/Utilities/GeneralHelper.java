@@ -3,6 +3,8 @@ package ru.apps4yourlife.life.lifebalance.Utilities;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.DataOutputStream;
@@ -24,6 +28,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
+import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBHelper;
 import ru.apps4yourlife.life.lifebalance.R;
@@ -147,7 +152,10 @@ public class GeneralHelper {
 
 
     public static void PushWishToServer(Context context, long wishId) {
+        LifeBalanceDBHelper dbHelper = new LifeBalanceDBHelper(context);
+        LifeBalanceDBDataManager.InsertQueue(dbHelper.getWritableDatabase(), String.valueOf(wishId),"0", "0");
         Toast.makeText(context, "Отправлено на рассмотрение", Toast.LENGTH_SHORT).show();
+
     }
 
     public static void StartSubscriptionProcess(Context context) {
@@ -243,93 +251,7 @@ public class GeneralHelper {
         return resourceId;
     }
 
-    public class SyncTask extends AsyncTask<Void,Void,Void> {
-
-        private static final String SYNC_TASK_ACTIVITY = "SyncTaskActivity";
-        private static final String URL_ADDRESS = "http://apps4yourlife.ru/lifebalance/request.php";
-
-        private int res = 0;
-        private LifeBalanceDBHelper dbHelper;
-        private Context mContext;
-        private int currentActivity;
-
-        public SyncTask(Context context) {
-            mContext = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dbHelper = new LifeBalanceDBHelper(mContext);
-            currentActivity = mContext.hashCode();
-            LifeBalanceDBDataManager.InsertOrUpdateSettings(dbHelper.getWritableDatabase(), SYNC_TASK_ACTIVITY, String.valueOf(currentActivity));
-        }
-
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                Log.d("TASK"," Started");
-                boolean isActive = true;
-                while (isActive) {
-                    // 1 - RECEIVE DATA FROM SERVER // once in minute
-                    // 2 - GET LIST for SEND
-                    // 3 - SEND
-                    TimeUnit.SECONDS.sleep(60);
-                    if (!LifeBalanceDBDataManager.GetSettingValueByName(dbHelper.getReadableDatabase(), SYNC_TASK_ACTIVITY).equalsIgnoreCase(String.valueOf(currentActivity))) {
-                        isActive = false;
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... voids){
-            super.onProgressUpdate(voids);
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-
-
-        public boolean sendDataToServer() {
-            try {
-                URL url = new URL(URL_ADDRESS);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                conn.setRequestProperty("Accept","application/json");
-                conn.setDoOutput(true);
-                conn.setDoInput(true);
-
-                JSONObject jsonParam = new JSONObject();
-                jsonParam.put("timestamp", 1488873360);
-                jsonParam.put("latitude", 0D);
-                jsonParam.put("longitude", 0D);
-
-                Log.i("JSON", jsonParam.toString());
-                DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-                os.writeBytes(jsonParam.toString());
-
-                os.flush();
-                os.close();
-
-                Log.i("STATUS", String.valueOf(conn.getResponseCode()));
-                Log.i("MSG" , conn.getResponseMessage());
-
-                conn.disconnect();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-    }
-
-
 }
+
+
+
