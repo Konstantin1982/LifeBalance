@@ -116,7 +116,7 @@ public class LifeBalanceDBDataManager {
             values.put(LifeBalanceContract.SettingsEntry.COLUMN_NAME, name);
             result = db.insert(LifeBalanceContract.SettingsEntry.TABLE_NAME, null, values);
         } else {
-            result = db.update(LifeBalanceContract.SettingsEntry.TABLE_NAME, values, LifeBalanceContract.SettingsEntry.COLUMN_NAME + " LIKE '?' ", new String[]{name});
+            result = db.update(LifeBalanceContract.SettingsEntry.TABLE_NAME, values, LifeBalanceContract.SettingsEntry.COLUMN_NAME + " LIKE ? " , new String[]{name});
         }
         return result;
     }

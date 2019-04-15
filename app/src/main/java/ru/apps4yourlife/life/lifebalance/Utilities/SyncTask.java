@@ -11,6 +11,8 @@ import org.json.JSONObject;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
@@ -22,8 +24,8 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
     private static final String SYNC_TASK_ACTIVITY = "SYNC_TASK_ACTIVITY";
     private static final String USER_ID = "USER_ID";
     private static final String KEY = "KEY";
-    private static final String URL_ADDRESS = "http://localhost/request.php";
-    //private static final String URL_ADDRESS = "http://apps4yourlife.ru/lifebalance/request.php";
+    //private static final String URL_ADDRESS = "http://localhost/request.php";
+    private static final String URL_ADDRESS = "http://apps4yourlife.ru/lifebalance/request.php";
 
     private int res = 0;
     private LifeBalanceDBHelper dbHelper;
@@ -46,7 +48,7 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            Log.d("TASK"," Started");
+            Log.e("TASK"," Started");
             boolean isActive = true;
             while (isActive) {
                 // 1 - RECEIVE DATA FROM SERVER // once in minute
@@ -100,6 +102,7 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
                     wish.put("STATUS", wishesToSend.getString(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS)));
                     wish.put("DESCRIPTION", wishesToSend.getString(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION)));
                     wish.put("SITUATION", wishesToSend.getString(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_SITUATION)));
+                    wish.put("TYPE", wishesToSend.getString(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_TYPE)));
                     wishesArray.put(wish);
                 }
                 data.put("wishes", wishesArray);
@@ -114,26 +117,30 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
         try {
             URL url = new URL(URL_ADDRESS);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             conn.setRequestProperty("Accept","application/json");
             conn.setDoOutput(true);
             conn.setDoInput(true);
 
-            Log.i("JSON. ORIGINAL DATA", data.toString());
+            byte[] bData = data.toString().getBytes(StandardCharsets.UTF_8);
+            //Log.e("JSON. ORIGINAL DATA", data.toString());
             DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-            os.writeBytes(data.toString());
-
+            //os.writeBytes(URLEncoder.encode(data.toString(), "UTF-8"));
+            os.write(bData);
             os.flush();
             os.close();
 
-            Log.i("JSON. RESPONSE", String.valueOf(conn.getResponseCode()));
-            Log.i("JSON. MESSAGE" , conn.getResponseMessage());
+            Log.e("JSON. RESPONSE", String.valueOf(conn.getResponseCode()));
+            Log.e("JSON. MESSAGE" , conn.getResponseMessage());
+            Log.e("JSON. MESSAGE_FULL" , conn.getContent().toString());
+
 
             conn.disconnect();
         } catch (Exception e) {
-            Log.i("JSON. ERROR", String.valueOf(e.getStackTrace().toString()));
+            e.printStackTrace();
+            Log.e("JSON. ERROR", String.valueOf(e.getStackTrace().toString()));
 
             e.printStackTrace();
         }
