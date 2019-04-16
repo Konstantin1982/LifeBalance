@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -186,7 +187,21 @@ public class LifeBalanceDBDataManager {
                 null);
         wishes.moveToFirst();
         return wishes;
+    }
 
+    public static void CommitWishesFromServer(SQLiteDatabase writableDb, String listId) {
+
+
+        long result = 0;
+        ContentValues values = new ContentValues();
+        values.put(LifeBalanceContract.ServerQueueEntry.COLUMN_STATUS, 1);
+        String whereClause = LifeBalanceContract.ServerQueueEntry.COLUMN_TYPE + " = 0 AND " + LifeBalanceContract.ServerQueueEntry.COLUMN_ENTITY_ID + " IN (" + listId + ")";
+        result = writableDb.update(LifeBalanceContract.ServerQueueEntry.TABLE_NAME, values, whereClause, null);
+        return;
+    }
+
+    public void CommitWishesFromServer(String listId) {
+        CommitWishesFromServer(mDBHelper.getWritableDatabase(), listId);
     }
 
     public int GetFearWishStatus(long wishId) {

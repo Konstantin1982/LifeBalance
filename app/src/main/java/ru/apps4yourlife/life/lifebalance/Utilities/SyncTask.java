@@ -8,7 +8,12 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -89,6 +94,7 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
             // wishes
             Cursor wishesToSend = LifeBalanceDBDataManager.GetWishesToServer(dbHelper.getReadableDatabase());
             int count = wishesToSend.getCount();
+            Log.e("JSON_PREPARE", " Count of Wishes to Server: " + String.valueOf(count));
             if (count > 0) {
                 JSONArray wishesArray = new JSONArray();
                 wishesToSend.moveToFirst();
@@ -113,6 +119,10 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
         return data;
     }
 
+    public void CommitWishesAnswer(String idList) {
+
+    }
+
     public boolean sendDataToServer(JSONObject data) {
         try {
             URL url = new URL(URL_ADDRESS);
@@ -125,23 +135,31 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
             conn.setDoInput(true);
 
             byte[] bData = data.toString().getBytes(StandardCharsets.UTF_8);
-            //Log.e("JSON. ORIGINAL DATA", data.toString());
             DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            //os.writeBytes(URLEncoder.encode(data.toString(), "UTF-8"));
             os.write(bData);
             os.flush();
             os.close();
+            InputStream inputStream = new BufferedInputStream(conn.getInputStream());
+            String responseData = convertStreamToString(inputStream);
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                JSONObject responseJSON = new JSONObject(responseData);
+                try {
+                    String updatedWishes = responseJSON.getString("wishes");
+                    Log.e("JSON.COMMIT", updatedWishes);
+                    if (!updatedWishes.isEmpty()) {
+                        LifeBalanceDBDataManager.CommitWishesFromServer (dbHelper.getWritableDatabase(),updatedWishes);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 
-            Log.e("JSON. RESPONSE", String.valueOf(conn.getResponseCode()));
-            Log.e("JSON. MESSAGE" , conn.getResponseMessage());
-            Log.e("JSON. MESSAGE_FULL" , conn.getContent().toString());
-
-
+            }
+            Log.e("JSON. RESPONSE_CODE", String.valueOf(conn.getResponseCode()));
+            Log.e("JSON. RESPONSE " , responseData);
             conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("JSON. ERROR", String.valueOf(e.getStackTrace().toString()));
-
             e.printStackTrace();
         }
         return false;
@@ -152,6 +170,28 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
         String key = "OK";
         return key;
 
+    }
+
+    private String convertStreamToString(InputStream is) {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append((line + "\n"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
     }
 }
 
