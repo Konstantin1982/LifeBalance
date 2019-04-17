@@ -102,6 +102,25 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                         LifeBalanceContract.ServerQueueEntry.COLUMN_STATUS + " INTEGER " +
                         ")";
 
+        final String SQL_CREATE_COMMENT_TABLE =
+        "CREATE TABLE " +
+                        LifeBalanceContract.ServerCommentEntry.TABLE_NAME + "(" +
+                        LifeBalanceContract.ServerCommentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        LifeBalanceContract.ServerCommentEntry.COLUMN_WISH_ID + " INTEGER, " +
+                        LifeBalanceContract.ServerCommentEntry.COLUMN_COMMENT + " VARCHAR(2048), " +
+                        LifeBalanceContract.ServerCommentEntry.COLUMN_COMMENT_STATUS + " VARCHAR(2048)" +
+                        ")";
+/*
+    public static final class ServerCommentEntry implements BaseColumns {
+        public static final String TABLE_NAME = "serverhints";
+        public static final String COLUMN_WISH_ID = "wishid";
+        public static final String COLUMN_COMMENT = "comment";
+        public static final String COLUMN_COMMENT_STATUS = "comment2";
+    }
+
+ */
+
+
         sqLiteDatabase.execSQL(SQL_CREATE_EVENTS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_MESSAGE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_WISHES_TABLE);
@@ -110,6 +129,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_SETTINGS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_STEPS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_QUEUE_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_COMMENT_TABLE);
         Log.d("DB", "TABLES WERE CREATED");
     }
 
@@ -175,7 +195,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 0,
                 0,
                 0,
-                GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED,
+                GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW,
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
                 "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );
@@ -186,7 +206,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 0,
                 0,
                 0,
-                GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS,
+                GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW,
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
                 "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );

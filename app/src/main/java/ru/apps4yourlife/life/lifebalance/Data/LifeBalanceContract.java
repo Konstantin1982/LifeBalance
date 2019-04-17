@@ -91,5 +91,12 @@ public class LifeBalanceContract {
         public static final String COLUMN_DESCRIPTION = "description"; // собственно, описание
     }
 
+    // комментарии с сервера
+    public static final class ServerCommentEntry implements BaseColumns {
+        public static final String TABLE_NAME = "serverhints";
+        public static final String COLUMN_WISH_ID = "wishid";
+        public static final String COLUMN_COMMENT = "comment";
+        public static final String COLUMN_COMMENT_STATUS = "comment2";
+    }
 
 }

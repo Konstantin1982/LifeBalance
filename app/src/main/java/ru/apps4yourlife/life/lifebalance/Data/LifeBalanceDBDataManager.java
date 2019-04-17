@@ -3,6 +3,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
@@ -189,6 +190,44 @@ public class LifeBalanceDBDataManager {
         return wishes;
     }
 
+    public static long GetCommentId(SQLiteDatabase readableDb, String wishId) {
+        long result = -1;
+        Cursor comments = readableDb.query(
+                LifeBalanceContract.ServerCommentEntry.TABLE_NAME,
+                null,
+                LifeBalanceContract.ServerCommentEntry.COLUMN_WISH_ID + " = ?",
+                new String[]{wishId},
+                null,
+                null,
+                null
+        );
+        if (comments.getCount() > 0) {
+            comments.moveToFirst();
+            result = comments.getLong( comments.getColumnIndex(LifeBalanceContract.ServerCommentEntry._ID));
+        }
+        return result;
+
+    }
+
+    public static void InsertOrUpdateServerComment(SQLiteDatabase writableDb, String wishId, String comment, String commentStatus) {
+        long result = 0;
+        ContentValues values = new ContentValues();
+        values.put(LifeBalanceContract.ServerCommentEntry.COLUMN_WISH_ID, wishId);
+        if (!comment.isEmpty()) {
+            values.put(LifeBalanceContract.ServerCommentEntry.COLUMN_COMMENT, comment);
+        }
+        if (!commentStatus.isEmpty()) {
+            values.put(LifeBalanceContract.ServerCommentEntry.COLUMN_COMMENT_STATUS, commentStatus);
+        }
+        long currentCommentId = LifeBalanceDBDataManager.GetCommentId(writableDb, wishId);
+        if (currentCommentId > 0) {
+            result = writableDb.update(LifeBalanceContract.ServerCommentEntry.TABLE_NAME, values, LifeBalanceContract.ServerCommentEntry._ID + " = ? " , new String[]{String.valueOf(currentCommentId)});
+        } else {
+            result = writableDb.insert(LifeBalanceContract.ServerCommentEntry.TABLE_NAME, null, values);
+        }
+        return;
+    }
+
     public static void CommitWishesFromServer(SQLiteDatabase writableDb, String listId) {
 
 
@@ -198,6 +237,21 @@ public class LifeBalanceDBDataManager {
         String whereClause = LifeBalanceContract.ServerQueueEntry.COLUMN_TYPE + " = 0 AND " + LifeBalanceContract.ServerQueueEntry.COLUMN_ENTITY_ID + " IN (" + listId + ")";
         result = writableDb.update(LifeBalanceContract.ServerQueueEntry.TABLE_NAME, values, whereClause, null);
         return;
+    }
+
+    public static void UpdateWishFromServer(SQLiteDatabase writableDb, String wishId, String newStatus, String comment){
+        ContentValues values = new ContentValues();
+        values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, newStatus);
+        writableDb.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{wishId});
+        if (!comment.isEmpty()) {
+            String commentWish = "", commentStatus = "";
+            if (Integer.valueOf(newStatus) == GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED) {
+                commentWish = comment;
+            } else {
+                commentStatus = comment;
+            }
+            InsertOrUpdateServerComment(writableDb, wishId, commentWish, commentStatus);
+        }
     }
 
     public void CommitWishesFromServer(String listId) {
@@ -265,9 +319,26 @@ public class LifeBalanceDBDataManager {
     }
 
     public String GetReviewForWish(long wishId, int mode) {
-        String result = "<B>Внимание к деталям</B> <BR> <UL><LI>Обрати внимание на ГГГ</LI></UL>";
-        // mode == 0 - review
-        // mode == 1 - sit review
+
+        Cursor commentCursor = mDBHelper.getReadableDatabase().query(
+                LifeBalanceContract.ServerCommentEntry.TABLE_NAME,
+                null,
+                LifeBalanceContract.ServerCommentEntry.COLUMN_WISH_ID + " = ? ",
+                new String[]{String.valueOf(wishId)},
+                null,
+                null,
+                null,
+                null
+        );
+        if (commentCursor.getCount() > 0) {
+            commentCursor.moveToPosition(0);
+        }
+        String result = "";
+        if (mode == 0) {
+            result = commentCursor.getString(commentCursor.getColumnIndex(LifeBalanceContract.ServerCommentEntry.COLUMN_COMMENT));
+        } else {
+            result = commentCursor.getString(commentCursor.getColumnIndex(LifeBalanceContract.ServerCommentEntry.COLUMN_COMMENT_STATUS));
+        }
         return result;
     }
 
