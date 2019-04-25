@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/main_menu_t1"
+        android:icon="@drawable/ic_magic_wand"
+        android:title="Блаблабла"></item>
+    <item
+        android:id="@+id/main_menu_t2"
+        android:icon="@drawable/ic_magic_wand"
+        android:title="Блаблабла"></item>
+    <item
+        android:id="@+id/main_menu_t3"
+        android:icon="@drawable/ic_magic_wand"
+        android:title="Блаблабла"></item>
+    <item
+        android:id="@+id/main_menu_t4"
+        android:icon="@drawable/ic_magic_wand"
+        android:title="Блаблабла"></item>
+
+</menu>
+
