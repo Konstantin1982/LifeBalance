@@ -6,6 +6,8 @@
     <string name="text_recommend_subscribe">Взгляд со стороны на ваши мечты, гармонизация их со Вселенной.</string>
     <string name="myself">Справлюсь сам!</string>
     <string name="OK">Ок!</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 
 </resources>
