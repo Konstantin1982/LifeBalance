@@ -3,6 +3,7 @@ package ru.apps4yourlife.life.lifebalance.Activities;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,8 +21,10 @@ import ru.apps4yourlife.life.lifebalance.Adapters.MessagesListAdapter;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        MessagesListAdapter.MessagesListAdapterClickHandler {
 
     // 1 - формулирование желания
     // 2 - работает над страхами
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         layoutManager.setMeasurementCacheEnabled(false);
         mListMessages.setLayoutManager(layoutManager);
         mListMessages.setHasFixedSize(true);
-        mMessagesListAdapter = new MessagesListAdapter(this );
+        mMessagesListAdapter = new MessagesListAdapter(this, this, 0 );
         mListMessages.setAdapter(mMessagesListAdapter);
 
     }
@@ -117,8 +120,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(wishList);
     }
 
+    public void messagesList_click(View view) {
+        onMessageClick("", "");
+    }
+
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_mentor) {
+            Toast.makeText(this,"Mentor buying", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_delete_wishes) {
+            Toast.makeText(this,"Delete WISHES", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_campaigns) {
+            Toast.makeText(this,"CAMAIGNS", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_help) {
+            Toast.makeText(this,"Main HELP", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_help2) {
+            Toast.makeText(this,"GENERAL HELP", Toast.LENGTH_SHORT).show();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onMessageClick(String itemId, String itemPositionInList) {
+        Intent messagesIntent = new Intent(this, MessagesActivity.class);
+        startActivity(messagesIntent);
     }
 }
+
+
+//  TODO 1 : IMPLEMENT MESSAGES!!!
+//  TODO 2 : IMPLEMENT HELP + SYNC
+//  TODO 3 : DELETE WISHES
+//  TODO 4 : DESIGN

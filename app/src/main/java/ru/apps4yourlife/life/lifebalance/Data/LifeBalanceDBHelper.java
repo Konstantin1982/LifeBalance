@@ -43,7 +43,8 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                         LifeBalanceContract.MessagesEntry.COLUMN_TO + " VARCHAR(255), " +
                         LifeBalanceContract.MessagesEntry.COLUMN_SUBJECT + " VARCHAR(255), " +
                         LifeBalanceContract.MessagesEntry.COLUMN_BODY + " BLOB, " +
-                        LifeBalanceContract.MessagesEntry.COLUMN_IS_NEW + " INTEGER DEFAULT 1 " +
+                        LifeBalanceContract.MessagesEntry.COLUMN_IS_NEW + " INTEGER DEFAULT 1, " +
+                        LifeBalanceContract.MessagesEntry.COLUMN_IS_SENT + " INTEGER DEFAULT 0 " +
                         ")";
 
         final String SQL_CREATE_WISHES_TABLE =

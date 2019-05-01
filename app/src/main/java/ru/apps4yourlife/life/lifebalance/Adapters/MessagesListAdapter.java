@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
@@ -20,7 +21,12 @@ import ru.apps4yourlife.life.lifebalance.R;
 public class MessagesListAdapter extends RecyclerView.Adapter <MessagesListAdapter.MessagesListAdapterViewHolder> {
     private Context mContext;
     private Cursor mListMessagesCursor;
+    private int mMode;
+    MessagesListAdapterClickHandler mClickHandler;
 
+    public interface MessagesListAdapterClickHandler {
+        void onMessageClick(String itemId, String itemPositionInList);
+    }
 
     class MessagesListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView messageFrom;
@@ -34,31 +40,42 @@ public class MessagesListAdapter extends RecyclerView.Adapter <MessagesListAdapt
             messageDate = (TextView) view.findViewById(R.id.messageDate);
             messageSubject = (TextView) view.findViewById(R.id.messageSubject);
             messageBody = (TextView) view.findViewById(R.id.messageBody);
+
+            view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             mListMessagesCursor.moveToPosition(position);
-            Log.d("ADAPTER", "CALL ACTIVITY with position = " + position);
-            //mChildrenListAdapterClickHandler.onChildClick(
-                    //mListChildrenCursor.getString(mListChildrenCursor.getColumnIndex(WardrobeContract.ChildEntry._ID)),
-                    //String.valueOf(position)
-            //);
+            mClickHandler.onMessageClick(
+                    mListMessagesCursor.getString(mListMessagesCursor.getColumnIndex(LifeBalanceContract.MessagesEntry._ID)),
+                    String.valueOf(position)
+            );
         }
     }
 
 
-    public MessagesListAdapter(Context context) {
+    public MessagesListAdapter(Context context, MessagesListAdapterClickHandler clickHandler, int mode) {
+        mClickHandler = clickHandler;
+        mMode = mode;
         mContext = context;
         LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
-        mListMessagesCursor = mDataManager.GetMessages(5);
+        if (mMode == 0)
+            mListMessagesCursor = mDataManager.GetMessages(5);
+        else
+            mListMessagesCursor = mDataManager.GetMessages(999);
     }
 
     @Override
     public MessagesListAdapter.MessagesListAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.message_item_in_list, parent, false);
-        return new MessagesListAdapter.MessagesListAdapterViewHolder(view);
+        if (mMode == 0) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.message_item_in_list, parent, false);
+            return new MessagesListAdapter.MessagesListAdapterViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.message_item_in_list, parent, false);
+            return new MessagesListAdapter.MessagesListAdapterViewHolder(view);
+        }
     }
 
     @Override

@@ -31,6 +31,7 @@ public class LifeBalanceContract {
         public static final String COLUMN_BODY = "body";
         public static final String COLUMN_IS_NEW = "isnew";
         public static final String COLUMN_SENT_DATE = "date";
+        public static final String COLUMN_IS_SENT = "issent";
     }
 
     // желания
