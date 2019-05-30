@@ -14,16 +14,16 @@
         <activity
             android:name=".Activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activities.WishesActivity"
             android:label="@string/title_activity_wishes"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Activities.WishEditActivity" />
         <activity android:name=".Activities.StepEditActivity" />
         <activity android:name=".Activities.MessagesActivity"></activity>

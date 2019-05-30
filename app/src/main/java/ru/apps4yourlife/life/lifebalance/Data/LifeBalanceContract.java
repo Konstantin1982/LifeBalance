@@ -66,6 +66,7 @@ public class LifeBalanceContract {
         public static final String COLUMN_STATUS = "status"; // создано, отправлено на проверку, проверено, нужно доработать, идет работа со страхами, идет реализация, готово"
         public static final String COLUMN_DESCRIPTION = "description"; // собственно, описание
         public static final String COLUMN_SITUATION = "situation"; // ситуация реализации
+        public static final String COLUMN_UPDATEDATE = "tmupdate"; // ситуация реализации
     }
 
     // очередь отправки на сервер

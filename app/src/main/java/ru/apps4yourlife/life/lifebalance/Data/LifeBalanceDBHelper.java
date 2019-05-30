@@ -57,7 +57,8 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                         LifeBalanceContract.WishesEntry.COLUMN_FACT_END + " INTEGER, " +
                         LifeBalanceContract.WishesEntry.COLUMN_STATUS + " INTEGER, " +
                         LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION + " VARCHAR(1020), " +
-                        LifeBalanceContract.WishesEntry.COLUMN_SITUATION + " VARCHAR(1020) " +
+                        LifeBalanceContract.WishesEntry.COLUMN_SITUATION + " VARCHAR(1020), " +
+                        LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE + " LONG" +
                         ")";
 
         final String SQL_CREATE_WISHES_TYPES_TABLE =
@@ -170,17 +171,6 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
                 null,
-                "0,2,5",
-                0,
-                0,
-                0,
-                GeneralHelper.WishStatusesClass.WISH_STATUS_NEW,
-                "Я хочу морковный сок из 20-ти морковных грядок. Сок холодный и свежий.",
-                "Морозное утро, выхожу из-за стола, пью ледяной сок."
-                );
-        LifeBalanceDBDataManager.InsertOrUpdateWish(
-                db,
-                null,
                 "1,2",
                 0,
                 0,
@@ -203,6 +193,18 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         long id = LifeBalanceDBDataManager.InsertOrUpdateWish(
                 db,
                 null,
+                "0,2,5",
+                0,
+                0,
+                0,
+                GeneralHelper.WishStatusesClass.WISH_STATUS_NEW,
+                "НОВОЕ Я хочу морковный сок из 20-ти морковных грядок. Сок холодный и свежий.",
+                ""
+        );
+
+        LifeBalanceDBDataManager.InsertOrUpdateWish(
+                db,
+                null,
                 "0,2",
                 0,
                 0,
@@ -211,96 +213,18 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                 "Устроиться на работу мечты - стать дворников на багамских островах.",
                 "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
                 );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "0 Пойти в кокосовый магазин"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                " 1 Вырастить кокос"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "2 Полить кокосовый сок"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "3 Полить кокосовый сок"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "4 Полить кокосовый сок"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "5 Полить кокосовый сок"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "6 Полить кокосовый сок"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "7 Полить кокосовый сок"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "8 Полить кокосовый сок"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "9 Полить кокосовый сок"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "10 Полить кокосовый сок"
-        );
-        LifeBalanceDBDataManager.InsertOrUpdateStep(
-                db,
-                0,
-                (int) id,
-                "11 Полить кокосовый сок"
-        );
 
-        LifeBalanceDBDataManager.InsertQueue(
-                db,
-                String.valueOf(id),
-                "0",
-                "0"
-        );
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         CreateTables(sqLiteDatabase);
 
-        InsertInitialEvent(sqLiteDatabase);
-        InsertInitialMessages(sqLiteDatabase);
-        insertFakeWishes(sqLiteDatabase);
-        InsertInitialWishesTypes(sqLiteDatabase);
-        InsertInitialSettings(sqLiteDatabase);
+        //InsertInitialEvent(sqLiteDatabase);
+        //InsertInitialMessages(sqLiteDatabase);
+        //insertFakeWishes(sqLiteDatabase);
+        //InsertInitialWishesTypes(sqLiteDatabase);
+        //InsertInitialSettings(sqLiteDatabase);
     }
 
     @Override

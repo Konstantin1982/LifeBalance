@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import ru.apps4yourlife.life.lifebalance.Adapters.EventsListAdapter;
 import ru.apps4yourlife.life.lifebalance.Adapters.MessagesListAdapter;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
@@ -38,10 +37,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Здоровье - Деньги
     public static final int MAX_COUNT_WISHES = 50;
 
-    //Events
-    RecyclerView mListEvents;
-    EventsListAdapter mEventsAdapter;
-
     // messages
     RecyclerView mListMessages;
     MessagesListAdapter mMessagesListAdapter;
@@ -54,10 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        //actionBar.setDisplayHomeAsUpEnabled(true);
-        //actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-        //actionBar.setElevation(0.0f);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -77,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataManager =  new LifeBalanceDBDataManager(this);
 
         wishButtonInit();
-        eventListInit();
         messagesListInit();
     }
 
@@ -90,17 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //  progress
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.wishes_progress_bar);
         progressBar.setProgress( (int) uncompleteWishes / MAX_COUNT_WISHES);
-    }
-
-    public void eventListInit(){
-        mListEvents = (RecyclerView) findViewById(R.id.eventsList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        layoutManager.setMeasurementCacheEnabled(false);
-
-        mListEvents.setLayoutManager(layoutManager);
-        mListEvents.setHasFixedSize(true);
-        mEventsAdapter = new EventsListAdapter(this);
-        mListEvents.setAdapter(mEventsAdapter);
     }
 
     public void messagesListInit() {
@@ -152,9 +131,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(messagesIntent);
     }
 }
+// TODO 1: Новые карточки Желаний в списке.
+// TODO 1.1 Кнопка отмены через три дня без активности. 
 
-
-//  TODO 1 : IMPLEMENT MESSAGES!!!
 //  TODO 2 : IMPLEMENT HELP + SYNC
 //  TODO 3 : DELETE WISHES
 //  TODO 4 : DESIGN

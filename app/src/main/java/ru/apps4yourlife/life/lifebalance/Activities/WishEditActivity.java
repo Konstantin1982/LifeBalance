@@ -72,6 +72,8 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         // get all data from Database
         initWish(wishIdString);
 
+
+
         // init layout
         int layout_type;
         switch (mWishStatus) {

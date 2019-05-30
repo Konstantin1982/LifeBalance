@@ -1,6 +1,7 @@
 package ru.apps4yourlife.life.lifebalance.Utilities;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -21,6 +22,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,6 +40,13 @@ import ru.apps4yourlife.life.lifebalance.R;
  */
 
 public class GeneralHelper {
+
+    public static String GetCurrentDateString() {
+// set the format to sql date time
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
 
     public static ArrayList<Integer> extractTypesFromWish(String types) {
         String[] typesArray = types.split(",");

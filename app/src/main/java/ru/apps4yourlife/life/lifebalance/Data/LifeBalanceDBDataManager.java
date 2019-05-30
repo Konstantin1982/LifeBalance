@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import ru.apps4yourlife.life.lifebalance.R;
 import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
@@ -28,6 +29,10 @@ public class LifeBalanceDBDataManager {
     public void deleteDatabase() {
         mContext.deleteDatabase(mDBHelper.getDatabaseName());
     }
+
+
+
+
 
 
     /*
@@ -168,7 +173,7 @@ public class LifeBalanceDBDataManager {
                 args,
                 null,
                 null,
-                LifeBalanceContract.WishesEntry.COLUMN_START + " DESC",
+                LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE + " DESC",
                 null
         );
         return wishes;
@@ -242,6 +247,7 @@ public class LifeBalanceDBDataManager {
     public static void UpdateWishFromServer(SQLiteDatabase writableDb, String wishId, String newStatus, String comment){
         ContentValues values = new ContentValues();
         values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, newStatus);
+        values.put(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE, new Date().getTime() );
         writableDb.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{wishId});
         if (!comment.isEmpty()) {
             String commentWish = "", commentStatus = "";
@@ -330,14 +336,14 @@ public class LifeBalanceDBDataManager {
                 null,
                 null
         );
+        String result = "";
         if (commentCursor.getCount() > 0) {
             commentCursor.moveToPosition(0);
-        }
-        String result = "";
-        if (mode == 0) {
-            result = commentCursor.getString(commentCursor.getColumnIndex(LifeBalanceContract.ServerCommentEntry.COLUMN_COMMENT));
-        } else {
-            result = commentCursor.getString(commentCursor.getColumnIndex(LifeBalanceContract.ServerCommentEntry.COLUMN_COMMENT_STATUS));
+            if (mode == 0) {
+                result = commentCursor.getString(commentCursor.getColumnIndex(LifeBalanceContract.ServerCommentEntry.COLUMN_COMMENT));
+            } else {
+                result = commentCursor.getString(commentCursor.getColumnIndex(LifeBalanceContract.ServerCommentEntry.COLUMN_COMMENT_STATUS));
+            }
         }
         return result;
     }
@@ -400,6 +406,7 @@ public class LifeBalanceDBDataManager {
         values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, status);
         values.put(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION, description);
         values.put(LifeBalanceContract.WishesEntry.COLUMN_SITUATION, situation);
+        values.put(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE, new Date().getTime() );
         if (idEntry == null) idEntry = "0";
         if (idEntry.equalsIgnoreCase("0")  || idEntry.equalsIgnoreCase("-1")) {
             result = db.insert(LifeBalanceContract.WishesEntry.TABLE_NAME, null, values);
@@ -416,6 +423,7 @@ public class LifeBalanceDBDataManager {
         long result = 0;
         ContentValues values = new ContentValues();
         values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, status);
+        values.put(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE, new Date().getTime() );
         result = mDBHelper.getWritableDatabase().update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{idEntry});
         if (result > 0 ) result = Long.valueOf(idEntry);
         return result;

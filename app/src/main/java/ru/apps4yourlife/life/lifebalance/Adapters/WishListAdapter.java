@@ -93,6 +93,11 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
         // public static Map<Integer, String> GetNextStepDescriptionForList(Integer current_status) {
         AbstractMap.SimpleEntry<String, String> nextStep =   GeneralHelper.GetNextStepDescriptionForList(mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS)));
 
+
+        String tmpTM = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE));
+        String tmpID = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry._ID));
+        Toast.makeText(mContext,  "POSITION : " + position + "; ID = " + tmpID + "; TIME = " +  tmpTM, Toast.LENGTH_SHORT).show();
+
         holder.wishDescriptionTextView.setText(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION)));
         holder.nextStepNumber.setText(nextStep.getKey());
         holder.nextStepDescription.setText(nextStep.getValue());
@@ -154,6 +159,8 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
     public void updateListValues(int position) {
         LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
         mWishListCursor = mDataManager.GetWishesList(mode);
+        notifyDataSetChanged();
+        /*
         Log.e("CURSOR","Count of new cursor = " + mWishListCursor.getCount() + "; Position = " + position);
         if (position >= 0) {
             notifyItemChanged(position);
@@ -161,6 +168,7 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
             //notifyItemInserted(mWishListCursor.getCount());
             notifyDataSetChanged();
         }
+        */
     }
 
     public void changeListMode(int newMode) {
