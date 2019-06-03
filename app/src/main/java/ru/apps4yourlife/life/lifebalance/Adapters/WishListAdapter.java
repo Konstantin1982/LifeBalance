@@ -24,7 +24,7 @@ import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
  * Created by ksharafutdinov on 14-Nov-18.
  */
 
-public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishListAdapterViewHolder> {
+public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
     private Context mContext;
     private Cursor mWishListCursor;
     private int mode;
@@ -35,42 +35,34 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
 
     private final WishListAdapterClickHandler mWishListAdapterClickHandler;
 
-    class WishListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private void GeneralOnClick(View v, int position) {
+        mWishListCursor.moveToPosition(position);
+        mWishListAdapterClickHandler.onWishClick(
+                mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry._ID)),
+                String.valueOf(position)
+        );
+    }
+
+    class WishListAdapterViewHolderStatusNew extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView wishDescriptionTextView;
         private ImageView wishType1;
         private ImageView wishType2;
         private ImageView wishType3;
-        private ConstraintLayout statusLayout;
-        private TextView nextStepNumber;
-        private TextView nextStepDescription;
-
-        WishListAdapterViewHolder(View view) {
+        WishListAdapterViewHolderStatusNew(View view) {
             super(view);
             wishDescriptionTextView = (TextView) view.findViewById(R.id.wishDescription);
             wishType1 = (ImageView) view.findViewById(R.id.list_wish_type_1);
             wishType2 = (ImageView) view.findViewById(R.id.list_wish_type_2);
             wishType3 = (ImageView) view.findViewById(R.id.list_wish_type_3);
-
-            nextStepNumber = (TextView) view.findViewById(R.id.nextStepNumber);
-            nextStepDescription = (TextView) view.findViewById(R.id.nextStepDescription);
-
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            int position = getAdapterPosition();
-            mWishListCursor.moveToPosition(position);
-
-            Toast.makeText(mContext, "CLICKED sds", Toast.LENGTH_SHORT).show();
-
-            Log.d("ADAPTER", "CALL ACTIVITY with position = " + position);
-            mWishListAdapterClickHandler.onWishClick(
-                    mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry._ID)),
-                     String.valueOf(position)
-            );
+            GeneralOnClick(v, getAdapterPosition());
         }
     }
+
 
     public WishListAdapter(Context context, WishListAdapterClickHandler clickHandler, int listMode) {
         mWishListAdapterClickHandler = clickHandler;
@@ -80,73 +72,97 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
         mWishListCursor = mDataManager.GetWishesList(mode);
     }
 
+
     @Override
-    public WishListAdapter.WishListAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list, parent, false);
-        return new WishListAdapter.WishListAdapterViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        switch (viewType) {
+            case 0:
+                view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step0, parent, false);
+                return new WishListAdapterViewHolderStatusNew(view);
+            default:
+                view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step0, parent, false);
+                return new WishListAdapterViewHolderStatusNew(view);
+        }
+    }
+    @Override
+    public int getItemViewType(int position) {
+        int layout_type = -1;
+        mWishListCursor.moveToPosition(position);
+        int currentStatus = mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
+        switch (currentStatus) {
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                layout_type = 0;
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
+                layout_type = 1;
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
+                layout_type = 2;
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+                layout_type = 3;
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
+                layout_type = 4;
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+                layout_type = 5;
+                break;
+            default:
+                layout_type = 0;
+        }
+        return layout_type;
     }
 
-    @Override
-    public void onBindViewHolder(final WishListAdapter.WishListAdapterViewHolder holder, final int position) {
-        mWishListCursor.moveToPosition(position);
-        ArrayList<Integer> types = GeneralHelper.extractTypesFromWish(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_TYPE)));
-        // public static Map<Integer, String> GetNextStepDescriptionForList(Integer current_status) {
-        AbstractMap.SimpleEntry<String, String> nextStep =   GeneralHelper.GetNextStepDescriptionForList(mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS)));
-
-
-        String tmpTM = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE));
-        String tmpID = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry._ID));
-        Toast.makeText(mContext,  "POSITION : " + position + "; ID = " + tmpID + "; TIME = " +  tmpTM, Toast.LENGTH_SHORT).show();
-
-        holder.wishDescriptionTextView.setText(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION)));
-        holder.nextStepNumber.setText(nextStep.getKey());
-        holder.nextStepDescription.setText(nextStep.getValue());
-        holder.wishType1.setImageBitmap(null);
-        holder.wishType2.setImageBitmap(null);
-        holder.wishType3.setImageBitmap(null);
-        holder.wishType1.setVisibility(View.INVISIBLE);
-        holder.wishType2.setVisibility(View.INVISIBLE);
-        holder.wishType3.setVisibility(View.INVISIBLE);
-
-/*
-            <TextView
-        android:id="@+id/nextStepNumber"
-        style="@style/WishListStepNumberText"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/dark_circle"
-        android:paddingVertical="2dp"
-        android:text="2"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/nextStepDescription"
-        app:layout_constraintTop_toTopOf="@+id/horizontal_divider_image" />
-
-            <TextView
-        android:id="@+id/nextStepDescription"
-*/
-
+    public void  SetWishTypeImages(ArrayList<Integer> types, ImageView wishType1, ImageView wishType2, ImageView wishType3) {
+        wishType1.setImageBitmap(null);
+        wishType2.setImageBitmap(null);
+        wishType3.setImageBitmap(null);
+        wishType1.setVisibility(View.INVISIBLE);
+        wishType2.setVisibility(View.INVISIBLE);
+        wishType3.setVisibility(View.INVISIBLE);
         int count = 1;
         for (Integer type : types) {
             int imageId = GeneralHelper.GetImageResourceByType(type);
             if (imageId > 0) {
                 if (count == 1) {
-                    holder.wishType1.setImageResource(imageId);
-                    holder.wishType1.setVisibility(View.VISIBLE);
+                    wishType1.setImageResource(imageId);
+                    wishType1.setVisibility(View.VISIBLE);
                 }
                 if (count == 2) {
-                    holder.wishType2.setImageResource(imageId);
-                    holder.wishType2.setVisibility(View.VISIBLE);
+                    wishType2.setImageResource(imageId);
+                    wishType2.setVisibility(View.VISIBLE);
                 }
                 if (count == 3) {
-                    holder.wishType3.setImageResource(imageId);
-                    holder.wishType3.setVisibility(View.VISIBLE);
+                    wishType3.setImageResource(imageId);
+                    wishType3.setVisibility(View.VISIBLE);
                 }
                 count++;
             }
+        }
+
+    }
+
+
+    @Override
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        mWishListCursor.moveToPosition(position);
+        ArrayList<Integer> types = GeneralHelper.extractTypesFromWish(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_TYPE)));
+        String wishDescription = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION));
+        // public static Map<Integer, String> GetNextStepDescriptionForList(Integer current_status) {
+        //AbstractMap.SimpleEntry<String, String> nextStep =   GeneralHelper.GetNextStepDescriptionForList(mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS)));
+        ImageView wishType1,wishType2, wishType3;
+        switch (holder.getItemViewType()) {
+            case 0:
+                WishListAdapterViewHolderStatusNew holder0 = (WishListAdapterViewHolderStatusNew) holder;
+                holder0.wishDescriptionTextView.setText(wishDescription);
+                wishType1 = holder0.wishType1;
+                wishType2 = holder0.wishType2;
+                wishType3 = holder0.wishType3;
+                SetWishTypeImages(types, wishType1, wishType2, wishType3);
         }
         return;
     }
@@ -156,19 +172,11 @@ public class WishListAdapter extends RecyclerView.Adapter <WishListAdapter.WishL
         return  mWishListCursor.getCount();
     }
 
+
     public void updateListValues(int position) {
         LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
         mWishListCursor = mDataManager.GetWishesList(mode);
         notifyDataSetChanged();
-        /*
-        Log.e("CURSOR","Count of new cursor = " + mWishListCursor.getCount() + "; Position = " + position);
-        if (position >= 0) {
-            notifyItemChanged(position);
-        } else {
-            //notifyItemInserted(mWishListCursor.getCount());
-            notifyDataSetChanged();
-        }
-        */
     }
 
     public void changeListMode(int newMode) {

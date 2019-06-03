@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 }
 // TODO 1: Новые карточки Желаний в списке.
-// TODO 1.1 Кнопка отмены через три дня без активности. 
+// TODO 1.1 Кнопка отмены через три дня без активности.
 
 //  TODO 2 : IMPLEMENT HELP + SYNC
 //  TODO 3 : DELETE WISHES
