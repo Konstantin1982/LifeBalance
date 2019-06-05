@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:background="@drawable/rect_light"
+    android:layout_height="wrap_content"
     android:layout_margin="8dp"
->
+    android:background="@drawable/rect_light">
 
     <ImageView
         android:id="@+id/list_wish_type_1"
@@ -72,7 +70,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wishDescription"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:srcCompat="@drawable/ic_arrow_down_big" />
 
     <TextView
@@ -83,11 +81,27 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:lines="3"
-        android:text="@string/wishlist_nextstep_1"
+        android:text="А вот теперь мне надо осознать и побороть свои Страхи. Или осознать свою новую  Мечту."
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/textView6"
+        style="@style/situationText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:lines="5"
+        android:text="Моя новая реальность:  Я встаю утром, выхожу на балкон. Белочка около сосны приветствует меня. Привет, Белка. Я пью мятный отвар из шишек и ем червяничное варенье.... "
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/wishDescription" />
 
 </android.support.constraint.ConstraintLayout>
 
