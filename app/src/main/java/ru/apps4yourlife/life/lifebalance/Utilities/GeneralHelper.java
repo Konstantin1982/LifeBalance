@@ -156,7 +156,8 @@ public class GeneralHelper {
 
 
     public static boolean isUserSubscribed() {
-        return false;
+        //TODO: MAKE CHECK STATUS
+        return true;
     }
 
 

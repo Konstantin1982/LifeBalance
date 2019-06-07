@@ -71,6 +71,16 @@
         <item name="android:textSize">14dp</item>
     </style>
 
+    <style name="noFearsText">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="sloganText">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
     <style name="helpText">
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">14dp</item>

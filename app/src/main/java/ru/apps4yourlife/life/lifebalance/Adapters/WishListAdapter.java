@@ -2,17 +2,13 @@ package ru.apps4yourlife.life.lifebalance.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
@@ -63,6 +59,28 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
         }
     }
 
+    class WishListAdapterViewHolderStatusSituation extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView wishDescriptionTextView;
+        private TextView wishSituationTextView;
+        private ImageView wishType1;
+        private ImageView wishType2;
+        private ImageView wishType3;
+        WishListAdapterViewHolderStatusSituation(View view) {
+            super(view);
+            wishDescriptionTextView = (TextView) view.findViewById(R.id.wishDescription);
+            wishSituationTextView = (TextView) view.findViewById(R.id.wishSituationDescription);
+            wishType1 = (ImageView) view.findViewById(R.id.list_wish_type_1);
+            wishType2 = (ImageView) view.findViewById(R.id.list_wish_type_2);
+            wishType3 = (ImageView) view.findViewById(R.id.list_wish_type_3);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            GeneralOnClick(v, getAdapterPosition());
+        }
+    }
+
 
     public WishListAdapter(Context context, WishListAdapterClickHandler clickHandler, int listMode) {
         mWishListAdapterClickHandler = clickHandler;
@@ -77,9 +95,18 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
-            case 0:
+            case 1:
                 view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step0, parent, false);
                 return new WishListAdapterViewHolderStatusNew(view);
+            case 2:
+                view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step1, parent, false);
+                return new WishListAdapterViewHolderStatusSituation(view);
+            case 3:
+                view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step2, parent, false);
+                return new WishListAdapterViewHolderStatusSituation(view);
+            case 4:
+                view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step3, parent, false);
+                return new WishListAdapterViewHolderStatusSituation(view);
             default:
                 view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step0, parent, false);
                 return new WishListAdapterViewHolderStatusNew(view);
@@ -93,26 +120,26 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
         switch (currentStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
-                layout_type = 0;
+                layout_type = 1;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
-                layout_type = 1;
+                layout_type = 10;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
                 layout_type = 2;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
-                layout_type = 3;
+                layout_type = 20;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
-                layout_type = 4;
+                layout_type = 3;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
-                layout_type = 5;
+                layout_type = 4;
                 break;
             default:
-                layout_type = 0;
+                layout_type = 1;
         }
         return layout_type;
     }
@@ -156,13 +183,34 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
         //AbstractMap.SimpleEntry<String, String> nextStep =   GeneralHelper.GetNextStepDescriptionForList(mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS)));
         ImageView wishType1,wishType2, wishType3;
         switch (holder.getItemViewType()) {
-            case 0:
+            case 1:
                 WishListAdapterViewHolderStatusNew holder0 = (WishListAdapterViewHolderStatusNew) holder;
                 holder0.wishDescriptionTextView.setText(wishDescription);
                 wishType1 = holder0.wishType1;
                 wishType2 = holder0.wishType2;
                 wishType3 = holder0.wishType3;
                 SetWishTypeImages(types, wishType1, wishType2, wishType3);
+            break;
+            case 2:
+                WishListAdapterViewHolderStatusSituation holder1 = (WishListAdapterViewHolderStatusSituation) holder;
+                holder1.wishDescriptionTextView.setText(wishDescription);
+                String wishSituation = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_SITUATION));
+                holder1.wishSituationTextView.setText(wishSituation);
+                wishType1 = holder1.wishType1;
+                wishType2 = holder1.wishType2;
+                wishType3 = holder1.wishType3;
+                SetWishTypeImages(types, wishType1, wishType2, wishType3);
+            break;
+            case 3:
+                WishListAdapterViewHolderStatusSituation holder2 = (WishListAdapterViewHolderStatusSituation) holder;
+                holder2.wishDescriptionTextView.setText(wishDescription);
+                wishSituation = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_SITUATION));
+                holder2.wishSituationTextView.setText(wishSituation);
+                wishType1 = holder2.wishType1;
+                wishType2 = holder2.wishType2;
+                wishType3 = holder2.wishType3;
+                SetWishTypeImages(types, wishType1, wishType2, wishType3);
+            break;
         }
         return;
     }

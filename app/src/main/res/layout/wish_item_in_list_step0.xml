@@ -56,24 +56,12 @@
         android:lines="5"
         android:maxLines="5"
         android:padding="16dp"
+        android:gravity="center_vertical"
         android:text="Я хочу иметь большой загородный трехэтажный дом на участке в 2 га с озером рядом и хорошими соседями"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wishDescription"
-        app:srcCompat="@drawable/ic_arrow_down_big" />
 
     <TextView
         android:id="@+id/textView7"
@@ -81,13 +69,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:lines="3"
-        android:text="@string/wishlist_nextstep_1"
+        android:layout_marginTop="8dp"
+        android:lines="2"
+        android:text="Обдумываем Желание и формулируем его."
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/wishDescription" />
 
 </android.support.constraint.ConstraintLayout>
 
