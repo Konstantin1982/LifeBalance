@@ -8,6 +8,10 @@
     <string name="OK">Ок!</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-<string name="wishlist_nextstep_1">Теперь мне предстоит представить эту новую Реальность, в которой моя Мечта уже сбылась.</string>
+    <string name="wishlist_nextstep_1">Теперь мне предстоит представить эту новую Реальность, в которой моя Мечта уже сбылась.</string>
+    <string name="wishlist_nextstep_10">Желание проходит проверку на базовые условия. Ответ будет скоро.</string>
+    <string name="wishlist_nextstep_2">!! Необходимо скорректировать формулировку !!</string>
+    <string name="wishlist_nextstep_3">Формируем новую реальность. Представляем и формулируем ситуацию из реальности, где Желание уже сбылось.</string>
+    <string name="wishlist_nextstep_4">Проверяем Вашу новую реальность. Потерпите, скоро вы получите ответ.</string>
 
 </resources>

@@ -72,7 +72,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         // get all data from Database
         initWish(wishIdString);
 
-
+        Toast.makeText(this,"STATUS = " + mWishStatus, Toast.LENGTH_SHORT).show();
 
         // init layout
         int layout_type;

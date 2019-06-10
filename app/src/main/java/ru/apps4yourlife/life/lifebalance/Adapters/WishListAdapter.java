@@ -3,6 +3,7 @@ package ru.apps4yourlife.life.lifebalance.Adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,12 +42,14 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
 
     class WishListAdapterViewHolderStatusNew extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView wishDescriptionTextView;
+        private TextView nextStepDescriptionTextView;
         private ImageView wishType1;
         private ImageView wishType2;
         private ImageView wishType3;
         WishListAdapterViewHolderStatusNew(View view) {
             super(view);
             wishDescriptionTextView = (TextView) view.findViewById(R.id.wishDescription);
+            nextStepDescriptionTextView = (TextView) view.findViewById(R.id.nextStepDescription);
             wishType1 = (ImageView) view.findViewById(R.id.list_wish_type_1);
             wishType2 = (ImageView) view.findViewById(R.id.list_wish_type_2);
             wishType3 = (ImageView) view.findViewById(R.id.list_wish_type_3);
@@ -62,6 +65,7 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
     class WishListAdapterViewHolderStatusSituation extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView wishDescriptionTextView;
         private TextView wishSituationTextView;
+        private TextView nextStepTextView;
         private ImageView wishType1;
         private ImageView wishType2;
         private ImageView wishType3;
@@ -69,6 +73,7 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
             super(view);
             wishDescriptionTextView = (TextView) view.findViewById(R.id.wishDescription);
             wishSituationTextView = (TextView) view.findViewById(R.id.wishSituationDescription);
+            nextStepTextView = (TextView) view.findViewById(R.id.nextStepDescription);
             wishType1 = (ImageView) view.findViewById(R.id.list_wish_type_1);
             wishType2 = (ImageView) view.findViewById(R.id.list_wish_type_2);
             wishType3 = (ImageView) view.findViewById(R.id.list_wish_type_3);
@@ -99,7 +104,7 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                 view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step0, parent, false);
                 return new WishListAdapterViewHolderStatusNew(view);
             case 2:
-                view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step1, parent, false);
+                view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step2, parent, false);
                 return new WishListAdapterViewHolderStatusSituation(view);
             case 3:
                 view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step2, parent, false);
@@ -120,17 +125,13 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
         switch (currentStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
-                layout_type = 1;
-                break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
-                layout_type = 10;
+                layout_type = 1;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
-                layout_type = 2;
-                break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
-                layout_type = 20;
+                layout_type = 2;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
                 layout_type = 3;
@@ -178,6 +179,8 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         mWishListCursor.moveToPosition(position);
         ArrayList<Integer> types = GeneralHelper.extractTypesFromWish(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_TYPE)));
+        int wishStatus = mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
+        Log.e("STATUS" , "WISH STATUS = " + wishStatus);
         String wishDescription = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION));
         // public static Map<Integer, String> GetNextStepDescriptionForList(Integer current_status) {
         //AbstractMap.SimpleEntry<String, String> nextStep =   GeneralHelper.GetNextStepDescriptionForList(mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS)));
@@ -186,6 +189,14 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
             case 1:
                 WishListAdapterViewHolderStatusNew holder0 = (WishListAdapterViewHolderStatusNew) holder;
                 holder0.wishDescriptionTextView.setText(wishDescription);
+                switch (wishStatus) {
+                    case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
+                        holder0.nextStepDescriptionTextView.setText(R.string.wishlist_nextstep_10);
+                    break;
+                    case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                        holder0.nextStepDescriptionTextView.setText(R.string.wishlist_nextstep_2);
+                    break;
+                }
                 wishType1 = holder0.wishType1;
                 wishType2 = holder0.wishType2;
                 wishType3 = holder0.wishType3;
@@ -195,7 +206,21 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                 WishListAdapterViewHolderStatusSituation holder1 = (WishListAdapterViewHolderStatusSituation) holder;
                 holder1.wishDescriptionTextView.setText(wishDescription);
                 String wishSituation = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_SITUATION));
+                String nextStepString;
                 holder1.wishSituationTextView.setText(wishSituation);
+                if (wishSituation.isEmpty()) {
+                    holder1.wishSituationTextView.setVisibility(View.GONE);
+                } else {
+                    holder1.wishSituationTextView.setVisibility(View.VISIBLE);
+                }
+                switch (wishStatus) {
+                    case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+                        holder1.nextStepTextView.setText(R.string.wishlist_nextstep_3);
+                    break;
+                    case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+                        holder1.nextStepTextView.setText(R.string.wishlist_nextstep_4);
+                    break;
+                }
                 wishType1 = holder1.wishType1;
                 wishType2 = holder1.wishType2;
                 wishType3 = holder1.wishType3;
