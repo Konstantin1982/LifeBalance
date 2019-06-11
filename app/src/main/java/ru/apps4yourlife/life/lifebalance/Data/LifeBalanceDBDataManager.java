@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -245,10 +246,16 @@ public class LifeBalanceDBDataManager {
     }
 
     public static void UpdateWishFromServer(SQLiteDatabase writableDb, String wishId, String newStatus, String comment){
-        ContentValues values = new ContentValues();
-        values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, newStatus);
-        values.put(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE, new Date().getTime() );
-        writableDb.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{wishId});
+
+        Cursor wish = GetWishById(wishId, writableDb);
+        int status = wish.getInt(wish.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
+        Log.e("WISHUPDATE", "old status= " + status + "; " + newStatus);
+        if (status < Integer.valueOf(newStatus)) {
+            ContentValues values = new ContentValues();
+            values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, newStatus);
+            values.put(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE, new Date().getTime());
+            writableDb.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{wishId});
+        }
         if (!comment.isEmpty()) {
             String commentWish = "", commentStatus = "";
             if (Integer.valueOf(newStatus) == GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED) {
@@ -362,8 +369,8 @@ public class LifeBalanceDBDataManager {
         return types;
     }
 
-    public Cursor GetWishById(String id) {
-        Cursor wish = mDBHelper.getReadableDatabase().query(
+    public static Cursor GetWishById(String id, SQLiteDatabase readableDb) {
+        Cursor wish = readableDb.query(
                 LifeBalanceContract.WishesEntry.TABLE_NAME,
                 null,
                 LifeBalanceContract.WishesEntry._ID + " = ? ",
@@ -377,6 +384,11 @@ public class LifeBalanceDBDataManager {
             wish.moveToPosition(0);
         }
         return wish;
+
+    }
+
+    public Cursor GetWishById(String id) {
+        return GetWishById(id, mDBHelper.getReadableDatabase());
     }
 
     public long GetCountOpenedWishes() {

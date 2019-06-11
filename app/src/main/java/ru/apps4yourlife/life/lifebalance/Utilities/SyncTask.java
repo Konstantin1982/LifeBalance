@@ -139,9 +139,6 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
         return data;
     }
 
-    public void CommitWishesAnswer(String idList) {
-
-    }
 
     public boolean getNewsFromServer() {
         try {
@@ -181,35 +178,39 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
                     if (sizeWishes > 0) {
                         publishProgress();
                     }
-                    // messages
-                    // news
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-
             }
-            //Log.e("JSON. RESPONSE_CODE", String.valueOf(conn.getResponseCode()));
-            //Log.e("JSON. RESPONSE " , responseData);
             conn.disconnect();
+            try {
+                //commit
+                if (!wishesIds.isEmpty()) {
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept", "application/json");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    Log.e("COMMIT1", "WISHESIDS = " + wishesIds);
+                    JSONObject fullResponse = PrepareDataToReceive("1");
+                    fullResponse.put("WISHES", wishesIds + "-1");
+                    Log.e("COMMIT2", "DATA = " + fullResponse.toString());
+                    bData = fullResponse.toString().getBytes(StandardCharsets.UTF_8);
+                    os = new DataOutputStream(conn.getOutputStream());
+                    os.write(bData);
+                    os.flush();
+                    os.close();
+                    InputStream inputStream2 = new BufferedInputStream(conn.getInputStream());
+                    conn.disconnect();
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                //Log.e("JSON. ERROR", String.valueOf(e.getStackTrace().toString()));
+                e.printStackTrace();
+            }
 
-
-            //commit
-            conn = (HttpURLConnection) url.openConnection();
-
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            conn.setRequestProperty("Accept","application/json");
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-
-            JSONObject fullResponse = PrepareDataToReceive("1");
-            fullResponse.put("WISHES", wishesIds + "-1");
-            bData = fullResponse.toString().getBytes(StandardCharsets.UTF_8);
-            os = new DataOutputStream(conn.getOutputStream());
-            os.write(bData);
-            os.flush();
-            os.close();
-            conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
             //Log.e("JSON. ERROR", String.valueOf(e.getStackTrace().toString()));
