@@ -71,7 +71,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:lines="2"
-        android:text="Обдумываем Желание и формулируем его."
+        android:text="@string/wishlist_nextstep_0"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

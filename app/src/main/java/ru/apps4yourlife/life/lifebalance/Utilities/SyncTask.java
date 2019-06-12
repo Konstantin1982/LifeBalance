@@ -292,3 +292,4 @@ public class SyncTask extends AsyncTask<Void,Void,Void> {
     }
 }
 
+// TODO: SEND WISHES IMMEDIATELY

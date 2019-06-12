@@ -481,7 +481,12 @@ public class LifeBalanceDBDataManager {
 
     // get steps by wish id
     public Cursor GetStepsByWishId(String wishId) {
-        Cursor steps = mDBHelper.getReadableDatabase().query(
+        return GetStepsByWishId(mDBHelper.getReadableDatabase(), wishId);
+    }
+
+    // get steps by wish id
+    public static Cursor GetStepsByWishId(SQLiteDatabase readableDb, String wishId) {
+        Cursor steps = readableDb.query(
                 LifeBalanceContract.StepsEntry.TABLE_NAME,
                 null,
                 LifeBalanceContract.StepsEntry.COLUMN_WISH_ID + " = ? ",
@@ -496,6 +501,8 @@ public class LifeBalanceDBDataManager {
         }
         return steps;
     }
+
+
 
     public static Cursor GetStepById(SQLiteDatabase db, long id) {
         Cursor steps = db.query(

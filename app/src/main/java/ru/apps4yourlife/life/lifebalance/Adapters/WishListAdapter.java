@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,6 +70,7 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
         private ImageView wishType1;
         private ImageView wishType2;
         private ImageView wishType3;
+        private TextView stepsTextView;
         WishListAdapterViewHolderStatusSituation(View view) {
             super(view);
             wishDescriptionTextView = (TextView) view.findViewById(R.id.wishDescription);
@@ -77,6 +79,7 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
             wishType1 = (ImageView) view.findViewById(R.id.list_wish_type_1);
             wishType2 = (ImageView) view.findViewById(R.id.list_wish_type_2);
             wishType3 = (ImageView) view.findViewById(R.id.list_wish_type_3);
+            stepsTextView = (TextView) view.findViewById(R.id.stepsCompleteValue);
             view.setOnClickListener(this);
         }
 
@@ -190,6 +193,9 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                 WishListAdapterViewHolderStatusNew holder0 = (WishListAdapterViewHolderStatusNew) holder;
                 holder0.wishDescriptionTextView.setText(wishDescription);
                 switch (wishStatus) {
+                    case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
+                        holder0.nextStepDescriptionTextView.setText(R.string.wishlist_nextstep_0);
+                    break;
                     case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
                         holder0.nextStepDescriptionTextView.setText(R.string.wishlist_nextstep_10);
                     break;
@@ -220,6 +226,9 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                     case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
                         holder1.nextStepTextView.setText(R.string.wishlist_nextstep_4);
                     break;
+                    case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
+                        holder1.nextStepTextView.setText(R.string.wishlist_nextstep_5);
+                    break;
                 }
                 wishType1 = holder1.wishType1;
                 wishType2 = holder1.wishType2;
@@ -235,6 +244,21 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                 wishType2 = holder2.wishType2;
                 wishType3 = holder2.wishType3;
                 SetWishTypeImages(types, wishType1, wishType2, wishType3);
+            break;
+            case 4:
+                WishListAdapterViewHolderStatusSituation holder3 = (WishListAdapterViewHolderStatusSituation) holder;
+                holder3.wishDescriptionTextView.setText(wishDescription);
+                wishSituation = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_SITUATION));
+                holder3.wishSituationTextView.setText(wishSituation);
+                wishType1 = holder3.wishType1;
+                wishType2 = holder3.wishType2;
+                wishType3 = holder3.wishType3;
+                SetWishTypeImages(types, wishType1, wishType2, wishType3);
+                LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
+                Cursor tmp = mDataManager.GetStepsByWishId(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry._ID)));
+                int countSteps = tmp.getCount() + 0;
+
+                holder3.stepsTextView.setText("(выполнено "+  String.valueOf(countSteps) +  "/10)");
             break;
         }
         return;

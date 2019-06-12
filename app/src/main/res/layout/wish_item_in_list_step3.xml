@@ -13,10 +13,8 @@
         android:layout_height="40dp"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:srcCompat="@drawable/ic_balloons" />
 
     <ImageView
@@ -28,7 +26,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/list_wish_type_1"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/stepsCompleteValue"
         app:srcCompat="@drawable/ic_balloons" />
 
     <ImageView
@@ -37,10 +35,8 @@
         android:layout_height="40dp"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/list_wish_type_2"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:srcCompat="@drawable/ic_balloons" />
 
     <TextView
@@ -102,18 +98,31 @@
         app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/stepsComplete"
         style="@style/sloganText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="Пора действовать! (выполнено 0/10)"
+        android:text="Пора действовать!"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/stepsCompleteValue"
+        style="@style/sloganText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="(выполнено 0/10)"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stepsComplete" />
 
 </android.support.constraint.ConstraintLayout>
 

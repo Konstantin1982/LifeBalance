@@ -17,6 +17,11 @@
             android:id="@+id/nav_campaigns"
             android:icon="@drawable/ic_new_releases_black_24dp"
             android:title="Акции и спецпредложения" />
+
+        <item
+            android:id="@+id/nav_support"
+            android:icon="@drawable/ic_contact_mail_black_24dp"
+            android:title="Обратная связь" />
     </group>
 
     <item android:title="Справочная информация">

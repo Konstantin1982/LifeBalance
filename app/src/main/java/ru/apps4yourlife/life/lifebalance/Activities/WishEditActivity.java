@@ -351,6 +351,9 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
                 fileName = "step_3.html";
                 break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+                fileName = "step_4.html";
+                break;
         }
         GeneralHelper.ShowHelpInWishActivity(fileName, extraMessage, this);
     }
