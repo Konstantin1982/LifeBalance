@@ -140,6 +140,7 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                 layout_type = 3;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE:
                 layout_type = 4;
                 break;
             default:
@@ -257,8 +258,10 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                 LifeBalanceDBDataManager mDataManager = new LifeBalanceDBDataManager(mContext);
                 Cursor tmp = mDataManager.GetStepsByWishId(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry._ID)));
                 int countSteps = tmp.getCount() + 0;
-
                 holder3.stepsTextView.setText("(выполнено "+  String.valueOf(countSteps) +  "/10)");
+                if (wishStatus == GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE) {
+                    holder3.stepsTextView.setText("Ваше желание выполняется");
+                }
             break;
         }
         return;

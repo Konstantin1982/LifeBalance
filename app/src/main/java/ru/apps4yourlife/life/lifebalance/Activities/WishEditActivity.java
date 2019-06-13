@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
+import android.provider.BaseColumns;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -91,6 +93,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 layout_type = R.layout.activity_wish_edit_status_fears;
             break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE:
                 layout_type = R.layout.activity_wish_status_steps;
             break;
             default:
@@ -148,6 +151,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 backButtonImage = R.drawable.ic_clear_white_24dp;
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE:
                 RecyclerView mStepsRecyclerView = (RecyclerView) findViewById(R.id.stepsRecyclerView);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 layoutManager.setMeasurementCacheEnabled(false);
@@ -264,21 +268,33 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
                 wishDescriptionTextView = (TextView) findViewById(R.id.wishDescriptionTextView);
                 wishDescriptionTextView.setText(description);
-                updateFinishButton();
+                updateFinishButton(true);
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE:
+                wishDescriptionTextView = (TextView) findViewById(R.id.wishDescriptionTextView);
+                wishDescriptionTextView.setText(description);
+                updateFinishButton(false);
+                FloatingActionButton stepsAdd = (FloatingActionButton) findViewById(R.id.addNewStepActionButton);
+                stepsAdd.setVisibility(View.INVISIBLE);
                 break;
 
         }
         UpdateUITypes();
     }
-    public void updateFinishButton() {
+    public void updateFinishButton(boolean isActive) {
         Cursor tmp = mDataManager.GetStepsByWishId(String.valueOf(mWishEntryId));
         Button finishButton = (Button) findViewById(R.id.buttonFinishWish);
-        if (tmp.getCount() < 10) {
-            finishButton.setEnabled(false);
-            finishButton.setText("Исполнить желание (" + tmp.getCount() + "/10)");
+        if (isActive){
+            if (tmp.getCount() < 10) {
+                finishButton.setEnabled(false);
+                finishButton.setText("Исполнить желание (" + tmp.getCount() + "/10)");
+            } else {
+                finishButton.setEnabled(true);
+                finishButton.setText("Исполнить желание !!!");
+            }
         } else {
-            finishButton.setEnabled(true);
-            finishButton.setText("Исполнить желание !!!");
+            finishButton.setEnabled(false);
+            finishButton.setText("Желание выполняется");
         }
 
     }
@@ -352,6 +368,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 fileName = "step_3.html";
                 break;
             case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE:
                 fileName = "step_4.html";
                 break;
         }
@@ -615,6 +632,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE:
                 menu_id = 0;
                 break;
             default:
@@ -667,11 +685,13 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
     @Override
     public void onStepClick(String stepId, String itemPositionInList) {
-        Intent stepEditIntent = new Intent(this, StepEditActivity.class);
-        stepEditIntent.putExtra("STEP_ID",  stepId);
-        stepEditIntent.putExtra("POSITION_ID",  itemPositionInList);
-        stepEditIntent.putExtra("WISH_ID",  String.valueOf(mWishEntryId));
-        startActivityForResult(stepEditIntent,0);
+        if (mWishStatus != GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE) {
+            Intent stepEditIntent = new Intent(this, StepEditActivity.class);
+            stepEditIntent.putExtra("STEP_ID", stepId);
+            stepEditIntent.putExtra("POSITION_ID", itemPositionInList);
+            stepEditIntent.putExtra("WISH_ID", String.valueOf(mWishEntryId));
+            startActivityForResult(stepEditIntent, 0);
+        }
     }
 
     @Override
@@ -695,7 +715,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             // from Step Edit
             int position = resultCode;
             mStepsListAdapter.updateListValues(position);
-            updateFinishButton();
+            updateFinishButton(true);
         }
     }
 
