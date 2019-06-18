@@ -21,6 +21,13 @@
         <item name="android:fontFamily">@font/abel</item>
     </style>
 
+    <style name="SmallHeaderText">
+        <item name="android:textColor">@color/colorAccentLight</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/abel</item>
+    </style>
+
     <style name="WishListHeaderText">
         <item name="android:textColor">@color/colorAccentLight</item>
         <item name="android:textSize">18dp</item>
