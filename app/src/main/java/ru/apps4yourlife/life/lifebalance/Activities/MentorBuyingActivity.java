@@ -38,7 +38,6 @@ public class MentorBuyingActivity extends AppCompatActivity {
     }
 
     public void onBuyingMentorClick(View view) {
-        // Check if we're running on Android 5.0 or higher
         Intent mentorSubmitIntent = new Intent(this, MentorBuyingSubmitActivity.class);
         startActivityForResult(mentorSubmitIntent,0);
     }

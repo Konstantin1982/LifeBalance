@@ -27,12 +27,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="Узнать наличие свободных мест"
+        android:onClick="OnCheckStateClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/freePlacesTextView" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/freePlacesTextView"
         style="@style/SmallHeaderText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/startBuyButton"
         style="@style/BlueButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -59,7 +60,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/headerAction"
         style="@style/HeaderText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button3" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/textAction"
         style="@style/sloganText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -82,10 +83,10 @@
         android:text='До 12 июля скидка 33%.  Чтобы воспользоваться, введи код "СЛОН" в несущетсвующее поле.'
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        app:layout_constraintTop_toBottomOf="@+id/headerAction" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/actualPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/SmallHeaderText"
@@ -94,7 +95,7 @@
         android:layout_marginTop="8dp"
         android:text="Итого цена: 4500 рублей."
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintTop_toBottomOf="@+id/textAction" />
 
     <TextView
         android:id="@+id/textView20"
@@ -104,7 +105,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:text="Ваше имя:"
-        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintBottom_toTopOf="@+id/startBuyButton"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -117,7 +118,7 @@
         android:ems="10"
         android:hint="Аноним_23990"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintBottom_toTopOf="@+id/startBuyButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView20" />
 

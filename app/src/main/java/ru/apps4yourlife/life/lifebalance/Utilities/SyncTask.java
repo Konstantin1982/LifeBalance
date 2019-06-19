@@ -26,7 +26,7 @@ import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBHelper;
 
 public class SyncTask extends AsyncTask<Void,Void,Void> {
 
-    private static final String SYNC_TASK_ACTIVITY = "SYNC_TASK_ACTIVITY";
+    public static final String SYNC_TASK_ACTIVITY = "SYNC_TASK_ACTIVITY";
     private static final String USER_ID = "USER_ID";
     private static final String KEY = "KEY";
     //private static final String URL_ADDRESS_TO_SEND = "http://localhost/request.php";

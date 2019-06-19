@@ -37,6 +37,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
     private WishListAdapter mWishListAdapter;
     private RecyclerView mListWishes;
+    private SyncTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
         wishListInit();
 
-        SyncTask task = new SyncTask(this);
+        task = new SyncTask(this);
         task.execute();
     }
 
@@ -140,6 +141,11 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        task.cancel(true);
+    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -147,7 +153,9 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         int id = item.getItemId();
 
         if (id == R.id.nav_mentor) {
-            Toast.makeText(this,"Mentor buying", Toast.LENGTH_SHORT).show();
+            Intent mentorSubmitIntent = new Intent(this, MentorBuyingActivity.class);
+            startActivity(mentorSubmitIntent);
+
         } else if (id == R.id.nav_delete_wishes) {
             Toast.makeText(this,"Delete WISHES", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_campaigns) {
