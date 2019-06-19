@@ -24,7 +24,7 @@ import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBHelper;
 import ru.apps4yourlife.life.lifebalance.R;
 
-import static ru.apps4yourlife.life.lifebalance.Utilities.SyncTask.SYNC_TASK_ACTIVITY;
+//import static ru.apps4yourlife.life.lifebalance.Utilities.SyncTask.SYNC_TASK_ACTIVITY;
 
 public class MentorBuyingSubmitActivity extends AppCompatActivity {
 
