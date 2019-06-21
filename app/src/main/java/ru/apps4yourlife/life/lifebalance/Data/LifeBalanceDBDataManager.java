@@ -429,6 +429,12 @@ public class LifeBalanceDBDataManager {
         return result;
     }
 
+    public long DeleteWish(String idEntry) {
+        long result = 0;
+        result = mDBHelper.getWritableDatabase().delete(LifeBalanceContract.WishesEntry.TABLE_NAME, LifeBalanceContract.WishesEntry._ID + " = ?", new String[]{idEntry});
+        return result;
+    }
+
     public long MoveWishToNextStatus(String idEntry,
                                           int status)
     {

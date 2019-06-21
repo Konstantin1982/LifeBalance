@@ -41,6 +41,21 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
         );
     }
 
+    class WishListAdapterViewHolderDelete extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView wishDescriptionTextView;
+
+        WishListAdapterViewHolderDelete(View view) {
+            super(view);
+            wishDescriptionTextView = (TextView) view.findViewById(R.id.wishDescription);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            GeneralOnClick(v, getAdapterPosition());
+        }
+    }
+
     class WishListAdapterViewHolderStatusNew extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView wishDescriptionTextView;
         private TextView nextStepDescriptionTextView;
@@ -115,6 +130,9 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
             case 4:
                 view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step3, parent, false);
                 return new WishListAdapterViewHolderStatusSituation(view);
+            case 100:
+                view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step100, parent, false);
+                return new WishListAdapterViewHolderDelete(view);
             default:
                 view = LayoutInflater.from(mContext).inflate(R.layout.wish_item_in_list_step0, parent, false);
                 return new WishListAdapterViewHolderStatusNew(view);
@@ -123,28 +141,32 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
     @Override
     public int getItemViewType(int position) {
         int layout_type = -1;
-        mWishListCursor.moveToPosition(position);
-        int currentStatus = mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
-        switch (currentStatus) {
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
-                layout_type = 1;
-                break;
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
-                layout_type = 2;
-                break;
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
-                layout_type = 3;
-                break;
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
-            case GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE:
-                layout_type = 4;
-                break;
-            default:
-                layout_type = 1;
+        if (mode < 2) {
+            mWishListCursor.moveToPosition(position);
+            int currentStatus = mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
+            switch (currentStatus) {
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
+                    layout_type = 1;
+                    break;
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+                    layout_type = 2;
+                    break;
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS:
+                    layout_type = 3;
+                    break;
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_STEPS:
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE:
+                    layout_type = 4;
+                    break;
+                default:
+                    layout_type = 1;
+            }
+        } else {
+            layout_type = 100;
         }
         return layout_type;
     }
@@ -262,6 +284,10 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                 if (wishStatus == GeneralHelper.WishStatusesClass.WISH_STATUS_COMPLETE) {
                     holder3.stepsTextView.setText("Ваше желание выполняется");
                 }
+            break;
+            case 100:
+                WishListAdapterViewHolderDelete holder100 = (WishListAdapterViewHolderDelete) holder;
+                holder100.wishDescriptionTextView.setText(wishDescription);
             break;
         }
         return;

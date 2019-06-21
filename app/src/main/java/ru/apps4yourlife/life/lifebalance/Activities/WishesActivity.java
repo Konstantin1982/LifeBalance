@@ -58,6 +58,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
     private WishListAdapter mWishListAdapter;
     private RecyclerView mListWishes;
     private SyncTask task;
+    private int taskState = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +79,12 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         wishListInit();
-        task = new SyncTask(this);
-        task.execute();
+
+        if (GeneralHelper.isUserSubscribed()) {
+            taskState = 0;
+            task = new SyncTask(this);
+            task.execute();
+        }
     }
 
     public void wishListInit(){
@@ -112,7 +117,10 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
             // from Wish Edit
             int position = resultCode;
             mWishListAdapter.updateListValues(position);
+        } else {
+            mWishListAdapter.updateListValues(-1);
         }
+
     }
 
     public void wishAdd_click(View view) {
@@ -140,8 +148,10 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_refresh_list, menu);
+        if (GeneralHelper.isUserSubscribed()) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_refresh_list, menu);
+        }
         return true;
     }
 
@@ -155,19 +165,17 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh_list:
-                task = new SyncTask(this);
-                task.execute();
+                if (GeneralHelper.isUserSubscribed()) {
+                    taskState = 0;
+                    task = new SyncTask(this);
+                    task.execute();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        task.cancel(true);
-    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -177,9 +185,9 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         if (id == R.id.nav_mentor) {
             Intent mentorSubmitIntent = new Intent(this, MentorBuyingActivity.class);
             startActivity(mentorSubmitIntent);
-
         } else if (id == R.id.nav_delete_wishes) {
-            Toast.makeText(this,"Delete WISHES", Toast.LENGTH_SHORT).show();
+            Intent deleteWishesIntent = new Intent(this, DeleteWishesActivity.class);
+            startActivityForResult(deleteWishesIntent,1);
         } else if (id == R.id.nav_campaigns) {
             Toast.makeText(this,"CAMAIGNS", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_help) {
@@ -234,7 +242,11 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
                     // 2 - GET LIST for SEND
                     JSONObject data = PrepareDataToSend();
                     // 3 - SEND
-                    sendDataToServer(data);
+                    if (!data.isNull("wishes"))  {
+                        sendDataToServer(data);
+                    } else {
+                        taskState++;
+                    }
 
                     //TimeUnit.SECONDS.sleep(60);
                     //if (!LifeBalanceDBDataManager.GetSettingValueByName(dbHelper.getReadableDatabase(), SYNC_TASK_ACTIVITY).equalsIgnoreCase(String.valueOf(currentActivity))) {
@@ -258,13 +270,16 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             mWishListAdapter.updateListValues(-1);
-            Toast.makeText(mContext,"Refresh has been finished.", Toast.LENGTH_SHORT).show();
+            if (taskState == 2) {
+                Toast.makeText(mContext, "Обновление прошло успешно.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mContext, taskState + "Ошибка соединения с сервером, проверьте интернет-соединение и попробуйте еще раз.", Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            Toast.makeText(mContext,"ERROR WHILE REFRESHING", Toast.LENGTH_SHORT).show();
         }
 
         public JSONObject PrepareDataToSend(){
@@ -298,7 +313,6 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
                     data.put("wishes", wishesArray);
                 }
             } catch (Exception ex){
-                Toast.makeText(mContext,"ERROR WHILE REFRESHING", Toast.LENGTH_SHORT).show();
                 ex.printStackTrace();
             }
             return data;
@@ -386,6 +400,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
                         InputStream inputStream2 = new BufferedInputStream(conn.getInputStream());
                         conn.disconnect();
                     }
+                    taskState++;
                 }
                 catch (Exception e) {
                     Toast.makeText(mContext,"ERROR WHILE REFRESHING", Toast.LENGTH_SHORT).show();
@@ -432,6 +447,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
                 }
                 conn.disconnect();
+                taskState++;
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(mContext,"ERROR WHILE REFRESHING", Toast.LENGTH_SHORT).show();
