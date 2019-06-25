@@ -31,11 +31,8 @@
             android:name=".Activities.MentorBuyingActivity"
             android:label="Подключить ментора" />
         <activity android:name=".Activities.MentorBuyingSubmitActivity" />
-        <activity android:name=".Activities.DeleteWishesActivity"></activity>
+        <activity android:name=".Activities.DeleteWishesActivity" />
+        <activity android:name=".Activities.FAQActivity"></activity>
     </application>
-    <application
-        android:name="HSApplication"
-
-    />
 
 </manifest>

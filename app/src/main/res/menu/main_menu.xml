@@ -22,10 +22,6 @@
     <item android:title="Справочная информация">
         <menu>
             <item
-                android:id="@+id/nav_help"
-                android:icon="@drawable/ic_live_help_black_24dp"
-                android:title="Помощь по разделам" />
-            <item
                 android:id="@+id/nav_help2"
                 android:icon="@drawable/ic_help_black_24dp"
                 android:title="Как воообще загадывать желания" />

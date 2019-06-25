@@ -29,6 +29,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.freshchat.consumer.sdk.FaqOptions;
+import com.freshchat.consumer.sdk.Freshchat;
+import com.freshchat.consumer.sdk.FreshchatConfig;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -41,6 +45,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import ru.apps4yourlife.life.lifebalance.Adapters.StepsListAdapter;
@@ -79,6 +85,10 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         wishListInit();
+
+
+        FreshchatConfig freshchatConfig=new FreshchatConfig("ffb3d5fd-cd52-4f1c-b466-911ccda50fb2","2ad2945a-6045-4dcc-8efb-cd786672316d");
+        Freshchat.getInstance(getApplicationContext()).init(freshchatConfig);
 
         if (GeneralHelper.isUserSubscribed()) {
             taskState = 0;
@@ -188,12 +198,11 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         } else if (id == R.id.nav_delete_wishes) {
             Intent deleteWishesIntent = new Intent(this, DeleteWishesActivity.class);
             startActivityForResult(deleteWishesIntent,1);
-        } else if (id == R.id.nav_campaigns) {
-            Toast.makeText(this,"CAMAIGNS", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_help) {
-            Toast.makeText(this,"Main HELP", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_support) {
+            Freshchat.showConversations(getApplicationContext());
         } else if (id == R.id.nav_help2) {
-            Toast.makeText(this,"GENERAL HELP", Toast.LENGTH_SHORT).show();
+            Intent faqIntent = new Intent(this, FAQActivity.class);
+            startActivity(faqIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -488,3 +497,4 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
 
 }
+// TODO: BAD FILEPROVIDER FOR HELP
