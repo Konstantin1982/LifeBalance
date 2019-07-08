@@ -3,13 +3,16 @@ package ru.apps4yourlife.life.lifebalance.Activities;
 import android.animation.ObjectAnimator;
 import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.provider.BaseColumns;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -102,6 +105,11 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         setContentView(layout_type);
         initLayout();
         updateUIWish(mWishEntry);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     public void initLayout() {
@@ -401,13 +409,13 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     mWishStatus == GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED) {
                 CheckBox submitCheckBox = findViewById(R.id.ready_to_check);
                 if (submitCheckBox.isChecked()) {
-                    if (GeneralHelper.isUserSubscribed()) {
+                    if (GeneralHelper.isUserSubscribed(this)) {
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW;
                         needToBeSent = true;
                     } else {
                         wishSave_routine();
                         needToBeSave = false;
-                        GeneralHelper.ShowRecommendToSubscribe(this, this).show();
+                        ShowRecommendToSubscribe(this, this).show();
                         needToCloseActivity = false;
                     }
                 }
@@ -416,13 +424,13 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     mWishStatus == GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED) {
                 CheckBox submitCheckBox = findViewById(R.id.ready_to_check);
                 if (submitCheckBox.isChecked()) {
-                    if (GeneralHelper.isUserSubscribed()) {
+                    if (GeneralHelper.isUserSubscribed(this)) {
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
                         needToBeSent = true;
                     } else {
                         wishSave_routine();
                         needToBeSave = false;
-                        GeneralHelper.ShowRecommendToSubscribe(this, this).show();
+                        ShowRecommendToSubscribe(this, this).show();
                         needToCloseActivity = false;
                     }
                 }
@@ -444,10 +452,33 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         return needToCloseActivity;
     }
 
+    public Dialog ShowRecommendToSubscribe(final Context context, final GeneralHelper.SubscribeDialogInterface listener ) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.title_recommend_subscribe)
+                .setMessage(R.string.text_recommend_subscribe)
+                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(context,"УРА! Спасибо за подписку!",Toast.LENGTH_SHORT).show();
+                        OnAgreedToSubscribe(context);
+                        listener.OnAgreedToSubscribe(context);
+                    }
+                })
+                .setNegativeButton(R.string.myself, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(context,"Успехов! При необходимости всегда можно подключить ментора",Toast.LENGTH_LONG).show();
+                        listener.OnRejectToSubscribe(context);
+                    }
+                });
+        return builder.create();
+    }
+
 
     @Override
     public void OnAgreedToSubscribe(Context context) {
-        GeneralHelper.StartSubscriptionProcess(this);
+        Intent mentorSubmitIntent = new Intent(context, MentorBuyingSubmitActivity.class);
+        startActivityForResult(mentorSubmitIntent, 1);
     }
 
     @Override
@@ -711,11 +742,18 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        int some = 1 + 2;
         if (requestCode == 0 ) {
             // from Step Edit
-            int position = resultCode;
+            int position;
+            if (resultCode >= 0 ) position = resultCode;
+            else position = -1;
             mStepsListAdapter.updateListValues(position);
             updateFinishButton(true);
+        }
+        if (requestCode == 1 ) {
+            // user subscribe
+            FinishActivity(0);
         }
     }
 

@@ -129,6 +129,10 @@ public class LifeBalanceDBDataManager {
         return result;
     }
 
+    public long InsertOrUpdateSettings(String name, String value) {
+        return InsertOrUpdateSettings(mDBHelper.getReadableDatabase(),name,value);
+    }
+
     public long InsertOrUpdateMessage(String idEntry, String from, String to, String subject, String body, int isnew, long messageDate) {
         return this.InsertOrUpdateMessage(mDBHelper.getWritableDatabase(), idEntry, from, to, subject, body, isnew, messageDate);
     }
@@ -248,22 +252,24 @@ public class LifeBalanceDBDataManager {
     public static void UpdateWishFromServer(SQLiteDatabase writableDb, String wishId, String newStatus, String comment){
 
         Cursor wish = GetWishById(wishId, writableDb);
-        int status = wish.getInt(wish.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
-        Log.e("WISHUPDATE", "old status= " + status + "; " + newStatus);
-        if (status < Integer.valueOf(newStatus)) {
-            ContentValues values = new ContentValues();
-            values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, newStatus);
-            values.put(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE, new Date().getTime());
-            writableDb.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{wishId});
-        }
-        if (!comment.isEmpty()) {
-            String commentWish = "", commentStatus = "";
-            if (Integer.valueOf(newStatus) == GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED) {
-                commentWish = comment;
-            } else {
-                commentStatus = comment;
+        if (wish != null) {
+            int status = wish.getInt(wish.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
+            Log.e("WISHUPDATE", "old status= " + status + "; " + newStatus);
+            if (status < Integer.valueOf(newStatus)) {
+                ContentValues values = new ContentValues();
+                values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, newStatus);
+                values.put(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE, new Date().getTime());
+                writableDb.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{wishId});
             }
-            InsertOrUpdateServerComment(writableDb, wishId, commentWish, commentStatus);
+            if (!comment.isEmpty()) {
+                String commentWish = "", commentStatus = "";
+                if (Integer.valueOf(newStatus) == GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED) {
+                    commentWish = comment;
+                } else {
+                    commentStatus = comment;
+                }
+                InsertOrUpdateServerComment(writableDb, wishId, commentWish, commentStatus);
+            }
         }
     }
 

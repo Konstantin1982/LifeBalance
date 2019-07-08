@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -30,6 +31,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
+import ru.apps4yourlife.life.lifebalance.Activities.MentorBuyingSubmitActivity;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBHelper;
@@ -40,6 +42,15 @@ import ru.apps4yourlife.life.lifebalance.R;
  */
 
 public class GeneralHelper {
+
+    /* SETTINGS
+        CLIENT_NAME
+
+     */
+
+    public static final String USER_ID_SETTING_NAME = "USER_ID";   // уникальный айди клиента
+    public static final String USER_NAME_SETTING_NAME = "CLIENT_NAME"; // имя клиента
+    public static final String USER_STATE_SETTING_NAME = "USER_STATUS";  // 1 2 - покупка есть.
 
     public static String GetCurrentDateString() {
 // set the format to sql date time
@@ -155,8 +166,12 @@ public class GeneralHelper {
     }
 
 
-    public static boolean isUserSubscribed() {
-        //TODO: MAKE CHECK STATUS
+    public static boolean isUserSubscribed(Context context) {
+        LifeBalanceDBHelper dbHelper = new LifeBalanceDBHelper(context);
+        String currentState = LifeBalanceDBDataManager.GetSettingValueByName(dbHelper.getReadableDatabase(),GeneralHelper.USER_STATE_SETTING_NAME);
+        if (currentState.equalsIgnoreCase("1") || currentState.equalsIgnoreCase("2")) {
+            return true;
+        }
         return false;
     }
 
@@ -168,9 +183,7 @@ public class GeneralHelper {
 
     }
 
-    public static void StartSubscriptionProcess(Context context) {
-        Toast.makeText(context, "Subscription process is started....", Toast.LENGTH_SHORT).show();
-    }
+
 
     public static void ShowHelpInWishActivity(String stepName, String extraMessage, final Context context) {
         try {
@@ -208,27 +221,6 @@ public class GeneralHelper {
     }
 
 
-    public static Dialog ShowRecommendToSubscribe(final Context context, final SubscribeDialogInterface listener ) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.title_recommend_subscribe)
-                .setMessage(R.string.text_recommend_subscribe)
-                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(context,"УРА! Спасибо за подписку!",Toast.LENGTH_SHORT).show();
-                        GeneralHelper.StartSubscriptionProcess(context);
-                        listener.OnAgreedToSubscribe(context);
-                    }
-                })
-                .setNegativeButton(R.string.myself, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(context,"Успехов! При необходимости всегда можно подключить ментора",Toast.LENGTH_LONG).show();
-                        listener.OnRejectToSubscribe(context);
-                    }
-                });
-        return builder.create();
-    }
 
     public static int GetImageResourceByType(int type) {
         int resourceId = 0;

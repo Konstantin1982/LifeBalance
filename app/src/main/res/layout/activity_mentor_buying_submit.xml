@@ -51,10 +51,11 @@
         style="@style/BlueButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:enabled="false"
+        android:onClick="OnSubmitClick"
         android:text="Оформить покупку"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,6 +70,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Акция: зеленый слоник"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button3" />
@@ -82,6 +84,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text='До 12 июля скидка 33%.  Чтобы воспользоваться, введи код "СЛОН" в несущетсвующее поле.'
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerAction" />
@@ -99,29 +102,29 @@
         app:layout_constraintTop_toBottomOf="@+id/textAction" />
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/userNameTextView"
         style="@style/SmallHeaderText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Ваше имя:"
-        app:layout_constraintBottom_toTopOf="@+id/startBuyButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/userNameEditText" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/userNameEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Аноним_23990"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/startBuyButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView20" />
+        app:layout_constraintStart_toEndOf="@+id/userNameTextView"
+        app:layout_constraintTop_toBottomOf="@+id/actualPrice" />
 
 </android.support.constraint.ConstraintLayout>
     <!--

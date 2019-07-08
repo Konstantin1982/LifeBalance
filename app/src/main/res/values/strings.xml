@@ -15,5 +15,5 @@
     <string name="wishlist_nextstep_3">Формируем новую реальность. Представляем и формулируем ситуацию из реальности, где Желание уже сбылось.</string>
     <string name="wishlist_nextstep_4">Проверяем Вашу новую реальность. Потерпите, скоро вы получите ответ.</string>
     <string name="wishlist_nextstep_5">!! Необходимо скорректировать реальность !!</string>
-
+    <string name="freshchat_file_provider_authority">ru.apps4yourlife.life.lifebalance</string>
 </resources>

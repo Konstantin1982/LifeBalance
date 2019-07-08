@@ -25,4 +25,3 @@ import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBHelper;
 
 // moved to activity
-// TODO: SEND WISHES IMMEDIATELY

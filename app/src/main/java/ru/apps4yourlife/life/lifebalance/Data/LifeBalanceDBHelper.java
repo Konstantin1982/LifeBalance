@@ -161,9 +161,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
     }
 
     public void InsertInitialSettings(SQLiteDatabase db) {
-        String name = "USER_ID";
-        String uuid = UUID.randomUUID().toString();
-        LifeBalanceDBDataManager.InsertOrUpdateSettings(db, name, uuid);
+        LifeBalanceDBDataManager.InsertOrUpdateSettings(db, GeneralHelper.USER_ID_SETTING_NAME, UUID.randomUUID().toString());
     }
 
 
@@ -224,7 +222,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
         //InsertInitialMessages(sqLiteDatabase);
         //insertFakeWishes(sqLiteDatabase);
         //InsertInitialWishesTypes(sqLiteDatabase);
-        //InsertInitialSettings(sqLiteDatabase);
+        InsertInitialSettings(sqLiteDatabase);
     }
 
     @Override

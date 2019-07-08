@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -29,6 +30,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.freshchat.consumer.sdk.FaqOptions;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
@@ -55,12 +59,14 @@ import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBHelper;
 import ru.apps4yourlife.life.lifebalance.R;
+import ru.apps4yourlife.life.lifebalance.Utilities.BillingHelper;
 import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 //import ru.apps4yourlife.life.lifebalance.Utilities.SyncTask;
 
-public class WishesActivity extends AppCompatActivity implements WishListAdapter.WishListAdapterClickHandler, NavigationView.OnNavigationItemSelectedListener {
+public class WishesActivity extends AppCompatActivity implements WishListAdapter.WishListAdapterClickHandler, NavigationView.OnNavigationItemSelectedListener, PurchasesUpdatedListener, BillingHelper.LastPurchaseListener  {
 
 
+    private BillingHelper mBillingHelper;
     private WishListAdapter mWishListAdapter;
     private RecyclerView mListWishes;
     private SyncTask task;
@@ -68,6 +74,8 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         getWindow().setExitTransition(new Explode());
 
@@ -90,11 +98,36 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         FreshchatConfig freshchatConfig=new FreshchatConfig("ffb3d5fd-cd52-4f1c-b466-911ccda50fb2","2ad2945a-6045-4dcc-8efb-cd786672316d");
         Freshchat.getInstance(getApplicationContext()).init(freshchatConfig);
 
-        if (GeneralHelper.isUserSubscribed()) {
+        RunSyncTask();
+    }
+
+    @Override
+    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+        LifeBalanceDBDataManager dbDataManager = new LifeBalanceDBDataManager(this);
+        if (responseCode == BillingClient.BillingResponse.OK && purchases != null){
+            dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_STATE_SETTING_NAME, "1");
+            RunSyncTask();
+            //Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+        }
+        if (responseCode == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
+            dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_STATE_SETTING_NAME, "2");
+            //Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+            RunSyncTask();
+        }
+    }
+
+    @Override
+    public void setLastPurchase(String code) {
+
+    }
+
+    public void RunSyncTask() {
+        if (GeneralHelper.isUserSubscribed(this)) {
             taskState = 0;
             task = new SyncTask(this);
             task.execute();
         }
+
     }
 
     public void wishListInit(){
@@ -127,16 +160,16 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
             // from Wish Edit
             int position = resultCode;
             mWishListAdapter.updateListValues(position);
+            invalidateOptionsMenu();
         } else {
             mWishListAdapter.updateListValues(-1);
         }
-
+        RunSyncTask();
     }
 
     public void wishAdd_click(View view) {
         onWishClick("-1", "-1");
     }
-
 
     @Override
     public void onWishClick(String wishId, String itemPositionInList) {
@@ -158,7 +191,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (GeneralHelper.isUserSubscribed()) {
+        if (GeneralHelper.isUserSubscribed(this)) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.menu_refresh_list, menu);
         }
@@ -175,17 +208,12 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh_list:
-                if (GeneralHelper.isUserSubscribed()) {
-                    taskState = 0;
-                    task = new SyncTask(this);
-                    task.execute();
-                }
+                RunSyncTask();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -209,6 +237,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     public class SyncTask extends AsyncTask<Void,Void,Void> {
 
@@ -464,11 +493,12 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
             return false;
         }
 
-        //TODO: generate key
         private String GenerateKey(String userId) {
-            String key = "OK";
+            String key =  "OK";
+            if (!GeneralHelper.isUserSubscribed(mContext)) {
+                key =  "ERROR";
+            }
             return key;
-
         }
 
         private String convertStreamToString(InputStream is) {
@@ -497,4 +527,3 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
 
 }
-// TODO: BAD FILEPROVIDER FOR HELP
