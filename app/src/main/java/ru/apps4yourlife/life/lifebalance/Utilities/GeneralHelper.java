@@ -1,5 +1,4 @@
 package ru.apps4yourlife.life.lifebalance.Utilities;
-
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -48,8 +47,8 @@ public class GeneralHelper {
 
      */
 
-    public static final String USER_ID_SETTING_NAME = "USER_ID";   // уникальный айди клиента
-    public static final String USER_NAME_SETTING_NAME = "CLIENT_NAME"; // имя клиента
+    public static final String USER_ID_SETTING_NAME = "USERID";   // уникальный айди клиента
+    public static final String USER_NAME_SETTING_NAME = "CLIENTNAME"; // имя клиента
     public static final String USER_STATE_SETTING_NAME = "USER_STATUS";  // 1 2 - покупка есть.
 
     public static String GetCurrentDateString() {
@@ -180,10 +179,7 @@ public class GeneralHelper {
         LifeBalanceDBHelper dbHelper = new LifeBalanceDBHelper(context);
         LifeBalanceDBDataManager.InsertQueue(dbHelper.getWritableDatabase(), String.valueOf(wishId),"0", "0");
         Toast.makeText(context, "Отправлено на рассмотрение", Toast.LENGTH_SHORT).show();
-
     }
-
-
 
     public static void ShowHelpInWishActivity(String stepName, String extraMessage, final Context context) {
         try {
@@ -252,8 +248,4 @@ public class GeneralHelper {
         }
         return resourceId;
     }
-
 }
-
-
-

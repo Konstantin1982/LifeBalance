@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="24dp"
-        android:text="Помощь в формулировании (и осознании) до 50 Ваших желаний; Отзывчивая обратная связь; Ответы на все Ваши вопросы."
+        android:text="Помощь в формулировании (и осознании) до 30 Ваших желаний; Отзывчивая обратная связь; Ответы на все Ваши вопросы."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toEndOf="@+id/imageView9"

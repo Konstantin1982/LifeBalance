@@ -242,11 +242,10 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
     public class SyncTask extends AsyncTask<Void,Void,Void> {
 
         public static final String SYNC_TASK_ACTIVITY = "SYNC_TASK_ACTIVITY";
-        private static final String USER_ID = "USER_ID";
         private static final String KEY = "KEY";
         //private static final String URL_ADDRESS_TO_SEND = "http://localhost/request.php";
-        private static final String URL_ADDRESS_TO_SEND = "http://apps4yourlife.ru/lifebalance/request.php";
-        private static final String URL_ADDRESS_TO_RECEIVE = "http://apps4yourlife.ru/lifebalance/receivedata.php";
+        private static final String URL_ADDRESS_TO_SEND = "https://apps4yourlife.ru/lifebalance/request.php";
+        private static final String URL_ADDRESS_TO_RECEIVE = "https://apps4yourlife.ru/lifebalance/receivedata.php";
 
         private int res = 0;
 
@@ -309,9 +308,9 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
             super.onPostExecute(aVoid);
             mWishListAdapter.updateListValues(-1);
             if (taskState == 2) {
-                Toast.makeText(mContext, "Обновление прошло успешно.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Обновление прошло успешно.", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(mContext, taskState + "Ошибка соединения с сервером, проверьте интернет-соединение и попробуйте еще раз.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Ошибка соединения с сервером, проверьте интернет-соединение и попробуйте еще раз.", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -324,8 +323,10 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
             JSONObject data = new JSONObject();
             try {
                 // UserID + KEY
-                String userId = LifeBalanceDBDataManager.GetSettingValueByName(dbHelper.getReadableDatabase(),USER_ID);
-                data.put(USER_ID, userId);
+                String userId = LifeBalanceDBDataManager.GetSettingValueByName(dbHelper.getReadableDatabase(),GeneralHelper.USER_ID_SETTING_NAME);
+                String userName = LifeBalanceDBDataManager.GetSettingValueByName(dbHelper.getReadableDatabase(),GeneralHelper.USER_NAME_SETTING_NAME);
+                data.put(GeneralHelper.USER_ID_SETTING_NAME, userId);
+                data.put(GeneralHelper.USER_NAME_SETTING_NAME, userName);
                 data.put(KEY,GenerateKey(userId));
 
                 // wishes
@@ -353,6 +354,8 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
             } catch (Exception ex){
                 ex.printStackTrace();
             }
+            Log.e("JSON", data.toString());
+
             return data;
         }
 
@@ -361,8 +364,8 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
             JSONObject data = new JSONObject();
             try {
                 // UserID + KEY
-                String userId = LifeBalanceDBDataManager.GetSettingValueByName(dbHelper.getReadableDatabase(),USER_ID);
-                data.put(USER_ID, userId);
+                String userId = LifeBalanceDBDataManager.GetSettingValueByName(dbHelper.getReadableDatabase(),GeneralHelper.USER_ID_SETTING_NAME);
+                data.put(GeneralHelper.USER_ID_SETTING_NAME, userId);
                 data.put(KEY,GenerateKey(userId));
                 data.put("COMMIT",commit);
             } catch (Exception ex){
@@ -473,6 +476,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
                 String responseData = convertStreamToString(inputStream);
                 if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     JSONObject responseJSON = new JSONObject(responseData);
+                    Log.e("JSON_RESPONSE", responseJSON.toString());
                     try {
                         String updatedWishes = responseJSON.getString("wishes");
                         Log.e("JSON.COMMIT", updatedWishes);
@@ -527,3 +531,4 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
 
 }
+

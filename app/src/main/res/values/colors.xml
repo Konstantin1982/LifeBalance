@@ -15,12 +15,12 @@
 -->
 
     <color name="colorPrimary">#e9e8d2</color>
-    <color name="colorPrimaryDark">#cecab0</color>
+    <color name="colorPrimaryDark">#b7b6a1</color>
 
 
     <color name="colorAccent">#553f54</color>
-    <color name="colorAccentLight">#67b2c1</color>
-    <color name="colorAccentDark">#e57c5c</color>
+    <color name="colorAccentLight">#826a80</color>
+    <color name="colorAccentDark">#2c182b</color>
 
     <color name="olive">#bea01a</color>
     <color name="green">#3fc67e</color>

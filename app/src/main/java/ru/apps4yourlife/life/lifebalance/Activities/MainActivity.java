@@ -109,11 +109,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_mentor) {
-            Toast.makeText(this,"Mentor buying", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Mentor buying", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_delete_wishes) {
-            Toast.makeText(this,"Delete WISHES", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Delete WISHES", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_help2) {
-            Toast.makeText(this,"GENERAL HELP", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"GENERAL HELP", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

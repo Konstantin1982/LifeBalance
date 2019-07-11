@@ -38,14 +38,14 @@ import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 
 public class MentorBuyingSubmitActivity extends AppCompatActivity implements PurchasesUpdatedListener, BillingHelper.LastPurchaseListener  {
 
-    private static final String URL_ADDRESS_TO_CHECK = "http://apps4yourlife.ru/lifebalance/state.php";
+    private static final String URL_ADDRESS_TO_CHECK = "https://apps4yourlife.ru/lifebalance/state.php";
     private BillingHelper mBillingHelper;
     private int places = -1;
     private double price = 8000;
     private int isCampaign = 0;
     private String cHeader = "";
     private String cText = "";
-    private String skuCode = "android.test.purchased";
+     private String skuCode = "android.test.purchased";
     //private String skuCode = "mainWish";
 
 

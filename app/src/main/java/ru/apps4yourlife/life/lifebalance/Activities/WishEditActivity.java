@@ -77,7 +77,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         // get all data from Database
         initWish(wishIdString);
 
-        Toast.makeText(this,"STATUS = " + mWishStatus, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"STATUS = " + mWishStatus, Toast.LENGTH_SHORT).show();
 
         // init layout
         int layout_type;
@@ -193,7 +193,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         } else {
             mWishEntryId = 0;
         }
-        Toast.makeText(this, "WISH ID = " + mWishEntryId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "WISH ID = " + mWishEntryId, Toast.LENGTH_SHORT).show();
         if (mWishEntryId > 0) {
             // edit wish
             mWishEntry = mDataManager.GetWishById(wishId);
@@ -330,7 +330,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             break;
         }
 
-        Toast.makeText(this, "Save clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Save clicked", Toast.LENGTH_SHORT).show();
         Log.e("wId", "WISH ID" + mWishEntryId + ";   NEW STATUS = " + mNewWishStatus);
         long res = mDataManager.InsertOrUpdateWish(
                 String.valueOf(mWishEntryId),
@@ -443,7 +443,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
                 }
                 mDataManager.InsertOrUpdateFearsStatus(mWishEntryId, mWishFearStatus);
-                Toast.makeText(this,"FEARS = " + mWishFearStatus, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this,"FEARS = " + mWishFearStatus, Toast.LENGTH_SHORT).show();
                 needToCloseActivity = true;
             }
             if (needToBeSave) wishSave_routine();
@@ -459,7 +459,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(context,"УРА! Спасибо за подписку!",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context,"УРА! Спасибо за подписку!",Toast.LENGTH_SHORT).show();
                         OnAgreedToSubscribe(context);
                         listener.OnAgreedToSubscribe(context);
                     }
@@ -594,7 +594,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         step_3.setEnabled(false);
         step_4.setEnabled(false);
         // 0 1 2 3 4
-        Toast.makeText(this, "FEARS!!! = " + mWishFearStatus, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "FEARS!!! = " + mWishFearStatus, Toast.LENGTH_SHORT).show();
         if (mWishFearStatus >= 3) {
             step_1.setChecked(true);
             step_2.setChecked(true);
@@ -727,7 +727,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
 
     @Override
     public void onArrowClick(String stepId, int direction) {
-        Toast.makeText(this, "ID = " + stepId + "; direction =   " + direction, Toast.LENGTH_SHORT ).show();
+        //Toast.makeText(this, "ID = " + stepId + "; direction =   " + direction, Toast.LENGTH_SHORT ).show();
         mDataManager.ReorderStep(Long.valueOf(stepId), direction);
         mStepsListAdapter.updateListValues(-1);
     }

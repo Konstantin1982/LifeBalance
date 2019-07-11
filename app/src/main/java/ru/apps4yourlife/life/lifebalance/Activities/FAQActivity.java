@@ -28,7 +28,10 @@ public class FAQActivity extends AppCompatActivity {
 
     public void clickOnMentorFaq(View view) {
         GeneralHelper.ShowHelpInWishActivity("why2.html", "", this);
+    }
 
+    public void clickOnApplicationFAQ(View view) {
+        GeneralHelper.ShowHelpInWishActivity("why3.html", "", this);
     }
 
     @Override
