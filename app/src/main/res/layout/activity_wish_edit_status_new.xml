@@ -19,7 +19,7 @@
         android:layout_marginTop="24dp"
         android:background="@color/colorPrimary"
         android:enabled="true"
-        android:hint="Запишите свое желание сюда"
+        android:hint="Запишите свое желание сюда и выберите сферы жизни выше"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/ready_to_check"
         app:layout_constraintEnd_toEndOf="parent"

@@ -197,7 +197,7 @@ public class GeneralHelper {
                 is.read(buffer);
                 is.close();
                 String str = new String(buffer);
-                String fullMessage = extraMessage + "<BR><HR>" + str;
+                String fullMessage = "<h2 align='center'>Комментарий ментора</h2>" + extraMessage + "<BR><BR><HR>" + str;
                 messageWebView.loadData(fullMessage, "text/html", "ru_RU");
             }
 

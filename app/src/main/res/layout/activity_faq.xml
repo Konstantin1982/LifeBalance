@@ -8,6 +8,7 @@
 
     <Button
         android:id="@+id/button4"
+        style="@style/TypicalButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -29,6 +30,7 @@
         />
 
     <Button
+        style="@style/TypicalButton"
         android:id="@+id/button5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,6 +45,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button4" />
 
     <Button
+        style="@style/TypicalButton"
         android:id="@+id/button2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

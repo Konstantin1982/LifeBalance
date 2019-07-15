@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telecom.Call;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +41,7 @@ import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 public class MentorBuyingSubmitActivity extends AppCompatActivity implements PurchasesUpdatedListener, BillingHelper.LastPurchaseListener  {
 
     private static final String URL_ADDRESS_TO_CHECK = "https://apps4yourlife.ru/lifebalance/state.php";
+    private static final String URL_ADDRESS_TO_CALLBACK = "https://apps4yourlife.ru/lifebalance/callback.php";
     private BillingHelper mBillingHelper;
     private int places = -1;
     private double price = 8000;
@@ -55,10 +58,14 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
         if (responseCode == BillingClient.BillingResponse.OK && purchases != null){
             dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_STATE_SETTING_NAME, "1");
             Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+            CallBackTask cb = new CallBackTask(0);
+            cb.execute();
         }
         if (responseCode == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
             dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_STATE_SETTING_NAME, "2");
             Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+            CallBackTask cb = new CallBackTask(1);
+            cb.execute();
         }
     }
 
@@ -80,9 +87,6 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
 
 
     public void OnCheckStateClick(View view) {
-        //getStateFromServer();
-        //LifeBalanceDBHelper dbHelper = new LifeBalanceDBHelper(this);
-        //LifeBalanceDBDataManager.InsertOrUpdateSettings(dbHelper.getWritableDatabase(), SYNC_TASK_ACTIVITY, String.valueOf(""));
         CheckStateTask task = new CheckStateTask();
         task.execute();
     }
@@ -227,8 +231,67 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
         }
     }
 
+
+    public class CallBackTask extends AsyncTask<Void,Void,Void> {
+
+        private  int mMode;
+        public CallBackTask(int mode) {
+            mMode = mode;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                callBackExecute();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... voids){
+            super.onProgressUpdate(voids);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            UpdateStateView(places,price,isCampaign,cHeader, cText);
+            super.onPostExecute(aVoid);
+        }
+
+        public boolean callBackExecute() {
+            try {
+                URL url = new URL(URL_ADDRESS_TO_CALLBACK + "?mode=" + mMode);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                conn.setRequestProperty("Accept","application/json");
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                InputStream inputStream = new BufferedInputStream(conn.getInputStream());
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    Log.d("Callback", "Callback OK");
+                } else {
+                    Log.e("Callback","CallBack ERROR" + conn.getResponseMessage());
+                }
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+    }
+
+
 }
 
 
-// TODO: PURCHASE FLOW.
+
 

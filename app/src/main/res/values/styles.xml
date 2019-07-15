@@ -9,7 +9,7 @@
     </style>
 
 
-    <style name="BlueButton" parent="Widget.AppCompat.Button.Colored">
+    <style name="TypicalButton" parent="Widget.AppCompat.Button.Colored">
         <item name="background">@color/colorPrimary</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:colorButtonNormal">@color/colorPrimary</item>

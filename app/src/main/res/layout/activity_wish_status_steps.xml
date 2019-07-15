@@ -58,13 +58,12 @@
 
     <Button
         android:id="@+id/buttonFinishWish"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        style="@style/TypicalButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@color/colorAccentDark"
         android:onClick="buttonFinishClick"
         android:elevation="0dp"
         android:text="Исполнить желание!"
