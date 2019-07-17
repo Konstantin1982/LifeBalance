@@ -48,8 +48,8 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
     private int isCampaign = 0;
     private String cHeader = "";
     private String cText = "";
-     private String skuCode = "android.test.purchased";
-    //private String skuCode = "mainWish";
+     //private String skuCode = "android.test.purchased";
+    private String skuCode = "mainwish";
 
 
     @Override
