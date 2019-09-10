@@ -128,4 +128,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 }
 
-//  TODO 4 : DESIGN
+// todo: validator on save

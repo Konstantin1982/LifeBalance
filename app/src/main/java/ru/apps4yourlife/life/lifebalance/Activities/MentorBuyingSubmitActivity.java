@@ -1,25 +1,19 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
-
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -121,7 +115,7 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
             }
 
             TextView priceView = (TextView) findViewById(R.id.actualPrice);
-            priceView.setText("Итого цена: " + String.valueOf(price) + " рублей.");
+            priceView.setText("Стоимость: " + String.valueOf(price) + " рублей.");
 
             TextView headerActionTextView = (TextView) findViewById(R.id.headerAction);
             TextView textActionTextView = (TextView) findViewById(R.id.textAction);

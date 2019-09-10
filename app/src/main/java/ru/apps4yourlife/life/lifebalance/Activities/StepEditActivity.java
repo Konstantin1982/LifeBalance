@@ -1,49 +1,15 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
-import android.animation.ObjectAnimator;
-import android.app.ActivityOptions;
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.BounceInterpolator;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import ru.apps4yourlife.life.lifebalance.Adapters.StepsListAdapter;
-import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
-import ru.apps4yourlife.life.lifebalance.Utilities.ChooseCategoriesFragment;
-import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 
 public class StepEditActivity extends AppCompatActivity {
 

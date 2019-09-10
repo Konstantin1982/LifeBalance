@@ -8,17 +8,6 @@
     android:focusableInTouchMode="true"
     tools:context="ru.apps4yourlife.life.lifebalance.Activities.MentorBuyingSubmitActivity">
 
-    <TextView
-        android:id="@+id/textView13"
-        style="@style/SmallHeaderText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Стоимость покупки: 8000 рублей."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/button3"
         style="@style/TypicalButton"
@@ -38,13 +27,13 @@
         style="@style/SmallHeaderText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="Свободных мест: (неизвестно)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/startBuyButton"
@@ -91,13 +80,13 @@
 
     <TextView
         android:id="@+id/actualPrice"
+        style="@style/SmallHeaderText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/SmallHeaderText"
-        android:textStyle="bold"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="Итого цена: 4500 рублей."
+        android:layout_marginEnd="8dp"
+        android:text="Стоимость: 4500 рублей."
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textAction" />
 
