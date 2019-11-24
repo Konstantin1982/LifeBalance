@@ -62,6 +62,8 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
         private ImageView wishType1;
         private ImageView wishType2;
         private ImageView wishType3;
+        private TextView warnTextView;
+
         WishListAdapterViewHolderStatusNew(View view) {
             super(view);
             wishDescriptionTextView = (TextView) view.findViewById(R.id.wishDescription);
@@ -69,6 +71,7 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
             wishType1 = (ImageView) view.findViewById(R.id.list_wish_type_1);
             wishType2 = (ImageView) view.findViewById(R.id.list_wish_type_2);
             wishType3 = (ImageView) view.findViewById(R.id.list_wish_type_3);
+            warnTextView = view.findViewById(R.id.warn_text);
             view.setOnClickListener(this);
         }
 
@@ -215,9 +218,11 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
             case 1:
                 WishListAdapterViewHolderStatusNew holder0 = (WishListAdapterViewHolderStatusNew) holder;
                 holder0.wishDescriptionTextView.setText(wishDescription);
+                holder0.warnTextView.setVisibility(View.INVISIBLE);
                 switch (wishStatus) {
                     case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
                         holder0.nextStepDescriptionTextView.setText(R.string.wishlist_nextstep_0);
+                        holder0.warnTextView.setVisibility(View.VISIBLE);
                     break;
                     case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
                         holder0.nextStepDescriptionTextView.setText(R.string.wishlist_nextstep_10);
@@ -230,6 +235,7 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                 wishType2 = holder0.wishType2;
                 wishType3 = holder0.wishType3;
                 SetWishTypeImages(types, wishType1, wishType2, wishType3);
+
             break;
             case 2:
                 WishListAdapterViewHolderStatusSituation holder1 = (WishListAdapterViewHolderStatusSituation) holder;

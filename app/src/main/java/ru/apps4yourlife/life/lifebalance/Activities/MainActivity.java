@@ -129,3 +129,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 }
 
 // todo: validator on save
+
+/*
+
+=========================================================
+1.2.0 Features
+=========================================================
+
+
+ TODO: 1. TEST WISH (???).
+ TODO   1.1. Create workflow
+ TODO   1.2. Design it
+ TODO   1.3  Implement scenario
+
+
+ TODO  2. MANUAL REWORK (IMPROVE DESIGN)
+
+ TODO 3. INVESTIGATE WEBCHAT NOTIFICATIONS
+
+
+
+
+ */

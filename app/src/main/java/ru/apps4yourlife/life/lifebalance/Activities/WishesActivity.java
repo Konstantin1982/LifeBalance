@@ -2,9 +2,11 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
 import android.app.ActivityOptions;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -236,6 +238,30 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private boolean isActivityStarted(Intent aIntent) {
+        try {
+            startActivity(aIntent);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            return false;
+        }
+    }
+
+    public void btnRateThisApp_click(View v) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=ru.apps4yourlife.life.lifebalance"));
+        if (!isActivityStarted(intent)) {
+            intent.setData(Uri
+                    .parse("https://play.google.com/store/apps/details?id=id=ru.apps4yourlife.life.lifebalance"));
+            if (!isActivityStarted(intent)) {
+                Toast.makeText(
+                        this,
+                        "Не удалось открыть Google Play.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

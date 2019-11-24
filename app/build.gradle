@@ -6,8 +6,8 @@ android {
         applicationId "ru.apps4yourlife.life.lifebalance"
         minSdkVersion 23
         targetSdkVersion 26
-        versionCode 101
-        versionName "1.0.1"
+        versionCode 120
+        versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -24,6 +24,6 @@ dependencies {
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:design:26.1.0'
-    compile 'com.github.freshdesk:freshchat-android:2.6.0'
+    implementation 'com.github.freshdesk:freshchat-android:2.6.0'
     implementation 'com.android.billingclient:billing:1.1'
 }
