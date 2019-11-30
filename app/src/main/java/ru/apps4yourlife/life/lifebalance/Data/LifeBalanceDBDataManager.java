@@ -17,7 +17,7 @@ import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 
 
 public class LifeBalanceDBDataManager {
-    private LifeBalanceDBHelper mDBHelper;
+    public LifeBalanceDBHelper mDBHelper;
     private Context mContext;
 
 

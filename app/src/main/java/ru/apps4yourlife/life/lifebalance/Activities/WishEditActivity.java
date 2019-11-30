@@ -308,10 +308,29 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     }
 
     public boolean isWishCorrect() {
-        return true;
+        String wishDescriptionString = "", wishSituationString = "";
+        boolean result = true;
+        switch (mWishStatus) {
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                EditText wishDescriptionEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
+                wishDescriptionString = wishDescriptionEditText.getText().toString();
+                if (wishDescriptionString.isEmpty()) result = false;
+                break;
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
+            case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+                EditText wishSituationEditText = (EditText) findViewById(R.id.wishSituationEditText);
+                wishSituationString = wishSituationEditText.getText().toString();
+                if (wishSituationString.isEmpty()) result = false;
+                break;
+        }
+        return result;
     }
 
     public void wishSave_routine() {
+        Log.e("SAVE ROTUINE" , "CALLED WITH ID = " + mWishEntryId);
         String wishDescriptionString = "", wishSituationString = "";
         switch (mWishStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
@@ -341,7 +360,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 mNewWishStatus,
                 wishDescriptionString,
                 wishSituationString);
-        if (mWishEntryId == 0) mWishEntryId = res;
+        if (mWishEntryId <= 0) mWishEntryId = res;
     }
 
     public void PutWishToNextStatus() {
@@ -448,6 +467,21 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             }
             if (needToBeSave) wishSave_routine();
             if (needToBeSent) GeneralHelper.PushWishToServer(this, mWishEntryId);
+        } else {
+            EditText wrongEditText;
+            String errorMessage = "";
+            switch (mWishStatus) {
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW:
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED:
+                    wrongEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
+                    errorMessage = "Желание должно быть заполнено.";
+                break;
+                default:
+                    wrongEditText = (EditText) findViewById(R.id.wishSituationEditText);
+                    errorMessage = "Необходимо описать ситуацию";
+            }
+            wrongEditText.setError(errorMessage);
         }
         return needToCloseActivity;
     }
@@ -467,7 +501,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 .setNegativeButton(R.string.myself, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(context,"Успехов! При необходимости всегда можно подключить ментора",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"Успехов! При необходимости всегда можно подключить тренера",Toast.LENGTH_LONG).show();
                         listener.OnRejectToSubscribe(context);
                     }
                 });

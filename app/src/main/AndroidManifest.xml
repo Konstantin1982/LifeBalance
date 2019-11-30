@@ -26,8 +26,8 @@
         <activity android:name=".Activities.WishEditActivity" android:label="Моё желание"/>
         <activity android:name=".Activities.StepEditActivity" android:label="Шаг к мечте" />
         <activity android:name=".Activities.MessagesActivity" android:label="Обратная связь"/>
-        <activity android:name=".Activities.MentorBuyingActivity" android:label="Подключить ментора" />
-        <activity android:name=".Activities.MentorBuyingSubmitActivity" android:label="Подключить ментора" />
+        <activity android:name=".Activities.MentorBuyingActivity" android:label="Подключить тренера" />
+        <activity android:name=".Activities.MentorBuyingSubmitActivity" android:label="Подключить тренера" />
         <activity android:name=".Activities.DeleteWishesActivity" android:label="Удаление желаний"/>
         <activity android:name=".Activities.FAQActivity" android:label="Ответы на вопросы"/>
 

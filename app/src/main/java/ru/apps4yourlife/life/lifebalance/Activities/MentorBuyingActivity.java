@@ -25,7 +25,7 @@ public class MentorBuyingActivity extends AppCompatActivity {
         if (GeneralHelper.isUserSubscribed(this)) {
             Button submitButton = findViewById(R.id.SubmitButton);
             submitButton.setEnabled(false);
-            submitButton.setText("МЕНТОР УЖЕ ПОДКЛЮЧЕН");
+            submitButton.setText("ТРЕНЕР УЖЕ ПОДКЛЮЧЕН");
         }
 
     }
@@ -51,7 +51,6 @@ public class MentorBuyingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 ) {
             if (resultCode == 0) {
-                //Toast.makeText(this,"Ментор НЕ подключен. Рекомендую попробовать позже.", Toast.LENGTH_SHORT ).show();
                 return;
             }
         }

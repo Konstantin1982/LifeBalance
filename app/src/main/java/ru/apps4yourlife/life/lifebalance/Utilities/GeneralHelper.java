@@ -50,6 +50,7 @@ public class GeneralHelper {
     public static final String USER_ID_SETTING_NAME = "USERID";   // уникальный айди клиента
     public static final String USER_NAME_SETTING_NAME = "CLIENTNAME"; // имя клиента
     public static final String USER_STATE_SETTING_NAME = "USER_STATUS";  // 1 2 - покупка есть.
+    public static final String USER_TEST_STATE_SETTING_NAME = "USER_TEST_STATUS";  // 1 2 - покупка есть.
 
     public static String GetCurrentDateString() {
 // set the format to sql date time
@@ -197,7 +198,7 @@ public class GeneralHelper {
                 is.read(buffer);
                 is.close();
                 String str = new String(buffer);
-                String fullMessage = "<h2 align='center'>Комментарий ментора</h2>" + extraMessage + "<BR><BR><HR>" + str;
+                String fullMessage = "<h2 align='center'>Комментарий от тренера</h2>" + extraMessage + "<BR><BR><HR>" + str;
                 messageWebView.loadData(fullMessage, "text/html", "ru_RU");
             }
 

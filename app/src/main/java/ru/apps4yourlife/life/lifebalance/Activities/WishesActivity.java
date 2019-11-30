@@ -225,6 +225,10 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         if (id == R.id.nav_mentor) {
             Intent mentorSubmitIntent = new Intent(this, MentorBuyingActivity.class);
             startActivity(mentorSubmitIntent);
+        }else if (id == R.id.nav_mentor_test) {
+            Intent mentorSubmitIntent = new Intent(this, MentorBuyingSubmitActivity.class);
+            mentorSubmitIntent.putExtra("MODE", "TEST");
+            startActivity(mentorSubmitIntent);
         } else if (id == R.id.nav_delete_wishes) {
             Intent deleteWishesIntent = new Intent(this, DeleteWishesActivity.class);
             startActivityForResult(deleteWishesIntent,1);
@@ -260,6 +264,17 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
                         this,
                         "Не удалось открыть Google Play.",
                         Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void debugBtn_click(View view) {
+        LifeBalanceDBDataManager manager = new LifeBalanceDBDataManager(this);
+        Cursor tmp = manager.mDBHelper.getReadableDatabase().rawQuery("Select _ID from Wishes", null);
+        if (tmp.getCount()>0) {
+            for (int i = 0; i< tmp.getCount(); i++) {
+                tmp.moveToPosition(i);
+                Log.e("DB WISH", "ID = " + tmp.getLong(0));
             }
         }
     }

@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
+import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBHelper;
 import ru.apps4yourlife.life.lifebalance.R;
@@ -42,24 +43,49 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
     private int isCampaign = 0;
     private String cHeader = "";
     private String cText = "";
-     //private String skuCode = "android.test.purchased";
-    private String skuCode = "mainwish";
+     //private String skuCodeMain = "android.test.purchased";
+    private String skuCodeMain = "mainwish";
+    private String skuCodeTest = "testwish";
+    private String mMode = "";
 
 
     @Override
     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
         LifeBalanceDBDataManager dbDataManager = new LifeBalanceDBDataManager(this);
         if (responseCode == BillingClient.BillingResponse.OK && purchases != null){
-            dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_STATE_SETTING_NAME, "1");
-            Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
-            CallBackTask cb = new CallBackTask(0);
-            cb.execute();
+
+            for (Purchase purchase : purchases) {
+                String skuCode = purchase.getSku();
+                if (skuCode.equalsIgnoreCase(skuCodeMain)) {
+                    dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_STATE_SETTING_NAME, "1");
+                    Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+                    CallBackTask cb = new CallBackTask(0);
+                    cb.execute();
+                }
+                if (skuCode.equalsIgnoreCase(skuCodeTest)) {
+                    dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_TEST_STATE_SETTING_NAME, "1");
+                    Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+                    CallBackTask cb = new CallBackTask(2);
+                    cb.execute();
+                }
+            }
         }
         if (responseCode == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
-            dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_STATE_SETTING_NAME, "2");
-            Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
-            CallBackTask cb = new CallBackTask(1);
-            cb.execute();
+            for (Purchase purchase : purchases) {
+                String skuCode = purchase.getSku();
+                if (skuCode.equalsIgnoreCase(skuCodeMain)) {
+                    dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_STATE_SETTING_NAME, "2");
+                    Toast.makeText(this, "Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+                    CallBackTask cb = new CallBackTask(1);
+                    cb.execute();
+                }
+                if (skuCode.equalsIgnoreCase(skuCodeTest)) {
+                    dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_TEST_STATE_SETTING_NAME, "1");
+                    Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+                    CallBackTask cb = new CallBackTask(3);
+                    cb.execute();
+                }
+            }
         }
     }
 
@@ -77,11 +103,20 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
         int i1 = r.nextInt(150000);
         EditText userNameEditText = findViewById(R.id.userNameEditText);
         userNameEditText.setText("Мечтатель_" + i1);
+
+        String activityMode = getIntent().getStringExtra("MODE");
+        if (activityMode != null) {
+            if (activityMode.equalsIgnoreCase("TEST")) {
+                mMode = "TEST";
+                setTitle("Тестовое желание");
+            }
+        }
+
     }
 
 
     public void OnCheckStateClick(View view) {
-        CheckStateTask task = new CheckStateTask();
+        CheckStateTask task = new CheckStateTask(mMode);
         task.execute();
     }
 
@@ -90,7 +125,11 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
             String userName = userNameEditText.getText().toString();
             LifeBalanceDBHelper dbHelper = new LifeBalanceDBHelper(this);
             LifeBalanceDBDataManager.InsertOrUpdateSettings(dbHelper.getWritableDatabase(),GeneralHelper.USER_NAME_SETTING_NAME,userName);
-            mBillingHelper = new BillingHelper(this, this, this, skuCode);
+            if (mMode == "TEST") {
+                mBillingHelper = new BillingHelper(this, this, this, skuCodeTest);
+            } else {
+                mBillingHelper = new BillingHelper(this, this, this, skuCodeMain);
+            }
             mBillingHelper.StartOperationInStore();
     }
 
@@ -127,14 +166,17 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
                 headerActionTextView.setVisibility(View.INVISIBLE);
                 textActionTextView.setVisibility(View.INVISIBLE);
             }
-
         }
-
     }
 
 
     public class CheckStateTask extends AsyncTask<Void,Void,Void> {
 
+        private String mMode;
+
+        public CheckStateTask(String mode) {
+            mMode = mode;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -168,7 +210,8 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
 
                 String wishesIds = "";
 
-                URL url = new URL(URL_ADDRESS_TO_CHECK);
+                URL url = new URL(URL_ADDRESS_TO_CHECK + "?mode=" + mMode);
+                Log.e("URL", url.toString());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestMethod("GET");
@@ -187,7 +230,7 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
                         isCampaign = responseJSON.getInt("is_campaign");
                         cHeader = responseJSON.getString("campaign_header");
                         cText = responseJSON.getString("campaign_text");
-                        //skuCode = responseJSON.getString("sku_code");
+                        //skuCodeMain = responseJSON.getString("sku_code");
 
                     } catch (Exception ex) {
                         ex.printStackTrace();

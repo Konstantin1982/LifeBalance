@@ -2,7 +2,7 @@
     <string name="app_name">LifeBalance</string>
     <string name="title_activity_wishes">Желания</string>
     <string name="title_choose_categories">Выбираем категории желания</string>
-    <string name="title_recommend_subscribe">Рекомендую Вам подключить ментора</string>
+    <string name="title_recommend_subscribe">Рекомендую Вам подключить Вашего личного Тренера</string>
     <string name="text_recommend_subscribe">Взгляд со стороны на ваши мечты, гармонизация их со Вселенной.</string>
     <string name="myself">Справлюсь сам!</string>
     <string name="OK">Ок!</string>
