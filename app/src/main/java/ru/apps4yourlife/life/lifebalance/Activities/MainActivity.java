@@ -137,15 +137,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 =========================================================
 
 
- TODO: 1. TEST WISH (???).
- TODO   1.1. Create workflow
- TODO   1.2. Design it
- TODO   1.3  Implement scenario
-
-
- TODO  2. MANUAL REWORK (IMPROVE DESIGN)
-
- TODO 3. INVESTIGATE WEBCHAT NOTIFICATIONS
+// TODO 1.2. 1 Валидация желания в форме
+// TODO 1.2. 2 Покупка с кодом test_wish...  100 рублей + промокоды бесплатные
+// TODO 1.2. 3 Если есть test_wish, я могу отправить одно желание на проверку.
+// TODO 1.2. 4 Редизайн справочных окошек.
+// TODO 1.2  5 Нотификации от webchat
 
 
 
