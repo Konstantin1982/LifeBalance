@@ -558,3 +558,11 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
 }
 
+
+// TODO 1.2. 1 Валидация желания в форме
+// TODO 1.2. 2 Покупка с кодом test_wish...  100 рублей + промокоды бесплатные
+// TODO 1.2. 3 Если есть test_wish, я могу отправить одно желание на проверку.
+// TODO 1.2. 4 Редизайн справочных окошек.
+// TODO 1.2  5 Нотификации от webchat
+
+
