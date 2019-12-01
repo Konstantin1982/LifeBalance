@@ -31,8 +31,40 @@ public class LifeBalanceDBDataManager {
         mContext.deleteDatabase(mDBHelper.getDatabaseName());
     }
 
+    /*
+        *****************************************
+        *              USERS SECTION
+        *****************************************
+     */
 
+    public int UserTestWishStatus() {
+        //0 - ничего не покупал
+        //1 - уже купил, но еще не использовал
+        //2 - купил и использовал
+        int result = 0;
+        // 1. Check Setting count
+        String userBoughtTest = GetSettingValueByName(mDBHelper.getReadableDatabase(), GeneralHelper.USER_TEST_STATE_SETTING_NAME);
+        if (userBoughtTest.equalsIgnoreCase("1")) {
+            // Пользователь уже покупал тестовое желание. Проверяем -  не использовал ли он его уже?
+            result = 1;
 
+            String selection = LifeBalanceContract.WishesEntry.COLUMN_ISTESTWISH + " = 1 ";
+            Cursor wishes = mDBHelper.getReadableDatabase().query(
+                    LifeBalanceContract.WishesEntry.TABLE_NAME,
+                    null,
+                    selection,
+                    null,
+                    null,
+                    null,
+                    LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE + " DESC",
+                    null
+            );
+            if (wishes.getCount() > 0) {
+                result = 2;
+            }
+        }
+        return result;
+    }
 
 
 

@@ -17,7 +17,7 @@ import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 
 public class LifeBalanceDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "lifebalance.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     private Context mContext;
 
@@ -56,6 +56,7 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
                         LifeBalanceContract.WishesEntry.COLUMN_PLAN_END + " INTEGER, " +
                         LifeBalanceContract.WishesEntry.COLUMN_FACT_END + " INTEGER, " +
                         LifeBalanceContract.WishesEntry.COLUMN_STATUS + " INTEGER, " +
+                        LifeBalanceContract.WishesEntry.COLUMN_ISTESTWISH + " INTEGER, " +
                         LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION + " VARCHAR(1020), " +
                         LifeBalanceContract.WishesEntry.COLUMN_SITUATION + " VARCHAR(1020), " +
                         LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE + " LONG" +
@@ -227,6 +228,11 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        Log.e("UPGRADE SQL", "ON UPGRADE");
+        final String SQL_ALTER =
+                "ALTER TABLE " + LifeBalanceContract.WishesEntry.TABLE_NAME +
+                        " ADD COLUMN " +  LifeBalanceContract.WishesEntry.COLUMN_ISTESTWISH + " INTEGER";
+        sqLiteDatabase.execSQL(SQL_ALTER);
 
     }
 }

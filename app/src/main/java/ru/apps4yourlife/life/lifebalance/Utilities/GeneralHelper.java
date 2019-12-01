@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
@@ -110,6 +111,7 @@ public class GeneralHelper {
 
     public interface SubscribeDialogInterface {
         void OnAgreedToSubscribe(Context context);
+        void OnAgreedTestSubscribe(Context context);
         void OnRejectToSubscribe(Context context);
     }
 

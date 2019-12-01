@@ -115,6 +115,19 @@
         app:layout_constraintStart_toEndOf="@+id/userNameTextView"
         app:layout_constraintTop_toBottomOf="@+id/actualPrice" />
 
+    <Button
+        android:id="@+id/helpSubmitButton"
+        style="@style/TypicalButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="Что такое тестовое желание?"
+        app:layout_constraintBottom_toTopOf="@+id/startBuyButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
     <!--
     сколько это стоит

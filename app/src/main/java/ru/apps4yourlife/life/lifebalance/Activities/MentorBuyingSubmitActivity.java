@@ -169,6 +169,10 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
         }
     }
 
+    public void HelpButtonClick(View view) {
+        // TOOD: SHOW HELP ABOUT TEST WISH
+        return;
+    }
 
     public class CheckStateTask extends AsyncTask<Void,Void,Void> {
 

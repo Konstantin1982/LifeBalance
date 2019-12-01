@@ -494,7 +494,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //Toast.makeText(context,"УРА! Спасибо за подписку!",Toast.LENGTH_SHORT).show();
-                        OnAgreedToSubscribe(context);
+                        //OnAgreedToSubscribe(context);
                         listener.OnAgreedToSubscribe(context);
                     }
                 })
@@ -505,6 +505,14 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                         listener.OnRejectToSubscribe(context);
                     }
                 });
+        if (mDataManager.UserTestWishStatus() == 0) {
+            builder.setNeutralButton("Тестовое желание с тренером", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    listener.OnAgreedTestSubscribe(context);
+                }
+            });
+        }
         return builder.create();
     }
 
@@ -513,6 +521,13 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     public void OnAgreedToSubscribe(Context context) {
         Intent mentorSubmitIntent = new Intent(context, MentorBuyingSubmitActivity.class);
         startActivityForResult(mentorSubmitIntent, 1);
+    }
+
+    @Override
+    public void OnAgreedTestSubscribe(Context context) {
+        Intent mentorSubmitIntent = new Intent(context, MentorBuyingSubmitActivity.class);
+        mentorSubmitIntent.putExtra("MODE", "TEST");
+        startActivityForResult(mentorSubmitIntent, 2);
     }
 
     @Override
@@ -785,7 +800,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             mStepsListAdapter.updateListValues(position);
             updateFinishButton(true);
         }
-        if (requestCode == 1 ) {
+        if (requestCode == 1 && requestCode == 2) {
             // user subscribe
             FinishActivity(0);
         }
