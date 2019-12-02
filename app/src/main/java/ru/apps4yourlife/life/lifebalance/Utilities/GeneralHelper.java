@@ -1,38 +1,20 @@
 package ru.apps4yourlife.life.lifebalance.Utilities;
-import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.DataOutputStream;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.concurrent.TimeUnit;
 
-import ru.apps4yourlife.life.lifebalance.Activities.MentorBuyingSubmitActivity;
-import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBHelper;
 import ru.apps4yourlife.life.lifebalance.R;

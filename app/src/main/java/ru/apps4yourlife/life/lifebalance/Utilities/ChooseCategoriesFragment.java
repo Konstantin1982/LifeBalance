@@ -7,14 +7,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
 

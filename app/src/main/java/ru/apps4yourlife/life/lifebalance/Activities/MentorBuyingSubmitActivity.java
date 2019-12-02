@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -105,12 +106,18 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
         userNameEditText.setText("Мечтатель_" + i1);
 
         String activityMode = getIntent().getStringExtra("MODE");
+        Button helpButton = findViewById(R.id.helpSubmitButton);
+        helpButton.setVisibility(View.GONE);
         if (activityMode != null) {
             if (activityMode.equalsIgnoreCase("TEST")) {
                 mMode = "TEST";
                 setTitle("Тестовое желание");
+                helpButton.setVisibility(View.VISIBLE);
             }
         }
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
     }
 
@@ -169,8 +176,21 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                setResult(1);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public void HelpButtonClick(View view) {
-        // TOOD: SHOW HELP ABOUT TEST WISH
+        // DONE: SHOW HELP ABOUT TEST WISH
+        GeneralHelper.ShowHelpInWishActivity("step_test.html", "", this);
         return;
     }
 

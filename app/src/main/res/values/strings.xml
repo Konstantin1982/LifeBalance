@@ -4,8 +4,9 @@
     <string name="title_choose_categories">Выбираем категории желания</string>
     <string name="title_recommend_subscribe">Рекомендую Вам подключить Вашего личного Тренера</string>
     <string name="text_recommend_subscribe">Взгляд со стороны на ваши мечты, гармонизация их со Вселенной.</string>
-    <string name="myself">Справлюсь сам!</string>
-    <string name="OK">Ок!</string>
+    <string name="myself">Справлюсь сам(а)!</string>
+    <string name="OKTRAINER">ДА, хочу подключить тренера!</string>
+    <string name="OK">OK</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="wishlist_nextstep_0">Обдумываем Желание и формулируем его.</string>

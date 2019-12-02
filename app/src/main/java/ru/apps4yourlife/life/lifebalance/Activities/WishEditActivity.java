@@ -1,16 +1,12 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
 import android.animation.ObjectAnimator;
-import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
-import android.provider.BaseColumns;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -42,7 +38,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import ru.apps4yourlife.life.lifebalance.Adapters.StepsListAdapter;
-import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.R;
@@ -490,7 +485,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.title_recommend_subscribe)
                 .setMessage(R.string.text_recommend_subscribe)
-                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.OKTRAINER, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //Toast.makeText(context,"УРА! Спасибо за подписку!",Toast.LENGTH_SHORT).show();
