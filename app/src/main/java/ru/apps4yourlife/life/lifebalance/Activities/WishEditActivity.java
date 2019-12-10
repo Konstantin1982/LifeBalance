@@ -50,6 +50,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     private long mWishEntryId;
     private int mWishStatus;
     private int mNewWishStatus;
+    private int mWishIsTest;
     private String mWishPositionInList;
     private String mWishSituation;
     private Cursor mWishEntry;
@@ -195,12 +196,14 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             mSelectedTypes = GeneralHelper.extractTypesFromWish(mWishEntry.getString(mWishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_TYPE)));
             mWishStatus = mWishEntry.getInt(mWishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
             mChosenDateLong = mWishEntry.getLong(mWishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_PLAN_END));
+            mWishIsTest = mWishEntry.getInt(mWishEntry.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_ISTESTWISH));
         } else {
             // new wish
             mWishEntry = null;
             mSelectedTypes = new ArrayList<Integer>();
             mWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_NEW;
             mChosenDateLong = 0;
+            mWishIsTest = 0;
         }
         mNewWishStatus = mWishStatus;
         mWishSituation = "";
@@ -354,7 +357,8 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 0,
                 mNewWishStatus,
                 wishDescriptionString,
-                wishSituationString);
+                wishSituationString,
+                mWishIsTest);
         if (mWishEntryId <= 0) mWishEntryId = res;
     }
 
@@ -426,6 +430,9 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     if (GeneralHelper.isUserSubscribed(this)) {
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW;
                         needToBeSent = true;
+                    } else if (GeneralHelper.isUserSubscribeTestWish(this) == 1) {
+                            mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW;
+                            needToBeSent = true;
                     } else {
                         wishSave_routine();
                         needToBeSave = false;
@@ -441,6 +448,9 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     if (GeneralHelper.isUserSubscribed(this)) {
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
                         needToBeSent = true;
+                    } else if (GeneralHelper.isUserSubscribeTestWish(this) == 1) {
+                            mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
+                            needToBeSent = true;
                     } else {
                         wishSave_routine();
                         needToBeSave = false;

@@ -446,7 +446,8 @@ public class LifeBalanceDBDataManager {
                                           long factend,
                                           int status,
                                           String description,
-                                          String situation) {
+                                          String situation,
+                                          int isTest) {
         long result = 0;
         ContentValues values = new ContentValues();
         values.put(LifeBalanceContract.WishesEntry.COLUMN_TYPE, types);
@@ -457,6 +458,7 @@ public class LifeBalanceDBDataManager {
         values.put(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION, description);
         values.put(LifeBalanceContract.WishesEntry.COLUMN_SITUATION, situation);
         values.put(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE, new Date().getTime() );
+        values.put(LifeBalanceContract.WishesEntry.COLUMN_ISTESTWISH, isTest );
         if (idEntry == null) idEntry = "0";
         if (idEntry.equalsIgnoreCase("0")  || idEntry.equalsIgnoreCase("-1")) {
             result = db.insert(LifeBalanceContract.WishesEntry.TABLE_NAME, null, values);
@@ -500,8 +502,8 @@ public class LifeBalanceDBDataManager {
         return result;
     }
 
-    public long InsertOrUpdateWish(String idEntry, String types, long start, long planend, long factend, int status, String description, String situation) {
-        return this.InsertOrUpdateWish(mDBHelper.getWritableDatabase(), idEntry, types, start, planend, factend, status, description, situation);
+    public long InsertOrUpdateWish(String idEntry, String types, long start, long planend, long factend, int status, String description, String situation, int isTest) {
+        return this.InsertOrUpdateWish(mDBHelper.getWritableDatabase(), idEntry, types, start, planend, factend, status, description, situation, isTest);
     }
 
     public static String GetSettingValueByName(SQLiteDatabase  db, String name) {

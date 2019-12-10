@@ -28,14 +28,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.freshchat.consumer.sdk.FaqOptions;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
 
@@ -51,11 +48,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import ru.apps4yourlife.life.lifebalance.Adapters.StepsListAdapter;
 import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
@@ -129,6 +123,11 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
             task = new SyncTask(this);
             task.execute();
         }
+        if (GeneralHelper.isUserSubscribeTestWish(this) > 0) {
+            taskState = 0;
+            task = new SyncTask(this);
+            task.execute();
+        }
 
     }
 
@@ -193,7 +192,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (GeneralHelper.isUserSubscribed(this)) {
+        if (GeneralHelper.isUserSubscribed(this) || GeneralHelper.isUserSubscribeTestWish(this) > 0) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.menu_refresh_list, menu);
         }
@@ -540,7 +539,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
         private String GenerateKey(String userId) {
             String key =  "OK";
-            if (!GeneralHelper.isUserSubscribed(mContext)) {
+            if (!GeneralHelper.isUserSubscribed(mContext) && GeneralHelper.isUserSubscribeTestWish(mContext) == 0) {
                 key =  "ERROR";
             }
             return key;

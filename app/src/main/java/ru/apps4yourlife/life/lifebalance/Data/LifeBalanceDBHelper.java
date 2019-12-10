@@ -166,54 +166,6 @@ public class LifeBalanceDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertFakeWishes(SQLiteDatabase db) {
-        LifeBalanceDBDataManager.InsertOrUpdateWish(
-                db,
-                null,
-                "1,2",
-                0,
-                0,
-                0,
-                GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED,
-                "Устроиться на работу мечты - стать дворников на багамских островах.",
-                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
-                );
-        LifeBalanceDBDataManager.InsertOrUpdateWish(
-                db,
-                null,
-                "0,1",
-                0,
-                0,
-                0,
-                GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW,
-                "Устроиться на работу мечты - стать дворников на багамских островах.",
-                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
-                );
-        long id = LifeBalanceDBDataManager.InsertOrUpdateWish(
-                db,
-                null,
-                "0,2,5",
-                0,
-                0,
-                0,
-                GeneralHelper.WishStatusesClass.WISH_STATUS_NEW,
-                "НОВОЕ Я хочу морковный сок из 20-ти морковных грядок. Сок холодный и свежий.",
-                ""
-        );
-
-        LifeBalanceDBDataManager.InsertOrUpdateWish(
-                db,
-                null,
-                "0,2",
-                0,
-                0,
-                0,
-                GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW,
-                "Устроиться на работу мечты - стать дворников на багамских островах.",
-                "Мету кокосовые листья, выбрасываю крабовые шкурки в океан."
-                );
-
-    }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {

@@ -128,8 +128,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 }
 
-// todo: validator on save
-
 /*
 
 =========================================================
@@ -143,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 // TODO 1.2. 3 Если есть test_wish, я могу отправить одно желание на проверку.
 // TODO 1.2. 4 Редизайн справочных окошек.
 // TODO 1.2  5 Нотификации от webchat
+// TODO 2 QUEUE for WISHES ON SERVER
 
 
 

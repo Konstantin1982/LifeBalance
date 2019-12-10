@@ -159,6 +159,11 @@ public class GeneralHelper {
         return false;
     }
 
+    public static int isUserSubscribeTestWish(Context context) {
+        LifeBalanceDBDataManager dbDataManager = new LifeBalanceDBDataManager(context);
+        return dbDataManager.UserTestWishStatus();
+    }
+
 
     public static void PushWishToServer(Context context, long wishId) {
         LifeBalanceDBHelper dbHelper = new LifeBalanceDBHelper(context);
