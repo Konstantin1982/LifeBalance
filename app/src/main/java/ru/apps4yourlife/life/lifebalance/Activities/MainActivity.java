@@ -137,8 +137,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 // DONE 1.2. 1 Валидация желания в форме
 // DONE 1.2. 2 Покупка с кодом test_wish...  100 рублей + промокоды бесплатные
-// TODO 1.2. 2.1 Внутри желания - ТЕСТОВАЯ ПОКУПКА!!!!
-// TODO 1.2. 3 Если есть test_wish, я могу отправить одно желание на проверку.
+// DONE 1.2. 2.1 Внутри желания - ТЕСТОВАЯ ПОКУПКА!!!!
+// DONE 1.2. 3 Если есть test_wish, я могу отправить одно желание на проверку.
 // TODO 1.2. 4 Редизайн справочных окошек.
 // TODO 1.2  5 Нотификации от webchat
 // TODO 2 QUEUE for WISHES ON SERVER

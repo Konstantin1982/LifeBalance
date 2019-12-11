@@ -432,6 +432,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                         needToBeSent = true;
                     } else if (GeneralHelper.isUserSubscribeTestWish(this) == 1) {
                             mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW;
+                            mWishIsTest = 1;
                             needToBeSent = true;
                     } else {
                         wishSave_routine();
@@ -449,8 +450,9 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
                         needToBeSent = true;
                     } else if (GeneralHelper.isUserSubscribeTestWish(this) == 1) {
-                            mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
-                            needToBeSent = true;
+                        mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
+                        needToBeSent = true;
+                        mWishIsTest = 1;
                     } else {
                         wishSave_routine();
                         needToBeSave = false;

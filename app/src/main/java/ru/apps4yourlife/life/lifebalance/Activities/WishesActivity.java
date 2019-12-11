@@ -546,10 +546,8 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         }
 
         private String convertStreamToString(InputStream is) {
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             StringBuilder sb = new StringBuilder();
-
             String line = null;
             try {
                 while ((line = reader.readLine()) != null) {

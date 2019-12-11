@@ -67,8 +67,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Button"
         android:onClick="debugBtn_click"
+        android:text="Button"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/imageView11"
         app:layout_constraintEnd_toStartOf="@+id/floatingActionButton2" />
 

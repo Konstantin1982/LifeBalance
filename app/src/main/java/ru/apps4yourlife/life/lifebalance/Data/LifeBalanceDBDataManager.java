@@ -15,6 +15,8 @@ import java.util.Date;
 import ru.apps4yourlife.life.lifebalance.R;
 import ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper;
 
+import static ru.apps4yourlife.life.lifebalance.Utilities.GeneralHelper.USER_GOT_TEST_WISH_NAME;
+
 
 public class LifeBalanceDBDataManager {
     public LifeBalanceDBHelper mDBHelper;
@@ -42,6 +44,11 @@ public class LifeBalanceDBDataManager {
         //1 - уже купил, но еще не использовал
         //2 - купил и использовал
         int result = 0;
+
+        String userUsTest = GetSettingValueByName(mDBHelper.getReadableDatabase(), USER_GOT_TEST_WISH_NAME);
+        if (userUsTest.equalsIgnoreCase("1")) {
+            return 2;
+        }
         // 1. Check Setting count
         String userBoughtTest = GetSettingValueByName(mDBHelper.getReadableDatabase(), GeneralHelper.USER_TEST_STATE_SETTING_NAME);
         if (userBoughtTest.equalsIgnoreCase("1")) {
@@ -284,24 +291,34 @@ public class LifeBalanceDBDataManager {
     public static void UpdateWishFromServer(SQLiteDatabase writableDb, String wishId, String newStatus, String comment){
 
         Cursor wish = GetWishById(wishId, writableDb);
-        if (wish != null) {
-            int status = wish.getInt(wish.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
-            Log.e("WISHUPDATE", "old status= " + status + "; " + newStatus);
-            if (status < Integer.valueOf(newStatus)) {
-                ContentValues values = new ContentValues();
-                values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, newStatus);
-                values.put(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE, new Date().getTime());
+        boolean needToInsert = false;
+        int status = -1;
+        if (wish.getCount() > 0) {
+            wish.moveToFirst();
+            status = wish.getInt(wish.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
+        }else {
+            needToInsert = true;
+        }
+        Log.e("WISHUPDATE", "old status= " + status + "; " + newStatus);
+        if (status < Integer.valueOf(newStatus)) {
+            ContentValues values = new ContentValues();
+            values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, newStatus);
+            values.put(LifeBalanceContract.WishesEntry.COLUMN_UPDATEDATE, new Date().getTime());
+            if (needToInsert) {
+                // user has deleted wish while waiting
+                InsertOrUpdateSettings(writableDb,USER_GOT_TEST_WISH_NAME,"0");
+            } else {
                 writableDb.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{wishId});
             }
-            if (!comment.isEmpty()) {
-                String commentWish = "", commentStatus = "";
-                if (Integer.valueOf(newStatus) == GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED) {
-                    commentWish = comment;
-                } else {
-                    commentStatus = comment;
-                }
-                InsertOrUpdateServerComment(writableDb, wishId, commentWish, commentStatus);
+        }
+        if (!comment.isEmpty()) {
+            String commentWish = "", commentStatus = "";
+            if (Integer.valueOf(newStatus) == GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED) {
+                commentWish = comment;
+            } else {
+                commentStatus = comment;
             }
+            InsertOrUpdateServerComment(writableDb, wishId, commentWish, commentStatus);
         }
     }
 
@@ -465,6 +482,9 @@ public class LifeBalanceDBDataManager {
         } else {
             result = db.update(LifeBalanceContract.WishesEntry.TABLE_NAME, values, LifeBalanceContract.WishesEntry._ID + " = ? ", new String[]{idEntry});
             if (result > 0) result = Long.valueOf(idEntry);
+        }
+        if (isTest == 1) {
+            InsertOrUpdateSettings(db,USER_GOT_TEST_WISH_NAME,"1");
         }
         return result;
     }

@@ -130,11 +130,13 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
     public void OnSubmitClick(View view) {
 
         // TODO: REMOVE IN PROD
+        /*
         LifeBalanceDBDataManager dbDataManager = new LifeBalanceDBDataManager(this);
         dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_TEST_STATE_SETTING_NAME, "1");
         Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
         CallBackTask cb = new CallBackTask(2);
         cb.execute();
+         */
 
         EditText userNameEditText = findViewById(R.id.userNameEditText);
             String userName = userNameEditText.getText().toString();

@@ -2,6 +2,7 @@ package ru.apps4yourlife.life.lifebalance.Utilities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
@@ -34,6 +35,7 @@ public class GeneralHelper {
     public static final String USER_NAME_SETTING_NAME = "CLIENTNAME"; // имя клиента
     public static final String USER_STATE_SETTING_NAME = "USER_STATUS";  // 1 2 - покупка есть.
     public static final String USER_TEST_STATE_SETTING_NAME = "USER_TEST_STATUS";  // 1 2 - покупка есть.
+    public static final String USER_GOT_TEST_WISH_NAME = "USER_GOT_TEST_WISH";  // 1 2 - покупка есть.
 
     public static String GetCurrentDateString() {
 // set the format to sql date time
@@ -161,7 +163,9 @@ public class GeneralHelper {
 
     public static int isUserSubscribeTestWish(Context context) {
         LifeBalanceDBDataManager dbDataManager = new LifeBalanceDBDataManager(context);
-        return dbDataManager.UserTestWishStatus();
+        int status =dbDataManager.UserTestWishStatus();
+        Log.e("USER STATUS", "IS = " + status);
+        return status;
     }
 
 
