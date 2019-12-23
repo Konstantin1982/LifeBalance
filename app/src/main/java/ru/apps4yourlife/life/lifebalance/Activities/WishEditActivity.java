@@ -319,16 +319,25 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
             case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+                // описание
                 EditText wishSituationEditText = (EditText) findViewById(R.id.wishSituationEditText);
                 wishSituationString = wishSituationEditText.getText().toString();
                 if (wishSituationString.isEmpty()) result = false;
+
+                // дата
+
+                Button mBirthDateButton = (Button) findViewById(R.id.planDateButton);
+                if (mBirthDateButton.getText().equals("Дата (не менее 6 месяцев от сегодня)")) {
+                    result = false;
+                }
+
                 break;
         }
         return result;
     }
 
     public void wishSave_routine() {
-        Log.e("SAVE ROTUINE" , "CALLED WITH ID = " + mWishEntryId);
+        //Log.e("SAVE ROTUINE" , "CALLED WITH ID = " + mWishEntryId);
         String wishDescriptionString = "", wishSituationString = "";
         switch (mWishStatus) {
             case GeneralHelper.WishStatusesClass.WISH_STATUS_NEW:
@@ -348,7 +357,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
         }
 
         //Toast.makeText(this, "Save clicked", Toast.LENGTH_SHORT).show();
-        Log.e("wId", "WISH ID" + mWishEntryId + ";   NEW STATUS = " + mNewWishStatus);
+        //Log.e("wId", "WISH ID" + mWishEntryId + ";   NEW STATUS = " + mNewWishStatus);
         long res = mDataManager.InsertOrUpdateWish(
                 String.valueOf(mWishEntryId),
                 GeneralHelper.ConvertTypesToString(mSelectedTypes),
@@ -430,7 +439,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     if (GeneralHelper.isUserSubscribed(this)) {
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW;
                         needToBeSent = true;
-                    } else if (GeneralHelper.isUserSubscribeTestWish(this) == 1) {
+                    } else if (GeneralHelper.isUserSubscribeTestWish(this,String.valueOf(mWishEntryId)) == 1) {
                             mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW;
                             mWishIsTest = 1;
                             needToBeSent = true;
@@ -449,7 +458,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     if (GeneralHelper.isUserSubscribed(this)) {
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
                         needToBeSent = true;
-                    } else if (GeneralHelper.isUserSubscribeTestWish(this) == 1) {
+                    } else if (GeneralHelper.isUserSubscribeTestWish(this, String.valueOf(mWishEntryId)) == 1) {
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
                         needToBeSent = true;
                         mWishIsTest = 1;
@@ -484,9 +493,17 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     wrongEditText = (EditText) findViewById(R.id.wishDescriptionEditText);
                     errorMessage = "Желание должно быть заполнено.";
                 break;
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION:
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED:
+                case GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW:
+                    wrongEditText = (EditText) findViewById(R.id.wishSituationEditText);
+                    errorMessage = "Необходимо описать ситуацию и указать дату!";
+                    Button mDateButton = findViewById(R.id.planDateButton);
+                    mDateButton.setError("(!)");
+                break;
                 default:
                     wrongEditText = (EditText) findViewById(R.id.wishSituationEditText);
-                    errorMessage = "Необходимо описать ситуацию";
+                    errorMessage = "Необходимо описать ситуацию и указать дату!";
             }
             wrongEditText.setError(errorMessage);
         }
@@ -512,7 +529,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                         listener.OnRejectToSubscribe(context);
                     }
                 });
-        if (mDataManager.UserTestWishStatus() == 0) {
+        if (mDataManager.UserTestWishStatus("-1") == 0) {
             builder.setNeutralButton("Тестовое желание с тренером", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {

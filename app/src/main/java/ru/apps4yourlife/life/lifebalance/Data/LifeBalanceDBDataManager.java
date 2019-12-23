@@ -39,14 +39,14 @@ public class LifeBalanceDBDataManager {
         *****************************************
      */
 
-    public int UserTestWishStatus() {
+    public int UserTestWishStatus(String wishId) {
         //0 - ничего не покупал
         //1 - уже купил, но еще не использовал
         //2 - купил и использовал
         int result = 0;
 
         String userUsTest = GetSettingValueByName(mDBHelper.getReadableDatabase(), USER_GOT_TEST_WISH_NAME);
-        if (userUsTest.equalsIgnoreCase("1")) {
+        if (!userUsTest.isEmpty() && !userUsTest.equalsIgnoreCase(wishId) && !userUsTest.equalsIgnoreCase("0")){
             return 2;
         }
         // 1. Check Setting count
@@ -55,7 +55,7 @@ public class LifeBalanceDBDataManager {
             // Пользователь уже покупал тестовое желание. Проверяем -  не использовал ли он его уже?
             result = 1;
 
-            String selection = LifeBalanceContract.WishesEntry.COLUMN_ISTESTWISH + " = 1 ";
+            String selection = LifeBalanceContract.WishesEntry.COLUMN_ISTESTWISH + " = 1 AND " + LifeBalanceContract.WishesEntry._ID + " !=  " + wishId;
             Cursor wishes = mDBHelper.getReadableDatabase().query(
                     LifeBalanceContract.WishesEntry.TABLE_NAME,
                     null,
@@ -299,7 +299,7 @@ public class LifeBalanceDBDataManager {
         }else {
             needToInsert = true;
         }
-        Log.e("WISHUPDATE", "old status= " + status + "; " + newStatus);
+        //Log.e("WISHUPDATE", "old status= " + status + "; " + newStatus);
         if (status < Integer.valueOf(newStatus)) {
             ContentValues values = new ContentValues();
             values.put(LifeBalanceContract.WishesEntry.COLUMN_STATUS, newStatus);
@@ -484,7 +484,7 @@ public class LifeBalanceDBDataManager {
             if (result > 0) result = Long.valueOf(idEntry);
         }
         if (isTest == 1) {
-            InsertOrUpdateSettings(db,USER_GOT_TEST_WISH_NAME,"1");
+            InsertOrUpdateSettings(db,USER_GOT_TEST_WISH_NAME,String.valueOf(result));
         }
         return result;
     }

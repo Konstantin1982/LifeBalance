@@ -48,6 +48,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
@@ -123,7 +125,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
             task = new SyncTask(this);
             task.execute();
         }
-        if (GeneralHelper.isUserSubscribeTestWish(this) > 0) {
+        if (GeneralHelper.isUserSubscribeTestWish(this,"-1") > 0) {
             taskState = 0;
             task = new SyncTask(this);
             task.execute();
@@ -192,7 +194,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (GeneralHelper.isUserSubscribed(this) || GeneralHelper.isUserSubscribeTestWish(this) > 0) {
+        if (GeneralHelper.isUserSubscribed(this) || GeneralHelper.isUserSubscribeTestWish(this,"-1") > 0) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.menu_refresh_list, menu);
         }
@@ -273,7 +275,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         if (tmp.getCount()>0) {
             for (int i = 0; i< tmp.getCount(); i++) {
                 tmp.moveToPosition(i);
-                Log.e("DB WISH", "ID = " + tmp.getLong(0));
+                //Log.e("DB WISH", "ID = " + tmp.getLong(0));
             }
         }
     }
@@ -310,7 +312,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                Log.e("TASK"," Started");
+                //Log.e("TASK"," Started");
                 //boolean isActive = true;
                 //while (isActive) {
                     // 1 - RECEIVE DATA FROM SERVER // once in minute
@@ -372,7 +374,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
                 // wishes
                 Cursor wishesToSend = LifeBalanceDBDataManager.GetWishesToServer(dbHelper.getReadableDatabase());
                 int count = wishesToSend.getCount();
-                Log.e("JSON_PREPARE", " Count of Wishes to Server: " + String.valueOf(count));
+                //Log.e("JSON_PREPARE", " Count of Wishes to Server: " + String.valueOf(count));
                 if (count > 0) {
                     JSONArray wishesArray = new JSONArray();
                     wishesToSend.moveToFirst();
@@ -381,7 +383,11 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
                         wishesToSend.moveToPosition(i);
                         wish.put("ID", wishesToSend.getString(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry._ID)));
                         wish.put("START", wishesToSend.getString(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_START)));
-                        wish.put("END1", wishesToSend.getString(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_PLAN_END)));
+
+                        long date = wishesToSend.getLong(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_PLAN_END));
+                        Date mChosenDate = new Date(date);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+                        wish.put("END1", dateFormat.format(mChosenDate.getTime()));
                         wish.put("END2", wishesToSend.getString(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_FACT_END)));
                         wish.put("STATUS", wishesToSend.getString(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS)));
                         wish.put("DESCRIPTION", wishesToSend.getString(wishesToSend.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION)));
@@ -394,7 +400,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
             } catch (Exception ex){
                 ex.printStackTrace();
             }
-            Log.e("JSON", data.toString());
+            //Log.e("JSON", data.toString());
 
             return data;
         }
@@ -469,10 +475,10 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
                         conn.setRequestProperty("Accept", "application/json");
                         conn.setDoOutput(true);
                         conn.setDoInput(true);
-                        Log.e("COMMIT1", "WISHESIDS = " + wishesIds);
+                        //Log.e("COMMIT1", "WISHESIDS = " + wishesIds);
                         JSONObject fullResponse = PrepareDataToReceive("1");
                         fullResponse.put("WISHES", wishesIds + "-1");
-                        Log.e("COMMIT2", "DATA = " + fullResponse.toString());
+                        //Log.e("COMMIT2", "DATA = " + fullResponse.toString());
                         bData = fullResponse.toString().getBytes(StandardCharsets.UTF_8);
                         os = new DataOutputStream(conn.getOutputStream());
                         os.write(bData);
@@ -516,10 +522,10 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
                 String responseData = convertStreamToString(inputStream);
                 if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     JSONObject responseJSON = new JSONObject(responseData);
-                    Log.e("JSON_RESPONSE", responseJSON.toString());
+                    //Log.e("JSON_RESPONSE", responseJSON.toString());
                     try {
                         String updatedWishes = responseJSON.getString("wishes");
-                        Log.e("JSON.COMMIT", updatedWishes);
+                        //Log.e("JSON.COMMIT", updatedWishes);
                         if (!updatedWishes.isEmpty()) {
                             LifeBalanceDBDataManager.CommitWishesFromServer (dbHelper.getWritableDatabase(),updatedWishes);
                         }
@@ -539,7 +545,7 @@ public class WishesActivity extends AppCompatActivity implements WishListAdapter
 
         private String GenerateKey(String userId) {
             String key =  "OK";
-            if (!GeneralHelper.isUserSubscribed(mContext) && GeneralHelper.isUserSubscribeTestWish(mContext) == 0) {
+            if (!GeneralHelper.isUserSubscribed(mContext) && GeneralHelper.isUserSubscribeTestWish(mContext,"-1") == 0) {
                 key =  "ERROR";
             }
             return key;

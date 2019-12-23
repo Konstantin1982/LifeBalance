@@ -209,7 +209,7 @@ public class WishListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
         mWishListCursor.moveToPosition(position);
         ArrayList<Integer> types = GeneralHelper.extractTypesFromWish(mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_TYPE)));
         int wishStatus = mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS));
-        Log.e("STATUS" , "WISH STATUS = " + wishStatus);
+        //Log.e("STATUS" , "WISH STATUS = " + wishStatus);
         String wishDescription = mWishListCursor.getString(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_DESCRIPTION));
         // public static Map<Integer, String> GetNextStepDescriptionForList(Integer current_status) {
         //AbstractMap.SimpleEntry<String, String> nextStep =   GeneralHelper.GetNextStepDescriptionForList(mWishListCursor.getInt(mWishListCursor.getColumnIndex(LifeBalanceContract.WishesEntry.COLUMN_STATUS)));

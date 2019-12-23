@@ -161,10 +161,10 @@ public class GeneralHelper {
         return false;
     }
 
-    public static int isUserSubscribeTestWish(Context context) {
+    public static int isUserSubscribeTestWish(Context context, String wishId) {
         LifeBalanceDBDataManager dbDataManager = new LifeBalanceDBDataManager(context);
-        int status =dbDataManager.UserTestWishStatus();
-        Log.e("USER STATUS", "IS = " + status);
+        int status =dbDataManager.UserTestWishStatus(wishId);
+        //Log.e("USER STATUS", "IS = " + status);
         return status;
     }
 

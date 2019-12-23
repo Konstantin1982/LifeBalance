@@ -72,18 +72,33 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
             }
         }
         if (responseCode == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
-            for (Purchase purchase : purchases) {
-                String skuCode = purchase.getSku();
-                if (skuCode.equalsIgnoreCase(skuCodeMain)) {
+            if (purchases != null) {
+                for (Purchase purchase : purchases) {
+                    String skuCode = purchase.getSku();
+                    if (skuCode.equalsIgnoreCase(skuCodeMain)) {
+                        dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_STATE_SETTING_NAME, "2");
+                        Toast.makeText(this, "Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+                        CallBackTask cb = new CallBackTask(1);
+                        cb.execute();
+                    }
+                    if (skuCode.equalsIgnoreCase(skuCodeTest)) {
+                        dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_TEST_STATE_SETTING_NAME, "1");
+                        Toast.makeText(this, "Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+                        CallBackTask cb = new CallBackTask(3);
+                        cb.execute();
+                    }
+                }
+            }   else {
+                if (mMode == "TEST") {
+                    dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_TEST_STATE_SETTING_NAME, "1");
+                    Toast.makeText(this, "Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
+                    CallBackTask cb = new CallBackTask(3);
+                    cb.execute();
+
+                } else {
                     dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_STATE_SETTING_NAME, "2");
                     Toast.makeText(this, "Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
                     CallBackTask cb = new CallBackTask(1);
-                    cb.execute();
-                }
-                if (skuCode.equalsIgnoreCase(skuCodeTest)) {
-                    dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_TEST_STATE_SETTING_NAME, "1");
-                    Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
-                    CallBackTask cb = new CallBackTask(3);
                     cb.execute();
                 }
             }
@@ -129,8 +144,8 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
 
     public void OnSubmitClick(View view) {
 
-        // TODO: REMOVE IN PROD
         /*
+        // DONE: REMOVE IN PROD
         LifeBalanceDBDataManager dbDataManager = new LifeBalanceDBDataManager(this);
         dbDataManager.InsertOrUpdateSettings(GeneralHelper.USER_TEST_STATE_SETTING_NAME, "1");
         Toast.makeText(this,"Покупка прошла успешно!!! Ваши желания обязательно сбудутся", Toast.LENGTH_LONG).show();
@@ -245,7 +260,7 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
                 String wishesIds = "";
 
                 URL url = new URL(URL_ADDRESS_TO_CHECK + "?mode=" + mMode);
-                Log.e("URL", url.toString());
+                //Log.e("URL", url.toString());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestMethod("GET");
