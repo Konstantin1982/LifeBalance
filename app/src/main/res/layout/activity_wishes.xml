@@ -46,7 +46,7 @@
         android:layout_marginEnd="24dp"
         android:clickable="true"
         android:onClick="wishAdd_click"
-        android:backgroundTint="@color/neartoWhite"
+        app:backgroundTint="@color/neartoWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_magic_wand_symbol" />
