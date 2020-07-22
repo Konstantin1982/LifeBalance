@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -29,14 +29,14 @@
     android:layout_height="match_parent"
     >
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_constraint"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="40dp"
             tools:context="ru.apps4yourlife.life.lifebalance.Activities.MainActivity">
 
-                        <android.support.v7.widget.CardView android:id="@+id/messages_card"
+                        <androidx.cardview.widget.CardView android:id="@+id/messages_card"
                                     xmlns:android="http://schemas.android.com/apk/res/android"
                                     xmlns:app="http://schemas.android.com/apk/res-auto"
                                     xmlns:tools="http://schemas.android.com/tools"
@@ -106,9 +106,9 @@
 
                                     </android.support.constraint.ConstraintLayout>
 
-                                </android.support.v7.widget.CardView>
+                                </androidx.cardview.widget.CardView>
 
-                        <android.support.v7.widget.CardView android:id="@+id/wishes_card"
+                        <androidx.cardview.widget.CardView android:id="@+id/wishes_card"
                                 xmlns:android="http://schemas.android.com/apk/res/android"
                                 xmlns:app="http://schemas.android.com/apk/res-auto"
                                 xmlns:tools="http://schemas.android.com/tools"
@@ -191,9 +191,9 @@
 
 
                                     </android.support.constraint.ConstraintLayout>
-                            </android.support.v7.widget.CardView>
+                            </androidx.cardview.widget.CardView>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

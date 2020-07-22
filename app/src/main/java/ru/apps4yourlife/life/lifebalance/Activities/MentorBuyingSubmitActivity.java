@@ -1,8 +1,8 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
 import android.os.AsyncTask;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
-import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceContract;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBHelper;
 import ru.apps4yourlife.life.lifebalance.R;
@@ -130,7 +129,7 @@ public class MentorBuyingSubmitActivity extends AppCompatActivity implements Pur
                 helpButton.setVisibility(View.VISIBLE);
             }
         }
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 

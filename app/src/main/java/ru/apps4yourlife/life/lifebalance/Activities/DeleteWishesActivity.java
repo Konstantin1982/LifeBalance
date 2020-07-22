@@ -1,16 +1,13 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
 import android.content.DialogInterface;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.design.widget.NavigationView;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.MenuItem;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import ru.apps4yourlife.life.lifebalance.Adapters.WishListAdapter;
 import ru.apps4yourlife.life.lifebalance.Data.LifeBalanceDBDataManager;
@@ -34,7 +31,7 @@ public class DeleteWishesActivity extends AppCompatActivity implements WishListA
         mWishListAdapter = new WishListAdapter(this, this, 2);
         mListWishes.setAdapter(mWishListAdapter);
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         actionBar.setElevation(0.0f);

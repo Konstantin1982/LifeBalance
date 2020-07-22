@@ -7,14 +7,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -58,6 +60,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     private long mChosenDateLong;
     private int mWishFearStatus;
     private StepsListAdapter mStepsListAdapter;
+    private InterstitialAd mInterstitialAd;
 
     private ArrayList<Integer> mSelectedTypes;
     private boolean isHelpShown = false;
@@ -65,6 +68,10 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         String wishIdString = getIntent().getStringExtra("WISH_ID");
         mWishPositionInList = getIntent().getStringExtra("POSITION_ID");
@@ -167,7 +174,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                 backButtonImage = R.drawable.ic_arrow_back_white_24dp;
             break;
         }
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(backButtonImage);
         actionBar.setElevation(0.0f);
@@ -436,6 +443,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     mWishStatus == GeneralHelper.WishStatusesClass.WISH_STATUS_REJECTED) {
                 CheckBox submitCheckBox = findViewById(R.id.ready_to_check);
                 if (submitCheckBox.isChecked()) {
+                    mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION;
                     if (GeneralHelper.isUserSubscribed(this)) {
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW;
                         needToBeSent = true;
@@ -443,11 +451,10 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                             mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_IN_REVIEW;
                             mWishIsTest = 1;
                             needToBeSent = true;
-                    } else {
-                        wishSave_routine();
-                        needToBeSave = false;
-                        ShowRecommendToSubscribe(this, this).show();
-                        needToCloseActivity = false;
+                    }
+                    wishSave_routine();
+                    if (mInterstitialAd.isLoaded()) {
+                        mInterstitialAd.show();
                     }
                 }
             }
@@ -455,6 +462,7 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                     mWishStatus == GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REJECTED) {
                 CheckBox submitCheckBox = findViewById(R.id.ready_to_check);
                 if (submitCheckBox.isChecked()) {
+                    mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_FEARS;
                     if (GeneralHelper.isUserSubscribed(this)) {
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
                         needToBeSent = true;
@@ -462,11 +470,10 @@ public class WishEditActivity extends AppCompatActivity implements ChooseCategor
                         mNewWishStatus = GeneralHelper.WishStatusesClass.WISH_STATUS_SITUATION_REVIEW;
                         needToBeSent = true;
                         mWishIsTest = 1;
-                    } else {
-                        wishSave_routine();
-                        needToBeSave = false;
-                        ShowRecommendToSubscribe(this, this).show();
-                        needToCloseActivity = false;
+                    }
+                    wishSave_routine();
+                    if (mInterstitialAd.isLoaded()) {
+                        mInterstitialAd.show();
                     }
                 }
             }

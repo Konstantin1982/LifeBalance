@@ -1,6 +1,6 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import ru.apps4yourlife.life.lifebalance.R;

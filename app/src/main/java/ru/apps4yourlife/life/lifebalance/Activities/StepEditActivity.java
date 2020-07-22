@@ -1,7 +1,7 @@
 package ru.apps4yourlife.life.lifebalance.Activities;
 
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +25,7 @@ public class StepEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_step_edit);
 
         int backButtonImage = R.drawable.ic_clear_white_24dp;
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(backButtonImage);
         actionBar.setElevation(0.0f);

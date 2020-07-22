@@ -32,7 +32,7 @@
         <activity android:name=".Activities.FAQActivity" android:label="Ответы на вопросы"/>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="ru.apps4yourlife.life.lifebalance"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -40,7 +40,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/freshchat_file_provider_paths" />
         </provider>
-
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3848852788165915~3265161350"/>
     </application>
 
 </manifest>
